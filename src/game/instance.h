@@ -242,6 +242,9 @@ void INSTANCE_InsertInstanceGroup(Instance* instance);
 // 0x004553f0 (PDB: 0x00456a30 / ?INSTANCE_Find@@YAPAUInstance@@H@Z)
 Instance* INSTANCE_Find(int instanceID);
 
+// 0x00455130 (PDB: 0x00456770 / ?INSTANCE_Query@@YAIPAUInstance@@I@Z)
+unsigned int INSTANCE_Query(Instance* instance, unsigned int query);
+
 // 0x00455bb0 (PDB: 0x004571f0 / ?INSTANCE_SetModel@@YAXPAUInstance@@H@Z)
 void INSTANCE_SetModel(Instance* instance, int modelNum);
 

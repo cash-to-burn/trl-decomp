@@ -466,6 +466,20 @@ Original Module: `f:\tr7\game\camera\cameraVV.c` (PDB -> Retail shift: `-0x1b10`
 | `0x0048e150` | `CAMERA_SetProjDistance2` | `void CAMERA_SetProjDistance2(CameraCore*, float)` | Decompiled & Verified |
 | `0x0048e210` | `CAMERA_SetProjDistance` | `void CAMERA_SetProjDistance(CameraCore*, float)` | Decompiled & Verified |
 
+### Camera Focus Subsystem (`src/game/camera/camerafocus.cpp`, `src/game/camera/camerafocus.h`, `src/game/globalinfo.h`)
+Original Module: `f:\tr7\game\camera\cameraFocus.c` (PDB -> Retail shift: `-0x1a30` to `-0x1a40`)
+
+| Address (Retail) | Function / Symbol | Signature / Purpose | Status |
+| :--- | :--- | :--- | :--- |
+| `0x00485c50` | `CAMERA_CreateNewFocuspoint` | `void CAMERA_CreateNewFocuspoint(Camera*)` | Decompiled & Verified |
+| `0x00485cc0` | `CAMERA_SetMaxVel` | `void CAMERA_SetMaxVel(Camera*)` | Decompiled & Verified |
+| `0x00485cd0` | `CAMERA_FocusHeight` | `float CAMERA_FocusHeight(Camera*)` | Decompiled & Verified |
+| `0x00485d50` | `CAMERA_SetInstanceFocus` | `void CAMERA_SetInstanceFocus(Camera*, Instance*)` | Decompiled & Verified |
+| `0x00485df0` | `CAMERA_GetInterestInstFocus` | `static cdc::Vector3 CAMERA_GetInterestInstFocus(Camera*)` | Decompiled & Verified |
+| `0x00486030` | `CAMERA_CalcFocusOffset` | `static cdc::Vector3 CAMERA_CalcFocusOffset(Camera*)` | Decompiled & Verified |
+| `0x004860e0` | `CAMERA_SetFocus` | `void CAMERA_SetFocus(Camera*, cdc::Vector3*)` | Decompiled & Verified |
+| `0x010c0998` | `globalInfo` | `GlobalInfo*` (`CameraDefaults` + global info layout) | Documented |
+
 ---
 
 ## Build Verification

@@ -9,6 +9,7 @@
 #include "game/Stream/stream.h"
 #include "game/obtable.h"
 #include "game/instance.h"
+#include "game/globalinfo.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include <cstdio>
 #include <cstdlib>
@@ -26,6 +27,7 @@ int g_noTrace = 0;
 char g_fontName[64] = "default";
 char g_baseAreaName[64] = "";
 GameTracker g_gameTracker = {};
+GlobalInfo* globalInfo = nullptr; // 0x010c0998 (PDB: 0x010c16d8)
 
 void GameTracker::ResetOverrides()
 {

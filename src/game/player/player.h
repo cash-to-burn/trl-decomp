@@ -416,5 +416,6 @@ bool RAZIEL_OkToLookAround(Instance* instance);                            // 0x
 void RAZIEL_DebugHealthFillUp(void);                                       // 0x00579140 (PDB: 0x00579140)
 void RAZIEL_DebugHurtRaziel(void);                                         // 0x005aa7b0 (PDB: 0x005aa7b0)
 void RAZIEL_TurnHead(Instance* instance);                                  // 0x0057d930 (PDB: 0x0057d930)
+Instance* playerGetVictim(void);                                           // 0x005a8990 (PDB: 0x005ab290)
 
 #endif // GAME_PLAYER_PLAYER_H

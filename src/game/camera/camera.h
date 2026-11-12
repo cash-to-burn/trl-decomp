@@ -524,6 +524,7 @@ static_assert(sizeof(Camera) == 0x1320, "Camera size mismatch");
 // Subsystem globals
 extern Camera theCamera;                // 0x010fc5a0 (PDB: 0x010fd7a0)
 extern uint32_t g_cameraAxisFlags;      // 0x01075ac8
+extern float zOffsetUndo;               // 0x010fc578 (PDB: 0x010fd778)
 
 // Camera lifecycle & configuration routines (Original: f:\tr7\game\camera\camera.c)
 void CAMERA_Initialize(Camera* camera);                                     // 0x0047c030 (PDB: 0x0047d9d0)
