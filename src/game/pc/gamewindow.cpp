@@ -1,4 +1,5 @@
 #include "game/pc/gamewindow.h"
+#include "game/pc/pcmouse.h"
 
 HWND g_hWnd = NULL;
 
@@ -32,23 +33,32 @@ LRESULT CALLBACK RegularWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         }
         break;
     case WM_LBUTTONDOWN:
-        // Mouse button 0 down
-        break;
+        PCMOUSE_UpdateButtonDown(0);
+        return 0;
     case WM_LBUTTONUP:
-        // Mouse button 0 up
-        break;
+        PCMOUSE_UpdateButtonUp(0);
+        return 0;
     case WM_RBUTTONDOWN:
-        // Mouse button 1 down
-        break;
+        PCMOUSE_UpdateButtonDown(1);
+        return 0;
     case WM_RBUTTONUP:
-        // Mouse button 1 up
-        break;
+        PCMOUSE_UpdateButtonUp(1);
+        return 0;
     case WM_MOUSEWHEEL:
-        // Mouse wheel scroll: (short)HIWORD(wParam) / WHEEL_DELTA
-        break;
-    case WM_MOUSEMOVE:
-        // Mouse position / cursor delta update
-        break;
+        PCMOUSE_ScrollMouseWheel((int)(short)HIWORD(wParam) / 120);
+        return 0;
+    case WM_MOUSEMOVE: {
+        RECT rc;
+        GetClientRect(hwnd, &rc);
+        int width = rc.right - rc.left;
+        int height = rc.bottom - rc.top;
+        if (width > 0 && height > 0) {
+            float normX = (float)(short)LOWORD(lParam) / (float)width;
+            float normY = (float)(short)HIWORD(lParam) / (float)height;
+            PCMOUSE_SetCursorPos(normX, normY);
+        }
+        return 0;
+    }
     default:
         break;
     }

@@ -3,7 +3,9 @@
 #include "game/pc/gamewindow.h"
 #include "game/pc/mainvm.h"
 #include "game/pc/setup.h"
+#include "game/pc/pcinput.h"
 #include "game/gameloop.h"
+#include "game/sound/sound.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include <cstdio>
 #include <cstdlib>
@@ -273,15 +275,22 @@ int ProcessArgs(char *argData, void *gameTracker, void *appData)
 // 0x0045c940 (PDB: 0x0045e0d0)
 void MAIN_DoMainInit(void)
 {
+    // 1. Initialize DirectInput devices
+    InputDevice::Create();
+
+    // 2. Initialize sound subsystem and load core audio banks
+    SOUND_Init();
+    SOUND_LoadBank("generalbank", -1);
+    SOUND_LoadBank("globalsoundinfo", -1);
+
+    // 3. Verify shaders.drm existence in archive
     char shaderPath[256];
     snprintf(shaderPath, sizeof(shaderPath), "%sshaders.drm", g_buildDir);
-
-    // Verify shaders.drm existence in archive
     if (g_pArchiveFS != nullptr && g_pArchiveFS->FileExists(shaderPath)) {
-        // Shaders unit loaded
+        // Core engine shaders loaded
     }
 
-    // Set initial mode on game tracker
+    // 4. Set initial mode on game tracker
     if (g_mainMenu != 0) {
         g_gameTracker.ChangeMode(3); // Main menu mode (0xa000)
     } else {

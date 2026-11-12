@@ -205,6 +205,46 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x004056c0` | `SETUP_DoSetupDialog` | `int SETUP_DoSetupDialog(int, int)` | Decompiled & Verified |
 | `0x004057c0` | `SETUP_LocalizeSetupDialog` | `void SETUP_LocalizeSetupDialog(void)` | Decompiled & Verified |
 
+### `src/game/pc/pcmouse.cpp` & `src/game/pc/pcmouse.h` (Original: `f:\tr7\game\pc\pcmouse.cpp`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x004051b0` | `?PCMOUSE_SetCursorPos@@YAXMM@Z` | `void PCMOUSE_SetCursorPos(float, float)` | Decompiled & Verified |
+| `0x00405280` | `?PCMOUSE_IsMouseActive@@YA_NXZ` | `bool PCMOUSE_IsMouseActive(void)` | Decompiled & Verified |
+| `0x004052a0` | `?PCMOUSE_DeActivateCursor@@YAXXZ` | `void PCMOUSE_DeActivateCursor(void)` | Decompiled & Verified |
+| `0x004052b0` | `?PCMOUSE_ActivateCursor@@YAXXZ` | `void PCMOUSE_ActivateCursor(void)` | Decompiled & Verified |
+| `0x004052d0` | `?PCMOUSE_GetCursorPos@@YAIPAM0@Z` | `uint32_t PCMOUSE_GetCursorPos(float*, float*)` | Decompiled & Verified |
+| `0x00405300` | `?PCMOUSE_UpdateDelta@@YAXMM@Z` | `void PCMOUSE_UpdateDelta(float, float)` | Decompiled & Verified |
+| `0x004053f0` | `?PCMOUSE_UpdateButtonDown@@YAXH@Z` | `void PCMOUSE_UpdateButtonDown(int)` | Decompiled & Verified |
+| `0x00405400` | `?PCMOUSE_UpdateButtonUp@@YAXH@Z` | `void PCMOUSE_UpdateButtonUp(int)` | Decompiled & Verified |
+| `0x00405410` | `?PCMOUSE_ScrollMouseWheel@@YAXH@Z` | `void PCMOUSE_ScrollMouseWheel(int)` | Decompiled & Verified |
+| `0x00405430` | `?PCMOUSE_GetMouseWheelPos@@YAHXZ` | `int PCMOUSE_GetMouseWheelPos(void)` | Decompiled & Verified |
+| `0x00405440` | `?PCMOUSE_SetMouseWheelPos@@YAXH@Z` | `void PCMOUSE_SetMouseWheelPos(int)` | Decompiled & Verified |
+| `0x00405450` | `?PCMOUSE_GetButtonState@@YAHH@Z` | `int PCMOUSE_GetButtonState(int)` | Decompiled & Verified |
+| `0x00405470` | `?PCMOUSE_DisplayCursor@@YA_NXZ` | `bool PCMOUSE_DisplayCursor(void)` | Decompiled & Verified |
+
+### `src/game/pc/pcinput.cpp` & `src/game/pc/pcinput.h` (Original: `f:\tr7\game\pc\pcinput.cpp`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x00411850` | `?Create@InputDevice@@SAXXZ` | `void InputDevice::Create(void)` | Decompiled & Verified |
+| `0x0040fec0` | `?Destroy@InputDevice@@SAXXZ` | `void InputDevice::Destroy(void)` | Decompiled & Verified |
+| `0x0040fe30` | `?Update@InputDevice@@SAXXZ` | `void InputDevice::Update(void)` | Decompiled & Verified |
+| `0x0040f800` | `?GetDevicePtr@InputDevice@@SAPAV1@H@Z` | `InputDevice* InputDevice::GetDevicePtr(int)` | Decompiled & Verified |
+| `0x00411930` | `?EnableMouse@InputDevice@@SAX_N@Z` | `void InputDevice::EnableMouse(bool)` | Decompiled & Verified |
+| `0x0040f750` | `?IsMouseEnabled@InputDevice@@SA_NXZ` | `bool InputDevice::IsMouseEnabled(void)` | Decompiled & Verified |
+| `0x0040f760` | `?EnableMouseButtons@InputDevice@@SA_N_N@Z` | `bool InputDevice::EnableMouseButtons(bool)` | Decompiled & Verified |
+| `0x00411490` | `PCKeyboardDevice::Poll` | `int PCKeyboardDevice::Poll(UpdateInfo*, int, bool)` | Decompiled & Verified |
+| `0x004111d0` | `PCMouseDevice::Poll` | `int PCMouseDevice::Poll(UpdateInfo*, int, bool)` | Decompiled & Verified |
+| `0x00410a30` | `PCGamepadDevice::Poll` | `int PCGamepadDevice::Poll(UpdateInfo*, int, bool)` | Decompiled & Verified |
+| `0x0040fd20` | `PCCombinationInputDevice::Poll` | `int PCCombinationInputDevice::Poll(UpdateInfo*, int, bool)` | Decompiled & Verified |
+
+### `src/game/sound/sound.cpp` & `src/game/sound/sound.h` (Original: `f:\tr7\game\sound\sound.cpp` / FMOD)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x005d4b00` | `?SOUND_Init@@YAXXZ` | `void SOUND_Init(void)` | Decompiled & Verified |
+| `0x005cc070` | `?SOUND_Free@@YAXXZ` | `void SOUND_Free(void)` | Decompiled & Verified |
+| `0x005d3e00` | `?SOUND_LoadBank@@YAHPBDH@Z` | `int SOUND_LoadBank(const char*, int)` | Decompiled & Verified |
+| `0x00462220` | `?OBTABLE_GetObjectID@@YAHPAD@Z` | `int OBTABLE_GetObjectID(const char*)` | Decompiled & Verified |
+
 ### `src/cdc/cdcSys/UTF8String.cpp` & `src/cdc/cdcSys/UTF8String.h`
 - String helper type `cdc::UTF8String` (constructors, destructor, `ConvertToWCHAR`, memory management).
 
@@ -217,13 +257,13 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **DirectInput & PC Mouse System (`pcmouse.cpp`)**:
-   - `PCMOUSE_Init` (`0x004033b0`)
-   - `PCMOUSE_Poll` (`0x00403560`)
-   - `PCMOUSE_SetCursorPos` (`0x00403480`)
-2. **DirectInput & PC Keyboard/Gamepad (`pcinput.cpp`)**:
-   - `PCINPUT_Init` (`0x0040fae0` / `0x00410420`)
-   - `PCINPUT_ReadState` (`0x00410650`)
-3. **Sound System PC Backend (`sfx_fmod` / `sfx_dsound`)**:
-   - `SOUND_Init` (`0x005d4b00`)
-   - `SOUND_LoadBank` (`0x005d3e00`)
+1. **Object & Unit Streaming Subsystem (`stream.cpp` / `load.cpp`)**:
+   - `STREAM_Init` (`0x004635a0`)
+   - `STREAM_Poll` (`0x004641e0`)
+   - `STREAM_LoadUnit` (`0x00463ae0`) / `LOAD_LoadUnit` (`0x005baa00` for `shaders.drm`)
+2. **Gameplay Loop & Engine Tick (`src/game/gameloop.cpp`)**:
+   - `GAMELOOP_MainLoop` (`0x004536e0`)
+   - `GAMELOOP_SystemInit` (`0x00450a50`)
+   - `GAMELOOP_ChangeMode` (`0x004526b0`)
+3. **Player / Lara Subsystem (`src/game/lara/`)**:
+   - Lara control structures and state initialization.
