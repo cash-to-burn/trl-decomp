@@ -17,6 +17,15 @@ struct alignas(16) Vector {
 
 struct alignas(16) Vector3 : public Vector {};
 struct alignas(16) Euler : public Vector {};
+struct alignas(16) Quat : public Vector {};
+
+// 0x004880e0 (PDB: 0x00489b20 / ?Dist2@cdc@@YAMABVVector@1@0@Z)
+inline float Dist2(const Vector& a, const Vector& b)
+{
+    const float dx = a.x - b.x;
+    const float dy = a.y - b.y;
+    return std::sqrt(dx * dx + dy * dy);
+}
 
 struct alignas(16) Matrix {
     Vector col0;
@@ -59,6 +68,7 @@ struct _CVECTOR {
 static_assert(sizeof(cdc::Vector) == 0x10, "cdc::Vector size mismatch");
 static_assert(sizeof(cdc::Vector3) == 0x10, "cdc::Vector3 size mismatch");
 static_assert(sizeof(cdc::Euler) == 0x10, "cdc::Euler size mismatch");
+static_assert(sizeof(cdc::Quat) == 0x10, "cdc::Quat size mismatch");
 static_assert(sizeof(cdc::Matrix) == 0x40, "cdc::Matrix size mismatch");
 static_assert(sizeof(Vector3f) == 0x0c, "Vector3f size mismatch");
 static_assert(sizeof(PlaneConstants) == 0x0c, "PlaneConstants size mismatch");

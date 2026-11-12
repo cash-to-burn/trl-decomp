@@ -239,6 +239,9 @@ Instance* INSTANCE_NewInstance(void);
 // 0x004546d0 (PDB: 0x00455d10 / ?INSTANCE_InsertInstanceGroup@@YAXPAUInstance@@@Z)
 void INSTANCE_InsertInstanceGroup(Instance* instance);
 
+// 0x00455370 (PDB: 0x004569b0 / ?INSTANCE_FindIntroUniqueID@@YAPAUIntro@@HPAH@Z)
+Intro* INSTANCE_FindIntroUniqueID(int uniqueID, int* outStreamUnitID);
+
 // 0x004553f0 (PDB: 0x00456a30 / ?INSTANCE_Find@@YAPAUInstance@@H@Z)
 Instance* INSTANCE_Find(int instanceID);
 

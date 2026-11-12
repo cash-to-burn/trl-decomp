@@ -21,11 +21,12 @@ struct CSenseManager {
 };
 extern CSenseManager* gSenseManager; // 0x01117490 (PDB: 0x01118640)
 
+#include "game/camera/cameraspline.h"
+
 extern void  RenderG2_MotionBlur(int blurPercent, int frames, int mode);                                      // 0x0040c6e0 (PDB: 0x0040cea0)
 extern void  INSTANCE_GetPosFromSegment(Instance* inst, int seg, cdc::Vector3* outPos);                       // 0x00455f20 (PDB: 0x004575a0)
 extern float CAMERA_DoVertigo(Camera* camera);                                                                // 0x0047cad0 (PDB: 0x0047e470)
 extern int   CAMERA_DoCameraCollision(Camera* camera, cdc::Vector3* startPos, int param3);                    // 0x004857b0 (PDB: 0x004871e0)
-extern void  CAMERA_SplineProcess(Camera* camera);                                                            // 0x004895a0 (PDB: 0x0048afe0)
 extern void  PLAYER_ReSetLookAround(Instance* instance);                                                      // 0x00566480 (PDB: 0x00568760)
 extern void  getTargetPosition(SenseTarget* target, cdc::Vector3* outPos);                                    // 0x00588be0 (PDB: 0x0058b270)
 extern bool  Sense_LineOfSight(Instance* viewerInst, cdc::Vector3* startPos, SenseTarget* target, int flags); // 0x00592fc0 (PDB: 0x005955c0)

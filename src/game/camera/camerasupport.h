@@ -9,7 +9,7 @@ struct Camera;
 void CriticalDampValue(int smoothType, float* current, float target, float* vel, float* acc, float maxVel); // 0x0048c6d0 (PDB: 0x0048e1e0)
 void CriticalDampValueControl(float* current, float target, float* vel, float* acc, float maxVel, float dampDivisor); // 0x0048c840 (PDB: 0x0048e350)
 void CriticalDampPosition(int smoothType, cdc::Vector3* current, const cdc::Vector3* target, cdc::Vector3* vel, cdc::Vector3* acc, float maxVel); // 0x0048ccc0 (PDB: 0x0048e7d0)
-void CriticalDampPositionControl(cdc::Vector3* current, const cdc::Vector3* target, cdc::Vector3* vel, cdc::Vector3* acc, float maxVel, float dampDivisor); // 0x0048d100 (PDB: 0x0048ec10)
+void CriticalDampPositionControl(cdc::Vector3* current, const cdc::Vector3* target, cdc::Vector3* vel, cdc::Vector3* acc, float maxVel, float dampDivisor, float* transition = nullptr); // 0x0048d100 (PDB: 0x0048ec10)
 void CriticalDampAngle(int smoothType, float* current, float target, float* vel, float* acc, float maxVel); // 0x0048d200 (PDB: 0x0048ed10)
 void CriticalDampAngleControl(float* current, float target, float* vel, float* acc, float maxVel, float dampDivisor); // 0x0048d2a0 (PDB: 0x0048edb0)
 

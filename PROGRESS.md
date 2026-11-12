@@ -529,6 +529,36 @@ Original Module: `f:\tr7\game\camera\cameraLook.c` (PDB -> Retail shift: `-0x1a4
 
 ---
 
+### Camera Spline Subsystem (`src/game/camera/cameraspline.h`, `src/game/camera/cameraspline.cpp`, `src/game/spline.h`)
+Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c` retail)
+- Also updated `cdc::Quat` / `cdc::Dist2` (`0x004880e0`) in [src/cdc/runtime/cdcMath/Math.h](src/cdc/runtime/cdcMath/Math.h), `Level` (`0x130` bytes) in [src/game/Stream/stream.h](src/game/Stream/stream.h), `INSTANCE_FindIntroUniqueID` (`0x00455370`) in [src/game/instance.h](src/game/instance.h), and `CriticalDampPositionControl` 7-arg `transition` param in [src/game/camera/camerasupport.h](src/game/camera/camerasupport.h) / [src/game/camera/camerasupport.cpp](src/game/camera/camerasupport.cpp).
+
+| Address | Symbol | Signature / Type | Status |
+| :--- | :--- | :--- | :--- |
+| `0x004880e0` | `cdc::Dist2` | `float Dist2(const Vector&, const Vector&)` | Decompiled & Verified |
+| `0x00488130` | `CAMERA_ClearSplineKeyValues` | `void CAMERA_ClearSplineKeyValues(MultiSpline*)` | Decompiled & Verified |
+| `0x00488140` | `CAMERA_ResetSplineCombatSettings` | `void CAMERA_ResetSplineCombatSettings(Camera*)` | Decompiled & Verified |
+| `0x00488190` | `CAMERA_Lock_Control_Angle` | `void CAMERA_Lock_Control_Angle(Camera*)` | Decompiled & Verified |
+| `0x004882a0` | `CAMERA_Unlock_Control_Angle` | `void CAMERA_Unlock_Control_Angle(Camera*)` | Decompiled & Verified |
+| `0x004882b0` | `CAMERA_SetSpline0` | `void CAMERA_SetSpline0(Camera*, Intro*, int, int)` | Decompiled & Verified |
+| `0x00488350` | `CAMERA_SetSpline1` | `void CAMERA_SetSpline1(Camera*, Intro*, int, int)` | Decompiled & Verified |
+| `0x004883f0` | `CAMERA_SetSpline2` | `void CAMERA_SetSpline2(Camera*, Intro*, int, int)` | Decompiled & Verified |
+| `0x00488490` | `CAMERA_SetSplineWidths` | `void CAMERA_SetSplineWidths(int, int, int, int)` | Decompiled & Verified |
+| `0x004884c0` | `CAMERA_SourceNumber` | `int CAMERA_SourceNumber(Camera*)` | Decompiled & Verified |
+| `0x00488500` | `CAMERA_ProcessSplineCamLevelData` | `int CAMERA_ProcessSplineCamLevelData(Camera*, SplineCameraLevelData*)` | Decompiled & Verified |
+| `0x00488b50` | `CAMERA_SetSplineCameraFromLevelData` | `void CAMERA_SetSplineCameraFromLevelData(Camera*, Level*, int)` | Decompiled & Verified |
+| `0x00488b70` | `CAMERA_NearestPointOnLine` | `float CAMERA_NearestPointOnLine(cdc::Vector3*, cdc::Vector3*, cdc::Vector3*, cdc::Vector3*)` | Decompiled & Verified |
+| `0x00488c60` | `CAMERA_DoWideSplineCalc` | `void CAMERA_DoWideSplineCalc(Camera*, cdc::Vector3*, Spline*, int, float, cdc::Vector3*, float, float)` | Decompiled & Verified |
+| `0x00488f70` | `CAMERA_DoWideSplineCalcZ` | `void CAMERA_DoWideSplineCalcZ(Camera*, cdc::Vector3*, Spline*, cdc::Vector3*, float, float)` | Decompiled & Verified |
+| `0x004890e0` | `CAMERA_SplineGetNearestPointTarget` | `float CAMERA_SplineGetNearestPointTarget(Camera*, Spline*, cdc::Vector3*, int*, cdc::Vector3*, float*)` | Decompiled & Verified |
+| `0x004893c0` | `CAMERA_CalcSplinecamPos` | `static void CAMERA_CalcSplinecamPos(Camera*, SplinecamData*, cdc::Vector3*, cdc::Vector3*)` | Decompiled & Verified |
+| `0x004895a0` | `CAMERA_SplineProcess` | `void CAMERA_SplineProcess(Camera*)` | Decompiled & Verified |
+| `0x00489ff0` | `CAMERA_CalcFollowSplinecamPos` | `void CAMERA_CalcFollowSplinecamPos(Camera*, cdc::Vector3*, cdc::Vector3*)` | Decompiled & Verified |
+| `SplineKey` / `RSplineKey` / `SplineState` / `Spline` / `RSpline` / `MultiSpline` | Spline data structs (`0x40` / `0x20` / `0x08` / `0x50` / `0x30` / `0x70` bytes) | Documented |
+| `SplineCameraLevelData` / `Level` | Level spline camera data & Level structs (`0x58` / `0x130` bytes) | Documented |
+
+---
+
 ## Build Verification
 - Cross-compiler target: `i686-w64-mingw32-g++` (32-bit Windows PE)
 - CMake library target: `libtrl_decomp_core.a` (clean compile and link)
@@ -536,8 +566,8 @@ Original Module: `f:\tr7\game\camera\cameraLook.c` (PDB -> Retail shift: `-0x1a4
 ---
 
 ## Next Targets in Execution Queue
-1. **Camera Spline & Cine Processors (`cameraspline.c`, `cameracine.c`)**:
-   - `CAMERA_SplineProcess` (`0x004895a0` retail) / `CAMERA_CineProcess`
+1. **Camera Cine & Stack Processors (`cameraCine.c`, `cameraStack.c`)**:
+   - `CAMERA_CinematicDone` / `CAMERA_CinematicProcess` (`0x004833e0` retail) and `cameraStack.c` (`0x0048a180` retail)
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:

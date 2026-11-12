@@ -21,13 +21,12 @@ extern float camTiltAdjustSpeed; // 0x00f15c88 (PDB: 0x00f15fc0)
 
 extern void         TRANS_SetTransformMatrixf(cdc::Matrix* m);                                      // 0x00402700 (PDB: 0x00402c70)
 extern cdc::Vector3* TRANS_RotTransPersVectorf(const cdc::Vector3* vIn, cdc::Vector3* vOut);       // 0x00402710 (PDB: 0x00402c80)
+#include "game/camera/cameraspline.h"
+
 extern float        MATH3D_LengthXYZ(const cdc::Vector3* a, const cdc::Vector3* b);                 // 0x00426b00
 extern float        CAMERA_DoVertigo(Camera* camera);                                               // 0x0047cad0 (PDB: 0x0047e470)
 extern void         CAMERA_UpdateFocusRoll(Camera* camera);                                         // 0x0047fe90 (PDB: 0x00481830)
 extern int          CAMERA_DoCameraCollision(Camera* camera, cdc::Vector3* startPos, int param3);   // 0x004857b0 (PDB: 0x004871e0)
-extern void         CAMERA_Unlock_Control_Angle(Camera* camera);                                    // 0x004882a0 (PDB: 0x00489ce0)
-extern void         CAMERA_SplineProcess(Camera* camera);                                           // 0x004895a0 (PDB: 0x0048afe0)
-extern void         CAMERA_CalcFollowSplinecamPos(Camera* camera, cdc::Vector3* outPos, const cdc::Vector3* focusPos); // 0x00489ff0 (PDB: 0x0048bab0)
 extern void         CameraStackMain(void);                                                          // 0x0048c6a0 (PDB: 0x0048e1b0)
 extern unsigned int CHUCKABLE_Query(Instance* instance, unsigned int query);                        // 0x00527910 (PDB: 0x00529500)
 extern void*        GetGrapplingHookStateTargetInstance(void* extraData);                           // 0x0055a1f0 (PDB: 0x0055c340)

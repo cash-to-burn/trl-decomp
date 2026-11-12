@@ -201,7 +201,7 @@ void CriticalDampPosition(int smoothType, cdc::Vector3* current, const cdc::Vect
 }
 
 // 0x0048d100 (PDB: 0x0048ec10)
-void CriticalDampPositionControl(cdc::Vector3* current, const cdc::Vector3* target, cdc::Vector3* vel, cdc::Vector3* acc, float maxVel, float dampDivisor)
+void CriticalDampPositionControl(cdc::Vector3* current, const cdc::Vector3* target, cdc::Vector3* vel, cdc::Vector3* acc, float maxVel, float dampDivisor, float* transition)
 {
     cdc::Vector3 diff;
     diff.x = (target->x - current->x) / dampDivisor;
@@ -218,6 +218,9 @@ void CriticalDampPositionControl(cdc::Vector3* current, const cdc::Vector3* targ
 
     float mag = std::sqrt(vel->x * vel->x + vel->y * vel->y + vel->z * vel->z);
     if (mag > maxVel && mag > 0.0f) {
+        if (transition != nullptr) {
+            *transition = 0.0f;
+        }
         float scale = maxVel / mag;
         vel->x *= scale;
         vel->y *= scale;
