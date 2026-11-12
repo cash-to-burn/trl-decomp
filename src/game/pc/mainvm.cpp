@@ -2,10 +2,13 @@
 #include "game/pc/gamewindow.h"
 #include "game/pc/setup.h"
 #include "game/pc/timer.h"
-#include "game/gameloop.h"
+#include "game/pc/pclocals.h"
+#include "game/pc/D3D/rnd_d3d.h"
+#include "game/archive/ArchiveFileSystem.h"
+#include "game/main.h"
 
-HANDLE hMainThread = NULL;       // 0x00f2c3a4
-DWORD iMainThreadId = 0;         // 0x00f2c3a0
+HANDLE hMainThread = NULL;             // 0x00f2c3a4
+DWORD iMainThreadId = 0;               // 0x00f2c3a0
 char g_mutexName[32] = TRL_MUTEX_NAME; // 0x00f10424
 int quitdone = 0;
 
@@ -53,10 +56,14 @@ void TerminateGame(void)
     DWORD curId = GetCurrentThreadId();
     if (curId != iMainThreadId && hMainThread) {
         SuspendThread(hMainThread);
+        RND_Shutdown();
+        D3D_ShutdownDevice();
         GAMEWINDOW_Deinit();
         TerminateProcess(GetCurrentProcess(), (UINT)-1);
         return;
     }
+    RND_Shutdown();
+    D3D_ShutdownDevice();
     GAMEWINDOW_Deinit();
     ExitProcess(0);
 #endif
@@ -99,10 +106,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         forceOptions = 2;
     }
 
-    // 4. Initialize high-resolution timer
+    // 4. Initialize core subsystems
+    InitFS();
     TIMER_Init();
+    InitArchive();
 
-    // 5. Mutex single-instance check
+    // 5. Setup localized directories
+    SetupBuildDir("PC-W");
+    if (!localstr_verifyexistence()) {
+        SetupBuildDir("PCENGLISH");
+    }
+    localstr_set_language(g_languageID);
+    SETUP_LocalizeSetupDialog();
+
+    // 6. Mutex single-instance check
     HANDLE hMutexAppIsRunning = CreateMutexA(NULL, FALSE, g_mutexName);
     if (hMutexAppIsRunning != NULL && GetLastError() == ERROR_ALREADY_EXISTS) {
         CloseHandle(hMutexAppIsRunning);
@@ -115,8 +132,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         EnumWindows(FindGameEnumWindowsProc, (LPARAM)&enumData);
         if (enumData.foundHwnd == NULL) {
-            cdc::UTF8String title("Tomb Raider: Legend");
-            cdc::UTF8String errorMsg("Another instance of Tomb Raider: Legend is already running.");
+            cdc::UTF8String title(localstr_get(0x11)); // "Error"
+            cdc::UTF8String errorMsg(localstr_get(0x2e)); // "Another instance of Tomb Raider: Legend is already running."
             MessageBoxUTF8(NULL, errorMsg, title, MB_OK | MB_ICONERROR);
         }
         return 1;
@@ -126,21 +143,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return 1;
     }
 
-    // 6. Direct3D subsystem & OS version check
+    // 7. Direct3D subsystem initialization & OS version check
+    if (!D3D_InitManager()) {
+        cdc::UTF8String title(localstr_get(0x11));
+        cdc::UTF8String errorMsg(localstr_get(0x12)); // "Failed to initialize Direct3D."
+        MessageBoxUTF8(NULL, errorMsg, title, MB_OK | MB_ICONERROR);
+        CloseHandle(hMutexAppIsRunning);
+        return 0;
+    }
+
     OSVERSIONINFOA verInfo;
     verInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
     GetVersionExA(&verInfo);
 
     // Requires Windows 2000 / XP or newer (NT 5.0+)
     if (verInfo.dwPlatformId <= VER_PLATFORM_WIN32_NT && verInfo.dwMajorVersion < 5) {
-        cdc::UTF8String title("Error");
-        cdc::UTF8String msg("Tomb Raider: Legend requires Windows 2000 or Windows XP.");
+        cdc::UTF8String title(localstr_get(0x11));
+        cdc::UTF8String msg(localstr_get(0x2d)); // "Tomb Raider: Legend requires Windows 2000 or Windows XP."
         MessageBoxUTF8(NULL, msg, title, MB_OK | MB_ICONERROR);
         CloseHandle(hMutexAppIsRunning);
         return 0;
     }
 
-    // 7. Configuration dialog check
+    // 8. Configuration dialog check
     int showDialog = (forceOptions != 0 || !hasRegistrySettings);
     int configOk = SETUP_DoSetupDialog(1, showDialog);
 
@@ -154,16 +179,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             GAMEWINDOW_Init();
 
             // Direct3D Device initialization
-            int d3dSuccess = 1;
-
-            if (d3dSuccess) {
+            if (D3D_InitDevice(false)) {
                 SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
                 SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
 
                 // Run main game state machine loop
-                GAMELOOP_Execute(0);
+                MainG2(0);
 
                 // Clean shutdown
+                RND_Shutdown();
+                ReleaseFS();
+                D3D_ShutdownDevice();
                 GAMEWINDOW_Deinit();
                 SETUP_SaveRegistrySettings();
 
@@ -174,13 +200,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
 
             GAMEWINDOW_Deinit();
-            MessageBoxA(NULL, "Failed to initialize Direct3D device.", "Error", MB_OK | MB_ICONERROR);
+            MessageBoxA(NULL, localstr_get(0x21), localstr_get(0x22), MB_OK | MB_ICONERROR);
             configOk = SETUP_DoSetupDialog(1, 1);
         } while (configOk);
 
         SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, oldScreensaver, NULL, 0);
     }
 
+    ReleaseFS();
+    D3D_ShutdownDevice();
     CloseHandle(hMutexAppIsRunning);
     return 0;
 #else
