@@ -5,6 +5,7 @@
 #include "game/pc/pclocals.h"
 #include "game/pc/D3D/rnd_d3d.h"
 #include "game/archive/ArchiveFileSystem.h"
+#include "game/Save/MSSave.h"
 #include "game/main.h"
 
 HANDLE hMainThread = NULL;             // 0x00f2c3a4
@@ -107,6 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
     // 4. Initialize core subsystems
+    MSSave::Create();
     InitFS();
     TIMER_Init();
     InitArchive();
@@ -191,6 +193,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 ReleaseFS();
                 D3D_ShutdownDevice();
                 GAMEWINDOW_Deinit();
+                MSSave::Destroy();
                 SETUP_SaveRegistrySettings();
 
                 // Restore screensaver

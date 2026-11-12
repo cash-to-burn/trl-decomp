@@ -8,6 +8,7 @@
 - **Symbol Offset Note**:
   - `mainvm.c`: Retail `.text` offset shift of `-0x4f0` relative to PDB (`0x00402150` in PDB maps to `0x00401c60` in executable).
   - `main.c` / `ArchiveFileSystem`: Retail `.text` offset shift of `-0x1790` relative to PDB (`0x0045e3a0` in PDB maps to `0x0045cc10` in executable).
+  - `Save` (`MSSave`): Retail `.text` offset shift of `-0xad0` to `-0x1470` relative to PDB (`0x005bed80` in PDB maps to `0x005bd910` in executable).
 
 ---
 
@@ -32,6 +33,13 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
     ├── SETUP_LoadUserPreferences() [0x004044c0]
     │
     ├── Command-Line Parsing: "-setup" (forceOptions=1) / "-config" (forceOptions=2)
+    │
+    ├── MSSave::Create() [0x005bd910 / PDB 0x005bed80]
+    │   ├── Allocates MSSave singleton instance (0x23578 bytes)
+    │   └── MSSave::MSSave() [0x005bd7c0]
+    │       ├── GetRootDir() [0x005bb7d0] -> GetShellFolderFromRegistry() / GetShellFolder()
+    │       ├── Creates autosave path (%s\autosave.dat) & settings path (%s\settings.dat)
+    │       └── Creates directory: "%s\Saved Games"
     │
     ├── InitFS() [0x0045c2a0 / PDB 0x0045d950] (Initializes native OS filesystem)
     │
@@ -58,28 +66,31 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
     │
     ├── SETUP_DoSetupDialog(1, showDialog) [0x004056c0]
     │
-    └── Main Execution Cycle:
-        ├── SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE) [Disable screensaver]
-        ├── GAMEWINDOW_Init() [0x00403fd0]
-        │   ├── RegisterClassA("TOMBRAIDER", RegularWndProc) [0x00403c00]
-        │   └── CreateWindowExA(WS_EX_TOPMOST, "TOMBRAIDER", "Tomb Raider: Legend", ...)
-        │
-        ├── D3D_InitDevice(false) [0x004139a0] -> PCDeviceManager::CreateDevice() [0x00ec5f80]
-        │   └── SetThreadPriority(THREAD_PRIORITY_NORMAL) & SetPriorityClass(NORMAL_PRIORITY_CLASS)
-        │
-        ├── MainG2(0) [0x0045cc10 / PDB 0x0045e3a0] (Core G2 Gameplay & Engine Loop)
-        │   ├── ProcessArgs(baseAreaName, gameTracker, appData) [0x0045c530]
-        │   ├── MAIN_DoMainInit() [0x0045c940] (Loads shaders.drm, sound banks, UI)
-        │   └── MainG2_UpdateLoop() [0x00401ab0] (Engine frame tick & message dispatch)
-        │
-        └── Shutdown & Cleanup:
-            ├── RND_Shutdown() [0x00413a20] -> PCDeviceManager::ReleaseDevice() [0x00ec6230]
-            ├── ReleaseFS() [0x0045c360 / PDB 0x0045da10] (Release Bigfile & FileSystem)
-            ├── D3D_ShutdownDevice() [0x00413930] -> PCDeviceManager::DestroyInstance()
-            ├── GAMEWINDOW_Deinit() [0x004040c0]
-            ├── SETUP_SaveRegistrySettings() [0x00404e00]
-            ├── SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, oldScreensaver) [Restore screensaver]
-            └── CloseHandle(hMutexAppIsRunning)
+    ├── Main Execution Cycle:
+    │   ├── SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE) [Disable screensaver]
+    │   ├── GAMEWINDOW_Init() [0x00403fd0]
+    │   │   ├── RegisterClassA("TOMBRAIDER", RegularWndProc) [0x00403c00]
+    │   │   └── CreateWindowExA(WS_EX_TOPMOST, "TOMBRAIDER", "Tomb Raider: Legend", ...)
+    │   │
+    │   ├── D3D_InitDevice(false) [0x004139a0] -> PCDeviceManager::CreateDevice() [0x00ec5f80]
+    │   │   └── SetThreadPriority(THREAD_PRIORITY_NORMAL) & SetPriorityClass(NORMAL_PRIORITY_CLASS)
+    │   │
+    │   ├── MainG2(0) [0x0045cc10 / PDB 0x0045e3a0] (Core G2 Gameplay & Engine Loop)
+    │   │   ├── ProcessArgs(baseAreaName, gameTracker, appData) [0x0045c530]
+    │   │   │   ├── FSHelper_ReadFile("\\TR7\\game\\pc\\TR7.arg") [0x0045c450]
+    │   │   │   └── Flag parsing (-NOHEALTH, -NOHINTS, -MAINMENU, -CHAPTER, -SRCONFIG, etc.)
+    │   │   ├── MAIN_DoMainInit() [0x0045c940] (Loads shaders.drm, sound banks, UI)
+    │   │   └── MainG2_UpdateLoop() [0x00401ab0] (Engine frame tick & state machine dispatch)
+    │   │
+    │   └── Shutdown & Cleanup:
+    │       ├── RND_Shutdown() [0x00413a20] -> PCDeviceManager::ReleaseDevice() [0x00ec6230]
+    │       ├── ReleaseFS() [0x0045c360 / PDB 0x0045da10] (Release Bigfile & FileSystem)
+    │       ├── D3D_ShutdownDevice() [0x00413930] -> PCDeviceManager::DestroyInstance()
+    │       ├── GAMEWINDOW_Deinit() [0x004040c0]
+    │       ├── MSSave::Destroy()
+    │       ├── SETUP_SaveRegistrySettings() [0x00404e00]
+    │       ├── SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, oldScreensaver) [Restore screensaver]
+    │       └── CloseHandle(hMutexAppIsRunning)
 ```
 
 ---
@@ -100,12 +111,37 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x00401b50` | `TerminateGame` | `void TerminateGame(void)` | Decompiled & Verified |
 | `0x00401ab0` | `MainG2_UpdateLoop` | `bool MainG2_UpdateLoop(void)` | Decompiled & Verified |
 
+### `src/game/Save/MSSave.cpp` & `src/game/Save/MSSave.h` (Original: `_final\game\Save\`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x005bd910` | `?Create@MSSave@@SAPAV1@XZ` | `MSSave* MSSave::Create(void)` | Decompiled & Verified |
+| `0x005bb5c0` | `MSSavePtr` | `MSSave* MSSavePtr(void)` | Decompiled & Verified |
+| `0x005bd7c0` | `??0MSSave@@QAE@XZ` | `MSSave::MSSave(void)` | Decompiled & Verified |
+| `0x005bb7d0` | `?GetRootDir@@YAPBDXZ` | `const wchar_t* MSSave::GetRootDir(wchar_t*)` | Decompiled & Verified |
+| `0x005bb6b0` | `GetShellFolder` | `bool MSSave::GetShellFolder(wchar_t*)` | Decompiled & Verified |
+| — | `GetShellFolderFromRegistry` | `bool MSSave::GetShellFolderFromRegistry(wchar_t*)` | Decompiled & Verified |
+| — | `GetRootDirDrive` | `const wchar_t* MSSave::GetRootDirDrive(void)` | Decompiled & Verified |
+| `0x005be880` | `?GetNumSaves@MSSave@@QBEIXZ` | `uint32_t MSSave::GetNumSaves(void) const` | Decompiled & Verified |
+| `0x005be890` | `?GetSaveName@MSSave@@QBEPBDI@Z` | `const char* MSSave::GetSaveName(uint32_t) const` | Decompiled & Verified |
+| `0x005beaf0` | `?IsAutoSaveValid@MSSave@@QBE_NXZ` | `bool MSSave::IsAutoSaveValid(void) const` | Decompiled & Verified |
+| `0x005beb20` | `?IsAutoSaveCompleted@MSSave@@QBE_NXZ` | `bool MSSave::IsAutoSaveCompleted(void) const` | Decompiled & Verified |
+| `0x005beb50` | `?CanLoad@MSSave@@QBE_NXZ` | `bool MSSave::CanLoad(void) const` | Decompiled & Verified |
+| `0x005beb70` | `?CanSave@MSSave@@QBE_NXZ` | `bool MSSave::CanSave(void) const` | Decompiled & Verified |
+| `0x005bebc0` | `?CanSaveNew@MSSave@@QBE_NXZ` | `bool MSSave::CanSaveNew(void) const` | Decompiled & Verified |
+| `0x005bec10` | `?IsSavesUpdated@MSSave@@QAE_NXZ` | `bool MSSave::IsSavesUpdated(void)` | Decompiled & Verified |
+| `0x005bdf10` | `?IsTransferDone@MSSave@@QAE_NXZ` | `bool MSSave::IsTransferDone(void)` | Decompiled & Verified |
+
 ### `src/game/main.cpp` & `src/game/main.h` (Original: `f:\tr7\game\main.c`)
 | Address (VA) | PDB Symbol | Signature | Status |
 |---|---|---|---|
-| `0x0045cc10` | `?MainG2@@YAHPAX@Z` | `int MainG2(void *appData)` | Decompiled & Verified |
-| `0x0045c940` | `?MAIN_DoMainInit@@YAXXZ` | `void MAIN_DoMainInit(void)` | Decompiled & Verified |
+| `0x0045c450` | `?FSHelper_ReadFile@@YAPAHPADEPAVFileSystem@cdc@@@Z` | `void* FSHelper_ReadFile(const char*, unsigned char, cdc::FileSystem*)` | Decompiled & Verified |
+| `0x0045bb80` | `Arg_FindFlag` | `const char* Arg_FindFlag(const char*, const char*)` | Decompiled & Verified |
+| `0x0045bc40` | `Arg_GetValue` | `void Arg_GetValue(const char*, const char*, char*)` | Decompiled & Verified |
+| `0x0045bbd0` | `Arg_GetPrefix` | `void Arg_GetPrefix(const char*, char*)` | Decompiled & Verified |
+| `0x0045bc00` | `Arg_GetDigits` | `void Arg_GetDigits(const char*, char*)` | Decompiled & Verified |
 | `0x0045c530` | `?ProcessArgs@@YAHPADPAUGameTracker@@PAX@Z` | `int ProcessArgs(char*, void*, void*)` | Decompiled & Verified |
+| `0x0045c940` | `?MAIN_DoMainInit@@YAXXZ` | `void MAIN_DoMainInit(void)` | Decompiled & Verified |
+| `0x0045cc10` | `?MainG2@@YAHPAX@Z` | `int MainG2(void *appData)` | Decompiled & Verified |
 
 ### `src/cdc/runtime/cdcRender/pc/shared/PCDeviceManager.cpp` & `.h` (Original: `cdcRender\pc\shared\PCDeviceManager.cpp`)
 | Address (VA) | PDB Symbol | Signature | Status |
@@ -181,11 +217,13 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **`DTPDataSection` Resource Management**:
-   - `DTPDataSection_Init` (`0x005bd910`)
-   - `src/game/dtp.cpp`
-2. **`MainG2` State Machine Breakdown**:
-   - Mode dispatch (`GAMELOOP_ChangeMode`, `GAMELOOP_InitRunning`)
-   - Level transition handler (`GAMELOOP_LevelLoadAndInit`)
-3. **`pcmouse.cpp` Direct Input / Mouse Implementation**:
-   - `PCMOUSE_SetCursorPos`, `PCMOUSE_UpdateButtonDown`, etc.
+1. **DirectInput & PC Mouse System (`pcmouse.cpp`)**:
+   - `PCMOUSE_Init` (`0x004033b0`)
+   - `PCMOUSE_Poll` (`0x00403560`)
+   - `PCMOUSE_SetCursorPos` (`0x00403480`)
+2. **DirectInput & PC Keyboard/Gamepad (`pcinput.cpp`)**:
+   - `PCINPUT_Init` (`0x0040fae0` / `0x00410420`)
+   - `PCINPUT_ReadState` (`0x00410650`)
+3. **Sound System PC Backend (`sfx_fmod` / `sfx_dsound`)**:
+   - `SOUND_Init` (`0x005d4b00`)
+   - `SOUND_LoadBank` (`0x005d3e00`)
