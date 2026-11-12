@@ -14,7 +14,7 @@ extern void FONT_Print(const char* fmt, ...);                                   
 // Camera focus globals
 float zOffsetUndo = 0.0f;                  // 0x010fc578 (PDB: 0x010fd778)
 static float combatZPosition = 0.0f;       // 0x010fda30 (PDB: 0x010fec30)
-static float currentZOffset = 0.0f;        // 0x010fda34 (PDB: 0x010fec34)
+float currentZOffset = 0.0f;               // 0x010fda34 (PDB: 0x010fec34)
 static float zOffsetVel = 0.0f;            // 0x010fda38 (PDB: 0x010fec38)
 static float zOffsetAccl = 0.0f;           // 0x010fda3c (PDB: 0x010fec3c)
 

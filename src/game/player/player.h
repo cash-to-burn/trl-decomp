@@ -205,6 +205,23 @@ struct PlayerProp {
     /* 0x030 */ OldRazielData oldData;
 };
 
+// Size: 0x60 bytes (TI: 0x67a0)
+struct EngagedInstance {
+    /* 0x00 */ cdc::Vector3 relativePosition;
+    /* 0x10 */ cdc::Vector3 engagementPoint;
+    /* 0x20 */ cdc::Vector3 engagementNormal;
+    /* 0x30 */ Instance* instance;
+    /* 0x34 */ void* body;
+    /* 0x38 */ void* geom;
+    /* 0x3c */ int atom;
+    /* 0x40 */ float distance;
+    /* 0x44 */ float zdirection;
+    /* 0x48 */ float xyDistance;
+    /* 0x4c */ float zDelta;
+    /* 0x50 */ float screenDistSq;
+    /* 0x54 */ uint8_t pad54[0x0c];
+};
+
 // Size: 0x1000 bytes (4096 bytes, TI: 0x66db)
 struct Player {
     /* 0x000 */ uint8_t smoothRideState[0x14]; // SmoothRideState (20 bytes)
@@ -243,7 +260,9 @@ struct Player {
     /* 0x0a4 */ float timeMultMultiplier;
     /* 0x0a8 */ uint8_t padA8[8];
     /* 0x0b0 */ cdc::Matrix spatialMatrix;
-    /* 0x0f0 */ uint8_t sensoryData[0x190];     // SensoryData (0x190 bytes)
+    /* 0x0f0 */ uint8_t sensoryDataPad0[0x10c]; // SensoryData (0x190 bytes total)
+    /* 0x1fc */ EngagedInstance* engagedList;   // SensoryData::EngagedList
+    /* 0x200 */ uint8_t sensoryDataPad200[0x80];
     /* 0x280 */ BaseInstance* attachedPlatform;
     /* 0x284 */ unsigned char dropOffHeight;
     /* 0x285 */ uint8_t pad285[3];
@@ -353,7 +372,11 @@ struct Player {
     /* 0x66c */ float effectsFadeDest;
     /* 0x670 */ float effectsFadeStep;
     /* 0x674 */ float effectsFade;
-    /* 0x678 */ uint8_t restOfPlayer[0x1000 - 0x678];
+    /* 0x678 */ uint8_t pad678[0x760 - 0x678];
+    /* 0x760 */ cdc::Vector3 LastTargetPos;
+    /* 0x770 */ uint8_t pad770[0x808 - 0x770];
+    /* 0x808 */ float currentWaterZ;
+    /* 0x80c */ uint8_t restOfPlayer[0x1000 - 0x80c];
 };
 
 // Size: 0x1070 bytes (4208 bytes, TI: 0x65bb)
@@ -389,6 +412,7 @@ static_assert(sizeof(PlayerHoldInfo) == 0x30, "PlayerHoldInfo size mismatch");
 static_assert(sizeof(GeneralAttributes) == 0x28, "GeneralAttributes size mismatch");
 static_assert(sizeof(OldRazielData) == 0xc68, "OldRazielData size mismatch");
 static_assert(sizeof(PlayerProp) == 0xc98, "PlayerProp size mismatch");
+static_assert(sizeof(EngagedInstance) == 0x60, "EngagedInstance size mismatch");
 static_assert(sizeof(Player) == 0x1000, "Player size mismatch");
 static_assert(sizeof(PlayerData) == 0x1070, "PlayerData size mismatch");
 static_assert(sizeof(PlayerSM) == 0x510, "PlayerSM size mismatch");

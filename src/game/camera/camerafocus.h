@@ -6,6 +6,9 @@
 struct Camera;
 struct Instance;
 
+// Camera focus globals
+extern float currentZOffset; // 0x010fda34 (PDB: 0x010fec34)
+
 // Camera focus point calculation routines (Original: f:\tr7\game\camera\cameraFocus.c)
 void  CAMERA_CreateNewFocuspoint(Camera* camera);                        // 0x00485c50 (PDB: 0x00487680)
 void  CAMERA_SetMaxVel(Camera* camera);                                  // 0x00485cc0 (PDB: 0x004876f0)

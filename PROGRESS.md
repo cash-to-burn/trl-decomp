@@ -480,6 +480,27 @@ Original Module: `f:\tr7\game\camera\cameraFocus.c` (PDB -> Retail shift: `-0x1a
 | `0x004860e0` | `CAMERA_SetFocus` | `void CAMERA_SetFocus(Camera*, cdc::Vector3*)` | Decompiled & Verified |
 | `0x010c0998` | `globalInfo` | `GlobalInfo*` (`CameraDefaults` + global info layout) | Documented |
 
+### Camera Behind Subsystem (`src/game/camera/camerabehind.cpp`, `src/game/camera/camerabehind.h`, `src/game/player/player.h`)
+Original Module: `f:\tr7\game\camera\cameraBehind.c` (PDB -> Retail shift: `-0x19a0`)
+
+| Address (Retail) | Function / Symbol | Signature / Purpose | Status |
+| :--- | :--- | :--- | :--- |
+| `0x00480470` | `CAMERA_CalcAutoCenterData` | `void CAMERA_CalcAutoCenterData(Camera*, float*, float*)` | Decompiled & Verified |
+| `0x00480610` | `CAMERA_CalcFollowPosition` | `static void CAMERA_CalcFollowPosition(Camera*, cdc::Euler*)` | Decompiled & Verified |
+| `0x00480a40` | `CAMERA_UpdateFocusDistance` | `static void CAMERA_UpdateFocusDistance(Camera*)` | Decompiled & Verified |
+| `0x00480b80` | `CAMERA_UpdateFocusTilt` | `static void CAMERA_UpdateFocusTilt(Camera*)` | Decompiled & Verified |
+| `0x00480c70` | `CAMERA_UpdateFocusRotate` | `static void CAMERA_UpdateFocusRotate(Camera*)` | Decompiled & Verified |
+| `0x00480dc0` | `CameraGetShapeValue` | `float CameraGetShapeValue(shapeValueParams*)` | Decompiled & Verified |
+| `0x00480e90` | `CAMERA_ResetFollowTransition` | `void CAMERA_ResetFollowTransition(Camera*)` | Decompiled & Verified |
+| `0x00480ef0` | `CAMERA_CalcFocusOffsetForSwim` | `static cdc::Vector3 CAMERA_CalcFocusOffsetForSwim(Camera*)` | Decompiled & Verified |
+| `0x00480f50` | `CAMERA_FollowPlayerSwimTilt` | `static void CAMERA_FollowPlayerSwimTilt(Camera*)` | Decompiled & Verified |
+| `0x00481100` | `CAMERA_DesiredCombatCamAngle` | `static float CAMERA_DesiredCombatCamAngle(Camera*, const cdc::Vector3*)` | Decompiled & Verified |
+| `0x00481180` | `CAMERA_FollowGoBehindPlayer` | `static void CAMERA_FollowGoBehindPlayer(Camera*, float)` | Decompiled & Verified |
+| `0x00481550` | `CAMERA_OffsetRecentZPos` | `void CAMERA_OffsetRecentZPos(const cdc::Vector3&)` | Decompiled & Verified |
+| `0x00481580` | `CAMERA_UpdateFocusRotationX` | `static void CAMERA_UpdateFocusRotationX(Camera*, Instance*)` | Decompiled & Verified |
+| `0x004824b0` | `CAMERA_GenericCameraProcess` | `void CAMERA_GenericCameraProcess(Camera*)` | Decompiled & Verified |
+| `EngagedInstance` | `struct EngagedInstance` | Player sensory engaged-instance list entry (`0x60` bytes) | Documented |
+
 ---
 
 ## Build Verification
@@ -489,9 +510,9 @@ Original Module: `f:\tr7\game\camera\cameraFocus.c` (PDB -> Retail shift: `-0x1a
 ---
 
 ## Next Targets in Execution Queue
-1. **Camera Behind & Look Processors (`camerabehind.c`, `cameralook.c`)**:
-   - `CAMERA_FollowGoBehindPlayer` (`0x00482b20` / retail `0x00481180`)
+1. **Camera Look & Cine Processors (`cameralook.c`, `cameracine.c`)**:
    - `CAMERA_LookProcess` (`0x00488a10` / retail `0x00487070`)
+   - `CAMERA_SplineProcess` / `CAMERA_CineProcess`
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:
