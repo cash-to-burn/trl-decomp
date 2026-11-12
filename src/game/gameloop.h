@@ -65,8 +65,13 @@ void GAMELOOP_SetLoadingDisplay(int display);
 // 0x0044fdf0 (PDB: 0x00451180 / ?GAMELOOP_InitStandardObjects@@YAXXZ)
 void GAMELOOP_InitStandardObjects(void);
 
-// 0x0044fe10 (PDB: 0x004511a0 / ?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z)
-void *GAMELOOP_IntroducePlayerInstance(int unitID, int playerObjectID, void *intro);
+// Forward declarations
+struct StreamUnit;
+struct Instance;
+struct GameTracker;
+
+// 0x0044fe20 (PDB: 0x004511a0 / ?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z)
+Instance *GAMELOOP_IntroducePlayerInstance(int streamUnitID, float x, float y, float z, int costumeObjectID);
 
 // 0x0044ff60 (PDB: 0x004512e0 / ?GAMELOOP_ResetAllScreenWipes@@YAXXZ)
 void GAMELOOP_ResetAllScreenWipes(void);

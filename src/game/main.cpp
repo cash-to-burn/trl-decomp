@@ -7,6 +7,8 @@
 #include "game/gameloop.h"
 #include "game/sound/sound.h"
 #include "game/Stream/stream.h"
+#include "game/obtable.h"
+#include "game/instance.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include <cstdio>
 #include <cstdlib>
@@ -288,6 +290,8 @@ void MAIN_DoMainInit(void)
 
     // 2. Initialize streaming and object list
     STREAM_Init();
+    OBTABLE_Init();
+    INSTANCE_InitInstanceList();
 
     // 3. Initialize sound subsystem and load core audio banks
     SOUND_Init();

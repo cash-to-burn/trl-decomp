@@ -1,4 +1,5 @@
 #include "game/gameloop.h"
+#include "game/instance.h"
 #include "game/main.h"
 #include "game/Stream/stream.h"
 #include "game/pc/mainvm.h"
@@ -142,13 +143,30 @@ void GAMELOOP_InitStandardObjects(void)
 {
 }
 
-// 0x0044fe10 (PDB: 0x004511a0)
-void *GAMELOOP_IntroducePlayerInstance(int unitID, int playerObjectID, void *intro)
+// 0x0044fe20 (PDB: 0x004511a0 / ?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z)
+Instance *GAMELOOP_IntroducePlayerInstance(int streamUnitID, float x, float y, float z, int costumeObjectID)
 {
-    (void)unitID;
-    (void)playerObjectID;
-    (void)intro;
-    return nullptr;
+    static Intro s_playerIntro = {};
+    static bool s_playerIntroInit = false;
+
+    if (!s_playerIntroInit) {
+        memset(&s_playerIntro, 0, sizeof(s_playerIntro));
+        s_playerIntro.scale.x = 1.0f;
+        s_playerIntro.scale.y = 1.0f;
+        s_playerIntro.scale.z = 1.0f;
+        s_playerIntro.scale.w = 0.0f;
+        s_playerIntro.intronum = 1;
+        s_playerIntro.UniqueID = -1;
+        s_playerIntroInit = true;
+    }
+
+    s_playerIntro.objectID = static_cast<unsigned char>(costumeObjectID);
+    s_playerIntro.position.x = x;
+    s_playerIntro.position.y = y;
+    s_playerIntro.position.z = z;
+    s_playerIntro.position.w = 0.0f;
+
+    return INSTANCE_IntroduceInstance(&s_playerIntro, static_cast<short>(streamUnitID), false);
 }
 
 // 0x0044ff60 (PDB: 0x004512e0)

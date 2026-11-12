@@ -259,9 +259,44 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x005d4930` | `?STREAM_DumpUnit@@YAXPAUStreamUnit@@H@Z` | `void STREAM_DumpUnit(StreamUnit*, int)` | Decompiled & Verified |
 | `0x005d4ac0` | `?STREAM_DumpAllUnitsNotNeeded@@YAXXZ` | `void STREAM_DumpAllUnitsNotNeeded(void)` | Decompiled & Verified |
 | `0x005d4b00` | `?STREAM_DumpAllLevels@@YAXHH@Z` | `void STREAM_DumpAllLevels(int, int)` | Decompiled & Verified |
-| `0x005d4d50` | `?STREAM_PollLoadQueue@@YAHXZ` | `int STREAM_PollLoadQueue(void)` | Decompiled & Verified |
+| `0x005d4d50` | `?STREAM_PollLoadQueue@@YAXXZ` | `int STREAM_PollLoadQueue(void)` | Decompiled & Verified |
 | `0x005d5720` | `?STREAM_LoadLevel@@YAPAUStreamUnit@@PBDPAUStreamPortal@@H@Z` | `StreamUnit* STREAM_LoadLevel(const char*, void*, int)` | Decompiled & Verified |
 | `0x005d5940` | `?STREAM_WaitForUnit@@YAXPAUStreamUnit@@@Z` | `void STREAM_WaitForUnit(StreamUnit*)` | Decompiled & Verified |
+
+### `src/game/obtable.cpp` & `src/game/obtable.h` (Original: `f:\tr7\game\obtable.c`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x00461c60` | `?OBTABLE_InstanceInit@@YAXPAUInstance@@@Z` | `void OBTABLE_InstanceInit(Instance*)` | Decompiled & Verified |
+| `0x00461d00` | `?OBTABLE_GetInstanceCollideFunc@@YAXPAUInstance@@@Z` | `void OBTABLE_GetInstanceCollideFunc(Instance*)` | Decompiled & Verified |
+| `0x00461d30` | `?OBTABLE_GetInstanceAdditionalCollideFunc@@YAXPAUInstance@@@Z` | `void OBTABLE_GetInstanceAdditionalCollideFunc(Instance*)` | Decompiled & Verified |
+| `0x00461d60` | `?OBTABLE_GetInstanceProcessFunc@@YAXPAUInstance@@@Z` | `void OBTABLE_GetInstanceProcessFunc(Instance*)` | Decompiled & Verified |
+| `0x00461d90` | `?OBTABLE_GetInstanceQueryFunc@@YAXPAUInstance@@@Z` | `void OBTABLE_GetInstanceQueryFunc(Instance*)` | Decompiled & Verified |
+| `0x00461dc0` | `?OBTABLE_GetInstanceMessageFunc@@YAXPAUInstance@@@Z` | `void OBTABLE_GetInstanceMessageFunc(Instance*)` | Decompiled & Verified |
+| `0x00461df0` | `?OBTABLE_InitObjectWithID@@YAXPAUObject@@@Z` | `void OBTABLE_InitObjectWithID(Object*)` | Decompiled & Verified |
+| `0x00461eb0` | `?OBTABLE_SetObjectAccess@@YAXPAUObject@@@Z` | `void OBTABLE_SetObjectAccess(Object*)` | Decompiled & Verified |
+| `0x00461ef0` | `?OBTABLE_ClearObjectReferences@@YAXXZ` | `void OBTABLE_ClearObjectReferences(void)` | Decompiled & Verified |
+| `0x00461f10` | `?OBTABLE_RemoveObjectEntry@@YAXPAUObject@@@Z` | `void OBTABLE_RemoveObjectEntry(Object*)` | Decompiled & Verified |
+| `0x00461f40` | `?OBTABLE_FindObject@@YAPAUObject@@H@Z` | `Object* OBTABLE_FindObject(int)` | Decompiled & Verified |
+| `0x00461f70` | `?OBTABLE_InitAnimPointers@@YAXPAUObjectTracker@@@Z` | `void OBTABLE_InitAnimPointers(ObjectTracker*)` | Decompiled & Verified |
+| `0x00461f90` | `?OBTABLE_Init@@YAXXZ` | `void OBTABLE_Init(void)` | Decompiled & Verified |
+| `0x00462220` | `?OBTABLE_GetObjectID@@YAHPAD@Z` | `int OBTABLE_GetObjectID(char*)` | Decompiled & Verified |
+
+### `src/game/instance.cpp` & `src/game/instance.h` (Original: `f:\tr7\game\instance.c`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x004545b0` | `?INSTANCE_InitInstanceList@@YAXXZ` | `void INSTANCE_InitInstanceList(void)` | Decompiled & Verified |
+| `0x00454670` | `?INSTANCE_NewInstance@@YAPAUInstance@@XZ` | `Instance* INSTANCE_NewInstance(void)` | Decompiled & Verified |
+| `0x004546d0` | `?INSTANCE_InsertInstanceGroup@@YAXPAUInstance@@@Z` | `void INSTANCE_InsertInstanceGroup(Instance*)` | Decompiled & Verified |
+| `0x004553f0` | `?INSTANCE_Find@@YAPAUInstance@@H@Z` | `Instance* INSTANCE_Find(int)` | Decompiled & Verified |
+| `0x00455bb0` | `?INSTANCE_SetModel@@YAXPAUInstance@@H@Z` | `void INSTANCE_SetModel(Instance*, int)` | Decompiled & Verified |
+| `0x00455db0` | `?INSTANCE_SetCurrentStreamUnitID@@YAXPAUInstance@@H@Z` | `void INSTANCE_SetCurrentStreamUnitID(Instance*, int)` | Decompiled & Verified |
+| `0x00456770` | `?INSTANCE_PlainDeath@@YAXPAUInstance@@@Z` | `void INSTANCE_PlainDeath(Instance*)` | Decompiled & Verified |
+| `0x004567c0` | `?INSTANCE_KillInstance@@YAXPAUInstance@@@Z` | `void INSTANCE_KillInstance(Instance*)` | Decompiled & Verified |
+| `0x00457a20` | `?INSTANCE_BirthCommon@@YAXPAUInstance@@PAUObject@@HH@Z` | `void INSTANCE_BirthCommon(Instance*, Object*, int, int)` | Decompiled & Verified |
+| `0x004582a0` | `?INSTANCE_IntroduceInstance@@YAPAUInstance@@PAUIntro@@F_N@Z` | `Instance* INSTANCE_IntroduceInstance(Intro*, short, bool)` | Decompiled & Verified |
+| `0x00458600` | `?INSTANCE_BirthObjectNoParent@@YAPAUInstance@@IPAVVector3@cdc@@PAVEuler@3@PAUIntroData@@PAUObject@@HH@Z` | `Instance* INSTANCE_BirthObjectNoParent(unsigned int, cdc::Vector3*, cdc::Euler*, IntroData*, Object*, int, int)` | Decompiled & Verified |
+| `0x00458750` | `?INSTANCE_BirthObject@@YAPAUInstance@@PAU1@PAUObject@@HH@Z` | `Instance* INSTANCE_BirthObject(Instance*, Object*, int, int)` | Decompiled & Verified |
+| `0x00458840` | `?INSTANCE_IntroduceSavedInstance@@YAPAUInstance@@PAUSavedIntro@@PAUStreamUnit@@PAH@Z` | `Instance* INSTANCE_IntroduceSavedInstance(SavedIntro*, StreamUnit*, int*)` | Decompiled & Verified |
 
 ### `src/game/gameloop.cpp` & `src/game/gameloop.h` (Original: `f:\tr7\game\gameloop.cpp`)
 | Address (VA) | PDB Symbol | Signature | Status |
@@ -283,7 +318,7 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x0044fdc0` | `?GAMELOOP_CloseStatic@@YAXXZ` | `void GAMELOOP_CloseStatic(void)` | Decompiled & Verified |
 | `0x0044fde0` | `?GAMELOOP_SetLoadingDisplay@@YAXH@Z` | `void GAMELOOP_SetLoadingDisplay(int)` | Decompiled & Verified |
 | `0x0044fdf0` | `?GAMELOOP_InitStandardObjects@@YAXXZ` | `void GAMELOOP_InitStandardObjects(void)` | Decompiled & Verified |
-| `0x0044fe10` | `?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z` | `void* GAMELOOP_IntroducePlayerInstance(int, int, void*)` | Decompiled & Verified |
+| `0x0044fe20` | `?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z` | `Instance* GAMELOOP_IntroducePlayerInstance(int, float, float, float, int)` | Decompiled & Verified |
 | `0x0044ff60` | `?GAMELOOP_ResetAllScreenWipes@@YAXXZ` | `void GAMELOOP_ResetAllScreenWipes(void)` | Decompiled & Verified |
 | `0x0044ff80` | `?GAMELOOP_IsWipeDone@@YAHH@Z` | `int GAMELOOP_IsWipeDone(int)` | Decompiled & Verified |
 | `0x0044ffb0` | `?GAMELOOP_IsWipeStartingOrON@@YAHH@Z` | `int GAMELOOP_IsWipeStartingOrON(int)` | Decompiled & Verified |
