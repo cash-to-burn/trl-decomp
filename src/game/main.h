@@ -6,10 +6,77 @@
 #include "common.h"
 #include "cdc/cdcFile/FileSystem.h"
 
-// Forward declaration of GameTracker
+struct Level;
+struct StreamUnit;
+
+struct ScreenWipe {
+    float current;
+    float target;
+    float rate;
+};
+
+// Extracted from tr7.pdb LF_STRUCTURE "GameTracker" (size 0x4b8 / 1208 bytes)
 struct GameTracker {
-    uint32_t flags;             // +0x14: 0x800000 = NOHINTS
-    int gameMode;               // current mode (1=attract, 2=running, 3=mainmenu, 4=pause, 6=chapter)
+    void *menu;                         // 0x000
+    void *memcard;                      // 0x004
+    Level *level;                       // 0x008
+    void *playerInstance;               // 0x00c
+    void *vertexPool;                   // 0x010
+    uint32_t flags;                     // 0x014: debugFlags (0x800000 = NOHINTS)
+    uint32_t debugFlags2;               // 0x018
+    uint32_t debugFlags3;               // 0x01c
+    uint32_t debugFlags4;               // 0x020
+    ScreenWipe wipe[12];                // 0x024: screen wipe slots (144 bytes)
+    uint32_t displayFrameCount;         // 0x0b4
+    uint32_t frameCount;                // 0x0b8: main game simulation frame count
+    int fpsFast;                        // 0x0bc
+    int gameFlags;                      // 0x0c0
+    int streamFlags;                    // 0x0c4
+    StreamUnit *mainDrawUnit;           // 0x0c8
+    char baseAreaName[20];              // 0x0cc: current active level area name
+    uint8_t levelDone;                  // 0x0e0
+    uint8_t levelChange;                // 0x0e1
+    uint8_t loadingDisplayType;         // 0x0e2
+    uint8_t gameMode;                   // 0x0e3 (1=attract, 2=running, 3=mainmenu, 4=pause, 6=chapter)
+    uint8_t cheatMode;                  // 0x0e4
+    uint8_t savingGame;                 // 0x0e5
+    int16_t postSaveScreenID;           // 0x0e6
+    int StreamUnitID;                   // 0x0e8
+    uint8_t block_collide_override;     // 0x0ec
+    uint8_t raziel_collide_override;    // 0x0ed
+    uint8_t sound_collide_override;     // 0x0ee
+    uint8_t attackwave_collide_override;// 0x0ef
+    int decoupleGame;                   // 0x0f0
+    uint32_t drawTime;                  // 0x0f4
+    uint32_t currentTime;               // 0x0f8
+    uint32_t currentMaterialTime;       // 0x0fc
+    uint32_t lastLoopTime;              // 0x100
+    float oldtimeMult;                  // 0x104
+    int intoldtimeMult;                 // 0x108
+    uint32_t currentTicks;              // 0x10c
+    uint32_t totalTime;                 // 0x110
+    uint32_t idleTime;                  // 0x114
+    uint32_t CPUidleTime;               // 0x118
+    int visibleInstances;               // 0x11c
+    int gameFramePassed;                // 0x120
+    int timeSinceLastGameFrame;         // 0x124
+    float timeMult;                     // 0x128
+    float unmodifiedActualTimeMult;     // 0x12c
+    float actualTimeMult;               // 0x130
+    float globalTimeMult;               // 0x134
+    float scrollProgress;               // 0x138
+    float timeDilation;                 // 0x13c
+    int debugTimeMult;                  // 0x140
+    float timeWarpDilation;             // 0x144
+    float timeWarpDuration;             // 0x148
+    float timeWarpRampTime;             // 0x14c
+    float timeWarpRemainingTime;        // 0x150
+    int frameRateLock;                  // 0x154
+    uint8_t monster_collide_override;   // 0x158
+    uint8_t monster_land_collide_override; // 0x159
+    uint8_t physics_line_draw_override; // 0x15a
+    uint8_t inSuperActionCine;          // 0x15b
+    int noMonstersCount;                // 0x15c
     int nextGameMode;
     int birthStreamUnitID;
     int attachedID;

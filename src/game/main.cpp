@@ -6,6 +6,7 @@
 #include "game/pc/pcinput.h"
 #include "game/gameloop.h"
 #include "game/sound/sound.h"
+#include "game/Stream/stream.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include <cstdio>
 #include <cstdlib>
@@ -22,10 +23,17 @@ int g_noVibration = 0;
 int g_noTrace = 0;
 char g_fontName[64] = "default";
 char g_baseAreaName[64] = "";
-GameTracker g_gameTracker = {0, 0, 0, 0, 0, nullptr};
+GameTracker g_gameTracker = {};
 
 void GameTracker::ResetOverrides()
 {
+    block_collide_override = 0;
+    raziel_collide_override = 0;
+    sound_collide_override = 0;
+    attackwave_collide_override = 0;
+    monster_collide_override = 0;
+    monster_land_collide_override = 0;
+    physics_line_draw_override = 0;
     birthStreamUnitID = 0;
     attachedID = 0;
     face = nullptr;
@@ -34,7 +42,7 @@ void GameTracker::ResetOverrides()
 void GameTracker::ChangeMode(int mode)
 {
     nextGameMode = mode;
-    gameMode = mode;
+    gameMode = (uint8_t)mode;
 }
 
 // 0x0045c450 (PDB: 0x0045dba0)
@@ -278,7 +286,10 @@ void MAIN_DoMainInit(void)
     // 1. Initialize DirectInput devices
     InputDevice::Create();
 
-    // 2. Initialize sound subsystem and load core audio banks
+    // 2. Initialize streaming and object list
+    STREAM_Init();
+
+    // 3. Initialize sound subsystem and load core audio banks
     SOUND_Init();
     SOUND_LoadBank("generalbank", -1);
     SOUND_LoadBank("globalsoundinfo", -1);

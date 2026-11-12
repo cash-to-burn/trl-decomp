@@ -9,6 +9,8 @@
   - `mainvm.c`: Retail `.text` offset shift of `-0x4f0` relative to PDB (`0x00402150` in PDB maps to `0x00401c60` in executable).
   - `main.c` / `ArchiveFileSystem`: Retail `.text` offset shift of `-0x1790` relative to PDB (`0x0045e3a0` in PDB maps to `0x0045cc10` in executable).
   - `Save` (`MSSave`): Retail `.text` offset shift of `-0xad0` to `-0x1470` relative to PDB (`0x005bed80` in PDB maps to `0x005bd910` in executable).
+  - `gameloop.cpp`: Retail `.text` offset shift of `-0x1380` relative to PDB (`0x00450950` in PDB maps to `0x0044f5d0` in executable).
+  - `Stream\stream.cpp`: Retail `.text` offset shift of `-0x2ac0` relative to PDB (`0x005d6700` in PDB maps to `0x005d3c40` in executable).
 
 ---
 
@@ -245,6 +247,65 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x005d3e00` | `?SOUND_LoadBank@@YAHPBDH@Z` | `int SOUND_LoadBank(const char*, int)` | Decompiled & Verified |
 | `0x00462220` | `?OBTABLE_GetObjectID@@YAHPAD@Z` | `int OBTABLE_GetObjectID(const char*)` | Decompiled & Verified |
 
+### `src/game/Stream/stream.cpp` & `src/game/Stream/stream.h` (Original: `f:\tr7\game\Stream\stream.cpp`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x005d3c40` | `?STREAM_Init@@YAXXZ` | `void STREAM_Init(void)` | Decompiled & Verified |
+| `0x005d3bc0` | `?STREAM_AbortAreaLoad@@YAXXZ` | `void STREAM_AbortAreaLoad(void)` | Decompiled & Verified |
+| `0x005d4400` | `?STREAM_GetStreamUnitWithID@@YAPAUStreamUnit@@H@Z` | `StreamUnit* STREAM_GetStreamUnitWithID(int)` | Decompiled & Verified |
+| `0x005d4440` | `?STREAM_GetStreamUnitWithName@@YAPAUStreamUnit@@PBD@Z` | `StreamUnit* STREAM_GetStreamUnitWithName(const char*)` | Decompiled & Verified |
+| `0x005d43c0` | `?STREAM_GetLevelWithID@@YAPAULevel@@H@Z` | `Level* STREAM_GetLevelWithID(int)` | Decompiled & Verified |
+| `0x005d48f0` | `?STREAM_MarkUnitNeeded@@YAXH@Z` | `void STREAM_MarkUnitNeeded(int)` | Decompiled & Verified |
+| `0x005d4930` | `?STREAM_DumpUnit@@YAXPAUStreamUnit@@H@Z` | `void STREAM_DumpUnit(StreamUnit*, int)` | Decompiled & Verified |
+| `0x005d4ac0` | `?STREAM_DumpAllUnitsNotNeeded@@YAXXZ` | `void STREAM_DumpAllUnitsNotNeeded(void)` | Decompiled & Verified |
+| `0x005d4b00` | `?STREAM_DumpAllLevels@@YAXHH@Z` | `void STREAM_DumpAllLevels(int, int)` | Decompiled & Verified |
+| `0x005d4d50` | `?STREAM_PollLoadQueue@@YAHXZ` | `int STREAM_PollLoadQueue(void)` | Decompiled & Verified |
+| `0x005d5720` | `?STREAM_LoadLevel@@YAPAUStreamUnit@@PBDPAUStreamPortal@@H@Z` | `StreamUnit* STREAM_LoadLevel(const char*, void*, int)` | Decompiled & Verified |
+| `0x005d5940` | `?STREAM_WaitForUnit@@YAXPAUStreamUnit@@@Z` | `void STREAM_WaitForUnit(StreamUnit*)` | Decompiled & Verified |
+
+### `src/game/gameloop.cpp` & `src/game/gameloop.h` (Original: `f:\tr7\game\gameloop.cpp`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x0044f5d0` | `?GAMELOOP_AllocStaticMemory@@YAXXZ` | `void GAMELOOP_AllocStaticMemory(void)` | Decompiled & Verified |
+| `0x0044f630` | `?GAMELOOP_InitGameTracker@@YAXXZ` | `void GAMELOOP_InitGameTracker(void)` | Decompiled & Verified |
+| `0x0044f6d0` | `?GAMELOOP_SystemInit@@YAXPAUGameTracker@@@Z` | `void GAMELOOP_SystemInit(GameTracker*)` | Decompiled & Verified |
+| `0x0044f710` | `?GAMELOOP_ResetGameStates@@YAXXZ` | `void GAMELOOP_ResetGameStates(void)` | Decompiled & Verified |
+| `0x0044f740` | `?GAMELOOP_ClearGameTracker@@YAXXZ` | `void GAMELOOP_ClearGameTracker(void)` | Decompiled & Verified |
+| `0x0044f7e0` | `?GAMELOOP_IntroduceInstances@@YAXPAUGameTracker@@@Z` | `void GAMELOOP_IntroduceInstances(GameTracker*)` | Decompiled & Verified |
+| `0x0044f820` | `?GAMELOOP_LoadingDisplayProcess@@YAXPAUInstance@@PAUGameTracker@@@Z` | `void GAMELOOP_LoadingDisplayProcess(void*, GameTracker*)` | Decompiled & Verified |
+| `0x0044f830` | `?GAMELOOP_InitRunning@@YAXPAD0@Z` | `void GAMELOOP_InitRunning(char*, char*)` | Decompiled & Verified |
+| `0x0044fa30` | `?GAMELOOP_CloseRunning@@YAXXZ` | `void GAMELOOP_CloseRunning(void)` | Decompiled & Verified |
+| `0x0044faa0` | `?GAMELOOP_DisplayRunning@@YAXPAUStreamUnit@@@Z` | `void GAMELOOP_DisplayRunning(StreamUnit*)` | Decompiled & Verified |
+| `0x0044fba0` | `?GAMELOOP_InitStaticDefault@@YAXPAD0@Z` | `void GAMELOOP_InitStaticDefault(char*, char*)` | Decompiled & Verified |
+| `0x0044fc50` | `?GAMELOOP_InitStaticChapter@@YAXPAD0H@Z` | `void GAMELOOP_InitStaticChapter(char*, char*, int)` | Decompiled & Verified |
+| `0x0044fd40` | `?GAMELOOP_InitStaticDeath@@YAXPAD0@Z` | `void GAMELOOP_InitStaticDeath(char*, char*)` | Decompiled & Verified |
+| `0x0044fd90` | `?GAMELOOP_DisplayStatic@@YAXXZ` | `void GAMELOOP_DisplayStatic(void)` | Decompiled & Verified |
+| `0x0044fdc0` | `?GAMELOOP_CloseStatic@@YAXXZ` | `void GAMELOOP_CloseStatic(void)` | Decompiled & Verified |
+| `0x0044fde0` | `?GAMELOOP_SetLoadingDisplay@@YAXH@Z` | `void GAMELOOP_SetLoadingDisplay(int)` | Decompiled & Verified |
+| `0x0044fdf0` | `?GAMELOOP_InitStandardObjects@@YAXXZ` | `void GAMELOOP_InitStandardObjects(void)` | Decompiled & Verified |
+| `0x0044fe10` | `?GAMELOOP_IntroducePlayerInstance@@YAPAUInstance@@HMMMH@Z` | `void* GAMELOOP_IntroducePlayerInstance(int, int, void*)` | Decompiled & Verified |
+| `0x0044ff60` | `?GAMELOOP_ResetAllScreenWipes@@YAXXZ` | `void GAMELOOP_ResetAllScreenWipes(void)` | Decompiled & Verified |
+| `0x0044ff80` | `?GAMELOOP_IsWipeDone@@YAHH@Z` | `int GAMELOOP_IsWipeDone(int)` | Decompiled & Verified |
+| `0x0044ffb0` | `?GAMELOOP_IsWipeStartingOrON@@YAHH@Z` | `int GAMELOOP_IsWipeStartingOrON(int)` | Decompiled & Verified |
+| `0x00450010` | `?GAMELOOP_AreAnyScreenFadesOnOrStarting@@YAHXZ` | `int GAMELOOP_AreAnyScreenFadesOnOrStarting(void)` | Decompiled & Verified |
+| `0x00450040` | `?GAMELOOP_SetScreenWipe@@YAXHHH@Z` | `void GAMELOOP_SetScreenWipe(int, int, int)` | Decompiled & Verified |
+| `0x004500a0` | `?GAMELOOP_HandleScreenWipes@@YAXXZ` | `void GAMELOOP_HandleScreenWipes(void)` | Decompiled & Verified |
+| `0x004506f0` | `?GAMELOOP_GetMainRenderUnit@@YAPAUStreamUnit@@XZ` | `StreamUnit* GAMELOOP_GetMainRenderUnit(void)` | Decompiled & Verified |
+| `0x00450770` | `?GAMELOOP_DisplayGameElements@@YA_NPAUGameTracker@@@Z` | `bool GAMELOOP_DisplayGameElements(GameTracker*)` | Decompiled & Verified |
+| `0x00450a30` | `?GAMELOOP_DisplayFrame@@YAXPAUGameTracker@@@Z` | `void GAMELOOP_DisplayFrame(GameTracker*)` | Decompiled & Verified |
+| `0x00450a90` | `TimeWarpRamp` | `float TimeWarpRamp(float, float, float)` | Decompiled & Verified |
+| `0x00450ad0` | `?GAMELOOP_DoTimeProcess@@YAXXZ` | `void GAMELOOP_DoTimeProcess(void)` | Decompiled & Verified |
+| `0x004511c0` | `?GAMELOOP_ModeStartRunning@@YAXH@Z` | `void GAMELOOP_ModeStartRunning(int)` | Decompiled & Verified |
+| `0x00451270` | `?GAMELOOP_ModeStartPause@@YAX_N@Z` | `void GAMELOOP_ModeStartPause(bool)` | Decompiled & Verified |
+| `0x00451360` | `?GAMELOOP_ChangeMode@@YAXH@Z` | `void GAMELOOP_ChangeMode(int)` | Decompiled & Verified |
+| `0x00451680` | `?GAMELOOP_ExitGame@@YAXH@Z` | `void GAMELOOP_ExitGame(int)` | Decompiled & Verified |
+| `0x00451780` | `?GAMELOOP_RequestLevelChangeByName@@YAXPADPAUGameTracker@@H@Z` | `void GAMELOOP_RequestLevelChangeByName(char*, GameTracker*, int)` | Decompiled & Verified |
+| `0x004517e0` | `?GAMELOOP_RequestLevelChange@@YAXPADHPAUGameTracker@@@Z` | `void GAMELOOP_RequestLevelChange(char*, int, GameTracker*)` | Decompiled & Verified |
+| `0x00451820` | `?GAMELOOP_LoadingDisplay@@YAXXZ` | `void GAMELOOP_LoadingDisplay(void)` | Decompiled & Verified |
+| `0x00451910` | `?GAMELOOP_LevelLoadAndInit@@YAHPADPAUGameTracker@@@Z` | `int GAMELOOP_LevelLoadAndInit(char*, GameTracker*)` | Decompiled & Verified |
+| `0x00451f90` | `?GAMELOOP_Process@@YAXPAUGameTracker@@@Z` | `void GAMELOOP_Process(GameTracker*)` | Decompiled & Verified |
+| `0x00452360` | `?GAMELOOP_MainLoop@@YAXPAUGameTracker@@@Z` | `void GAMELOOP_MainLoop(GameTracker*)` | Decompiled & Verified |
+
 ### `src/cdc/cdcSys/UTF8String.cpp` & `src/cdc/cdcSys/UTF8String.h`
 - String helper type `cdc::UTF8String` (constructors, destructor, `ConvertToWCHAR`, memory management).
 
@@ -257,13 +318,11 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **Object & Unit Streaming Subsystem (`stream.cpp` / `load.cpp`)**:
-   - `STREAM_Init` (`0x004635a0`)
-   - `STREAM_Poll` (`0x004641e0`)
-   - `STREAM_LoadUnit` (`0x00463ae0`) / `LOAD_LoadUnit` (`0x005baa00` for `shaders.drm`)
-2. **Gameplay Loop & Engine Tick (`src/game/gameloop.cpp`)**:
-   - `GAMELOOP_MainLoop` (`0x004536e0`)
-   - `GAMELOOP_SystemInit` (`0x00450a50`)
-   - `GAMELOOP_ChangeMode` (`0x004526b0`)
-3. **Player / Lara Subsystem (`src/game/lara/`)**:
-   - Lara control structures and state initialization.
+1. **Player Control & Lara System (`src/game/lara/` / `f:\tr7\game\lara\`)**:
+   - `LARA_Init` / `PLAYER_Init`
+   - Lara state machine and control structures
+2. **Object & Instance System (`obtable.cpp` / `instance.cpp`)**:
+   - `OBTABLE_Init` (`0x00461f90`), `OBTABLE_InitObjectWithID` (`0x00461dd0`)
+   - `INSTANCE_IntroduceSavedInstances`, `INSTANCE_BirthObject`
+3. **Camera Subsystem (`src/game/camera/`)**:
+   - `CAMERA_Init`, `CAMERA_Update`

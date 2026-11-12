@@ -16,6 +16,8 @@ public:
     virtual uint32_t GetFileSize(const char *path) override;
     virtual void *OpenFile(const char *path) override;
     virtual void Release() override;
+    virtual int Poll() override { return 0; }
+    virtual void ProcessRequests() override {}
 
     // 0x0047a990
     bool Open(const char *archiveName);

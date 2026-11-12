@@ -15,6 +15,8 @@ public:
     virtual uint32_t GetFileSize(const char *path) = 0;
     virtual void *OpenFile(const char *path) = 0;
     virtual void Release() = 0;
+    virtual int Poll() { return 0; }
+    virtual void ProcessRequests() {}
 };
 
 } // namespace cdc

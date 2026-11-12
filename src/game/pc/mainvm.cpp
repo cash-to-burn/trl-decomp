@@ -4,6 +4,8 @@
 #include "game/pc/timer.h"
 #include "game/pc/pclocals.h"
 #include "game/pc/D3D/rnd_d3d.h"
+#include "game/pc/pcinput.h"
+#include "game/Stream/stream.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include "game/Save/MSSave.h"
 #include "game/main.h"
@@ -74,12 +76,21 @@ void TerminateGame(void)
 bool MainG2_UpdateLoop(void)
 {
     uint64_t startUS = TIMER_GetTimeUS();
+
+    // 1. Input poll & device updates
+    InputDevice::Update();
+
+    // 2. Poll streaming loader queue
+    STREAM_PollLoadQueue();
+
+    // 3. Process Windows messages (returns 1 on WM_QUIT)
     if (GAMEWINDOW_Poll()) {
-        return true; // Quit requested
+        return false; // Quit requested
     }
+
     uint64_t elapsedUS = TIMER_GetTimeUS() - startUS;
     (void)elapsedUS;
-    return false;
+    return true; // Keep running
 }
 
 // 0x00401c60 (PDB: 0x00402150)
