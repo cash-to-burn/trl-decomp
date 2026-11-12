@@ -7,8 +7,6 @@
 #include <cstdint>
 
 // Forward declarations
-struct StateObj;
-struct StateMachine;
 struct AnimBlend;
 struct TuneData;
 struct Idle;
@@ -35,10 +33,25 @@ struct HandLockController;
 
 #pragma pack(push, 1)
 
+// Size: 0x14 bytes (TI: 0x64ad)
+struct StateObj {
+    /* 0x00 */ uint8_t pad00[0x10];
+    /* 0x10 */ const int* stateInfo; // +0x04 (stateInfo[1]) = stateID
+};
+
 // Size: 0x08 bytes (TI: 0x64ed)
 struct MessageQueue {
     void* head;
     void* tail;
+};
+
+struct State;
+
+// Size: 0x4c bytes (TI: 0x685a)
+struct StateMachine {
+    /* 0x00 */ void* vtable;
+    /* 0x04 */ State* activeState;
+    /* 0x08 */ uint8_t pad08[0x4c - 0x08];
 };
 
 // Size: 0x34 bytes (52 bytes, TI: 0x6974)
@@ -194,7 +207,29 @@ struct OldRazielData {
     /* 0x0fc */ float SwimPhysicsSurfMinRotation;
     /* 0x100 */ float SwimPhysicsSurfMaxRotation;
     /* 0x104 */ float SwimPhysicsSurfKickDecel;
-    /* 0x108 */ uint8_t pad_data[0xc68 - 0x108];
+    /* 0x108 */ uint8_t pad_data108[0x7b0 - 0x108];
+    /* 0x7b0 */ float fAimAnchorOffset;
+    /* 0x7b4 */ float vAimBoom[3];
+    /* 0x7c0 */ float fAimPanHRate;
+    /* 0x7c4 */ float fAimPanVRate;
+    /* 0x7c8 */ float fAimMinPitch;
+    /* 0x7cc */ float fAimMaxPitch;
+    /* 0x7d0 */ float fAimInterpIn;
+    /* 0x7d4 */ float fAimInterpCtrl1;
+    /* 0x7d8 */ float fAimInterpCtrl2;
+    /* 0x7dc */ float fAimProjDistFactor;
+    /* 0x7e0 */ float fAimMinRange;
+    /* 0x7e4 */ float fAimMaxRange;
+    /* 0x7e8 */ float fAimSwingDelay;
+    /* 0x7ec */ uint8_t uAimStick;
+    /* 0x7ed */ uint8_t uAimProjInterpIn;
+    /* 0x7ee */ uint8_t uAimPad[2];
+    /* 0x7f0 */ float fAimAssistInnerRadius;
+    /* 0x7f4 */ float fAimAssistOuterWidth;
+    /* 0x7f8 */ float fAimAssistOuterHeight;
+    /* 0x7fc */ float fAimAssistTimeSlowH;
+    /* 0x800 */ float fAimAssistTimeSlowV;
+    /* 0x804 */ uint8_t pad_data804[0xc68 - 0x804];
 };
 
 // Size: 0xc98 bytes (3224 bytes, TI: 0x7eab)
@@ -391,7 +426,7 @@ struct PlayerData {
 
 // Size: 0x510 bytes (1296 bytes, TI: 0x6b3b)
 struct PlayerSM {
-    /* 0x000 */ uint8_t stateMachineBase[0x4c]; // StateMachine base (76 bytes)
+    /* 0x000 */ StateMachine stateMachine; // StateMachine base (76 bytes)
     /* 0x04c */ uint8_t pad04c[0x14];
     /* 0x060 */ cdc::Matrix vehicleMatrix;      // 0x60 - 0xa0
     /* 0x0a0 */ uint8_t pad0a0[0x30];
@@ -402,6 +437,8 @@ struct PlayerSM {
 #pragma pack(pop)
 
 // Exact memory layout static assertions against PDB
+static_assert(sizeof(StateObj) == 0x14, "StateObj size mismatch");
+static_assert(sizeof(StateMachine) == 0x4c, "StateMachine size mismatch");
 static_assert(sizeof(MessageQueue) == 0x08, "MessageQueue size mismatch");
 static_assert(sizeof(State) == 0x34, "State size mismatch");
 static_assert(sizeof(CharacterState) == 0x38, "CharacterState size mismatch");

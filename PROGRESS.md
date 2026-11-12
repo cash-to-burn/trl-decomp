@@ -501,6 +501,32 @@ Original Module: `f:\tr7\game\camera\cameraBehind.c` (PDB -> Retail shift: `-0x1
 | `0x004824b0` | `CAMERA_GenericCameraProcess` | `void CAMERA_GenericCameraProcess(Camera*)` | Decompiled & Verified |
 | `EngagedInstance` | `struct EngagedInstance` | Player sensory engaged-instance list entry (`0x60` bytes) | Documented |
 
+### Camera Look Subsystem (`src/game/camera/cameralook.cpp`, `src/game/camera/cameralook.h`, `src/game/player/player.h`)
+Original Module: `f:\tr7\game\camera\cameraLook.c` (PDB -> Retail shift: `-0x1a40`)
+
+| Address (Retail) | Function / Symbol | Signature / Purpose | Status |
+| :--- | :--- | :--- | :--- |
+| `0x00486450` | `CAMERA_SetStickyLookMode` | `void CAMERA_SetStickyLookMode(Camera*)` | Decompiled & Verified |
+| `0x00486460` | `CAMERA_SetAccurateAimMode` | `void CAMERA_SetAccurateAimMode(Camera*)` | Decompiled & Verified |
+| `0x00486470` | `CAMERA_SetLookFocusAndBase` | `void CAMERA_SetLookFocusAndBase(Camera*)` | Decompiled & Verified |
+| `0x00486510` | `CAMERA_EndLook` | `void CAMERA_EndLook(Camera*)` | Decompiled & Verified |
+| `0x00486730` | `CAMERA_BezierLine` | `static float CAMERA_BezierLine(float, float, float)` | Decompiled & Verified |
+| `0x00486780` | `CAMERA_AccurateAimInterpTime` | `float CAMERA_AccurateAimInterpTime(Camera*)` | Decompiled & Verified |
+| `0x004867a0` | `CAMERA_InitAimAssist` | `void CAMERA_InitAimAssist()` | Decompiled & Verified |
+| `0x00486820` | `CAMERA_AimAssist` | `void CAMERA_AimAssist(Camera*, cdc::Vector3*)` | Decompiled & Verified |
+| `0x00486c90` | `CAMERA_ResetStickyLookMode` | `void CAMERA_ResetStickyLookMode(Camera*)` | Decompiled & Verified |
+| `0x00486cb0` | `CAMERA_ResetAccurateAimMode` | `void CAMERA_ResetAccurateAimMode(Camera*)` | Decompiled & Verified |
+| `0x00486cd0` | `CAMERA_StartLookaroundMode` | `void CAMERA_StartLookaroundMode(Camera*)` | Decompiled & Verified |
+| `0x00486df0` | `CAMERA_StartAccurateAimMode` | `void CAMERA_StartAccurateAimMode(Camera*)` | Decompiled & Verified |
+| `0x00486fb0` | `CAMERA_ForceEndLookaroundMode` | `void CAMERA_ForceEndLookaroundMode(Camera*)` | Decompiled & Verified |
+| `0x00486fd0` | `CAMERA_LookProcess` | `void CAMERA_LookProcess(Camera*)` | Decompiled & Verified |
+| `0x00487540` | `CAMERA_AccurateAimProcessInputs` | `void CAMERA_AccurateAimProcessInputs(Camera*, float*, float*)` | Decompiled & Verified |
+| `0x004877d0` | `CAMERA_AccurateAimProcess` | `void CAMERA_AccurateAimProcess(Camera*)` | Decompiled & Verified |
+| `0x00487c30` | `CAMERA_TurretProcess` | `void CAMERA_TurretProcess(Camera*)` | Decompiled & Verified |
+| `0x010fc57c` | `cameraTurretInterp` | `float cameraTurretInterp` | Documented |
+| `TurretProp` / `TurretData` / `TurretState` | Turret camera data structs (`0x144` / `0x160` / `0x54` bytes) | Documented |
+| `StateObj` / `StateMachine` | Player state machine layout (`0x14` / `0x4c` bytes) | Documented |
+
 ---
 
 ## Build Verification
@@ -510,9 +536,8 @@ Original Module: `f:\tr7\game\camera\cameraBehind.c` (PDB -> Retail shift: `-0x1
 ---
 
 ## Next Targets in Execution Queue
-1. **Camera Look & Cine Processors (`cameralook.c`, `cameracine.c`)**:
-   - `CAMERA_LookProcess` (`0x00488a10` / retail `0x00487070`)
-   - `CAMERA_SplineProcess` / `CAMERA_CineProcess`
+1. **Camera Spline & Cine Processors (`cameraspline.c`, `cameracine.c`)**:
+   - `CAMERA_SplineProcess` (`0x004895a0` retail) / `CAMERA_CineProcess`
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:
