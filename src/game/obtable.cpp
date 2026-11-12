@@ -2,6 +2,7 @@
 #include "game/instance.h"
 #include "game/gameloop.h"
 #include "game/main.h"
+#include "game/player/player.h"
 #include "game/pc/pclocals.h"
 #include "game/archive/ArchiveFileSystem.h"
 #include "cdc/cdcFile/FileSystem.h"
@@ -44,49 +45,57 @@ ObjectAccess objectAccess[] = {
     { nullptr, nullptr }
 };
 
+#define PLAYER_OBJECT_FUNCS \
+    reinterpret_cast<InstanceInitFunc>(RazielInit), \
+    reinterpret_cast<InstanceProcessFunc>(RazielProcess), \
+    reinterpret_cast<InstanceCollideFunc>(RazielCollide), \
+    reinterpret_cast<InstanceQueryFunc>(RazielQuery), \
+    reinterpret_cast<InstanceMessageFunc>(RazielPost), \
+    reinterpret_cast<InstanceAdditionalCollideFunc>(RazielAdditionalCollide)
+
 // 0x00f15538 (PDB: ?objectFunc@@3PAUObjectFunc@@A)
 ObjectFunc objectFunc[] = {
-    { "lara", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_young", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_biker", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_evening", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_evening_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
+    { "lara", PLAYER_OBJECT_FUNCS },
+    { "lara_winter", PLAYER_OBJECT_FUNCS },
+    { "lara_young", PLAYER_OBJECT_FUNCS },
+    { "lara_biker", PLAYER_OBJECT_FUNCS },
+    { "lara_evening", PLAYER_OBJECT_FUNCS },
+    { "lara_evening_alt", PLAYER_OBJECT_FUNCS },
     { "physical", reinterpret_cast<InstanceInitFunc>(0x005333a0), nullptr, nullptr, nullptr, nullptr, nullptr },
     { "particle", nullptr, nullptr, nullptr, nullptr, nullptr, nullptr },
     { "enemy", reinterpret_cast<InstanceInitFunc>(0x00494030), reinterpret_cast<InstanceProcessFunc>(0x00492b20), reinterpret_cast<InstanceCollideFunc>(0x00492f30), reinterpret_cast<InstanceQueryFunc>(0x00492b90), reinterpret_cast<InstanceMessageFunc>(0x00492bc0), reinterpret_cast<InstanceAdditionalCollideFunc>(0x004932c0) },
     { "flashback_stream", reinterpret_cast<InstanceInitFunc>(0x005d6450), reinterpret_cast<InstanceProcessFunc>(0x005d6660), nullptr, reinterpret_cast<InstanceQueryFunc>(0x005d5d20), reinterpret_cast<InstanceMessageFunc>(0x005d69f0), nullptr },
     { "russia_stream", reinterpret_cast<InstanceInitFunc>(0x005d6450), reinterpret_cast<InstanceProcessFunc>(0x005d6660), nullptr, reinterpret_cast<InstanceQueryFunc>(0x005d5d20), reinterpret_cast<InstanceMessageFunc>(0x005d69f0), nullptr },
     { "tokyo_stream", reinterpret_cast<InstanceInitFunc>(0x005d6450), reinterpret_cast<InstanceProcessFunc>(0x005d6660), nullptr, reinterpret_cast<InstanceQueryFunc>(0x005d5d20), reinterpret_cast<InstanceMessageFunc>(0x005d69f0), nullptr },
-    { "lara_classic", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_classic_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_goth", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_goth_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_biker_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_biker_nj", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_suit", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_suit_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_alta", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_altb", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_altc", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter_alta", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter_nj", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter_alt_nj", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_winter_alta_nj", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_evening_red", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_evening_alta", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_special_forces", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_special_forces_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_catsuit", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_catsuit_snow", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_bikini", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_bikini_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_sport", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "lara_sport_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "amanda_player", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
-    { "amanda_player_alt", reinterpret_cast<InstanceInitFunc>(0x0059d5b0), reinterpret_cast<InstanceProcessFunc>(0x0059aa90), reinterpret_cast<InstanceCollideFunc>(0x00565ce0), reinterpret_cast<InstanceQueryFunc>(0x0058a3e0), reinterpret_cast<InstanceMessageFunc>(0x00595060), reinterpret_cast<InstanceAdditionalCollideFunc>(0x0058b060) },
+    { "lara_classic", PLAYER_OBJECT_FUNCS },
+    { "lara_classic_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_goth", PLAYER_OBJECT_FUNCS },
+    { "lara_goth_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_biker_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_biker_nj", PLAYER_OBJECT_FUNCS },
+    { "lara_suit", PLAYER_OBJECT_FUNCS },
+    { "lara_suit_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_alta", PLAYER_OBJECT_FUNCS },
+    { "lara_altb", PLAYER_OBJECT_FUNCS },
+    { "lara_altc", PLAYER_OBJECT_FUNCS },
+    { "lara_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_winter_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_winter_alta", PLAYER_OBJECT_FUNCS },
+    { "lara_winter_nj", PLAYER_OBJECT_FUNCS },
+    { "lara_winter_alt_nj", PLAYER_OBJECT_FUNCS },
+    { "lara_winter_alta_nj", PLAYER_OBJECT_FUNCS },
+    { "lara_evening_red", PLAYER_OBJECT_FUNCS },
+    { "lara_evening_alta", PLAYER_OBJECT_FUNCS },
+    { "lara_special_forces", PLAYER_OBJECT_FUNCS },
+    { "lara_special_forces_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_catsuit", PLAYER_OBJECT_FUNCS },
+    { "lara_catsuit_snow", PLAYER_OBJECT_FUNCS },
+    { "lara_bikini", PLAYER_OBJECT_FUNCS },
+    { "lara_bikini_alt", PLAYER_OBJECT_FUNCS },
+    { "lara_sport", PLAYER_OBJECT_FUNCS },
+    { "lara_sport_alt", PLAYER_OBJECT_FUNCS },
+    { "amanda_player", PLAYER_OBJECT_FUNCS },
+    { "amanda_player_alt", PLAYER_OBJECT_FUNCS },
     { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr }
 };
 

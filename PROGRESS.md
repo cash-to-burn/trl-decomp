@@ -344,6 +344,49 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ### `src/cdc/cdcSys/UTF8String.cpp` & `src/cdc/cdcSys/UTF8String.h`
 - String helper type `cdc::UTF8String` (constructors, destructor, `ConvertToWCHAR`, memory management).
 
+### `src/game/player/player.cpp` & `src/game/player/player.h` (Original: `f:\tr7\game\player\player.c`)
+- Size assertions for `MessageQueue` (0x08), `State` (0x34), `CharacterState` (0x38), `HealthSystem` (0x0c), `SplashSystem` (0x14), `AlgoSystem` (0x10), `PlayerHoldInfo` (0x30), `GeneralAttributes` (0x28), `OldRazielData` (0xc68), `PlayerProp` (0xc98), `Player` (0x1000), `PlayerData` (0x1070), `PlayerSM` (0x510).
+- Subsystem globals: `gPlayer` (0x0111707c), `gPlayerSM` (0x01117494), `playerData` (0x01116f90), `s_playerInstance` (0x010e52bc), `s_timeScale` (0x010e53d8).
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x0059d5b0` | `RazielInit` | `void RazielInit(Instance*, GameTracker*)` | Decompiled & Verified |
+| `0x0059aa90` | `RazielProcess` | `void RazielProcess(Instance*, GameTracker*)` | Decompiled & Verified |
+| `0x00565ce0` | `RazielCollide` | `void RazielCollide(Instance*, GameTracker*)` | Decompiled & Verified |
+| `0x0058a3e0` | `RazielQuery` | `unsigned int RazielQuery(Instance*, unsigned int)` | Decompiled & Verified |
+| `0x00595060` | `RazielPost` | `void RazielPost(Instance*, unsigned int, unsigned int)` | Decompiled & Verified |
+| `0x0058b060` | `RazielAdditionalCollide` | `void RazielAdditionalCollide(Instance*, GameTracker*)` | Decompiled & Verified |
+| `0x00565cd0` | `RazielClearData` | `void RazielClearData(Instance*)` | Decompiled & Verified |
+| `0x00565ed0` | `RAZIEL_SetLookAround` | `void RAZIEL_SetLookAround(Instance*)` | Decompiled & Verified |
+| `0x00565f40` | `RAZIEL_ResetLookAround` | `void RAZIEL_ResetLookAround(Instance*)` | Decompiled & Verified |
+| `0x00565fba` | `RAZIEL_OkToLookAround` | `bool RAZIEL_OkToLookAround(Instance*)` | Decompiled & Verified |
+| `0x00579140` | `RAZIEL_DebugHealthFillUp` | `void RAZIEL_DebugHealthFillUp(void)` | Decompiled & Verified |
+| `0x005aa7b0` | `RAZIEL_DebugHurtRaziel` | `void RAZIEL_DebugHurtRaziel(void)` | Decompiled & Verified |
+| `0x0057d930` | `RAZIEL_TurnHead` | `void RAZIEL_TurnHead(Instance*)` | Decompiled & Verified |
+
+### `src/game/player/control.cpp` & `src/game/player/control.h` (Original: `f:\tr7\game\player\control.c`)
+- Physics and external forces subsystem for player character.
+- Struct `Force` (0x20).
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x005b2db0` | `SetFallMaxZSpeed` | `void SetFallMaxZSpeed(Instance*, float)` | Decompiled & Verified |
+| `0x005b2dc0` | `SetFallMaxSideSpeed` | `void SetFallMaxSideSpeed(Instance*, float)` | Decompiled & Verified |
+| `0x005b2dd0` | `SetImpulsePhysics` | `void SetImpulsePhysics(Instance*, Player*)` | Decompiled & Verified |
+| `0x005b2e80` | `InitExternalForces` | `void InitExternalForces(Force*, int)` | Decompiled & Verified |
+| `0x005b2ec0` | `SetExternalForce` | `void SetExternalForce(Force*, float, float, float, unsigned char, float)` | Decompiled & Verified |
+| `0x005b2ef0` | `SetPhysics` | `void SetPhysics(Instance*, float, float, float, float)` | Decompiled & Verified |
+| `0x005b5850` | `ResetExternalForces` | `void ResetExternalForces(Instance*)` | Decompiled & Verified |
+| `0x005b5910` | `ResetPhysics` | `void ResetPhysics(Instance*, float)` | Decompiled & Verified |
+| `0x005b5980` | `SetDropPhysics` | `void SetDropPhysics(Instance*, Player*)` | Decompiled & Verified |
+| `0x005b5b60` | `ApplyExternalLocalForces` | `void ApplyExternalLocalForces(Player*, Instance*, Force*, int, cdc::Vector3*)` | Decompiled & Verified |
+| `0x005b5d00` | `ProcessPhysics` | `void ProcessPhysics(Player*, CharacterState*, int, int)` | Decompiled & Verified |
+
+### `src/game/playercntrl.cpp` & `src/game/playercntrl.h` (Original: `f:\tr7\game\playercntrl.c`)
+- Global player control toggle (`gPlayerControl_Enabled` at `0x00f159f4`).
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x00463b40` | `?PLAYERCNTRL_Enable@@YAXXZ` | `void PLAYERCNTRL_Enable(void)` | Decompiled & Verified |
+| `0x00463b50` | `?PLAYERCNTRL_Disable@@YAXXZ` | `void PLAYERCNTRL_Disable(void)` | Decompiled & Verified |
+
 ---
 
 ## Build Verification
@@ -353,11 +396,11 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **Player Control & Lara System (`src/game/lara/` / `f:\tr7\game\lara\`)**:
-   - `LARA_Init` / `PLAYER_Init`
-   - Lara state machine and control structures
-2. **Object & Instance System (`obtable.cpp` / `instance.cpp`)**:
-   - `OBTABLE_Init` (`0x00461f90`), `OBTABLE_InitObjectWithID` (`0x00461dd0`)
-   - `INSTANCE_IntroduceSavedInstances`, `INSTANCE_BirthObject`
-3. **Camera Subsystem (`src/game/camera/`)**:
-   - `CAMERA_Init`, `CAMERA_Update`
+1. **Camera Subsystem (`src/game/camera/` / `f:\tr7\game\camera\`)**:
+   - `CameraCore` (0x300 bytes) & `Camera` (0x1320 bytes) types
+   - `CAMERA_Initialize` (`0x0047c0b0`), `CAMERA_Process` (`0x0047e880`), `CAMERA_SetMode` (`0x0047b220`)
+   - Axis inversion and aim inversion routines
+2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
+   - Animation blending and character motion systems
+3. **Collision / Physics Subsystem (`src/game/collide/`)**:
+   - Instance physical query and collision resolution
