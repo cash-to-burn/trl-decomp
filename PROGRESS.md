@@ -387,6 +387,47 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x00463b40` | `?PLAYERCNTRL_Enable@@YAXXZ` | `void PLAYERCNTRL_Enable(void)` | Decompiled & Verified |
 | `0x00463b50` | `?PLAYERCNTRL_Disable@@YAXXZ` | `void PLAYERCNTRL_Disable(void)` | Decompiled & Verified |
 
+### `src/game/camera/camera.cpp` & `src/game/camera/camera.h` (Original: `f:\tr7\game\camera\camera.c`)
+- Size assertions for `CameraCore` (0x300), `CameraKey` (0x18), `FollowTransitionData` (0x24), `FollowSplinecamData` (0x50), `SplinecamData` (0x50), `SplinecamParams` (0x7c), `SavedCinematic` (0x230), `NextCamData` (0x140), `CameraDataUnion` (0x160), and `Camera` (0x1320).
+- Subsystem globals: `theCamera` (0x010fc5a0 / PDB 0x010fd7a0), `g_cameraAxisFlags` (0x01075ac8), `camera_shakeOffset` (0x010fc360).
+- Input axis scale routines: `INPUT_SetAxisScale` (0x00452570), `INPUT_GetAxisScale` (0x004525b0).
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x0047c030` | `CAMERA_Initialize` | `void CAMERA_Initialize(Camera*)` | Decompiled & Verified |
+| `0x0047c570` | `CAMERA_Lock` | `void CAMERA_Lock(Camera*, int)` | Decompiled & Verified |
+| `0x0047c590` | `CAMERA_Unlock` | `void CAMERA_Unlock(Camera*, int)` | Decompiled & Verified |
+| `0x0047c5b0` | `CAMERA_SetSmoothValue` | `void CAMERA_SetSmoothValue(Camera*, int)` | Decompiled & Verified |
+| `0x0047c610` | `CAMERA_Adjust_tilt_stay_in_place` | `void CAMERA_Adjust_tilt_stay_in_place(Camera*, int)` | Decompiled & Verified |
+| `0x0047c6a0` | `CAMERA_Adjust_tilt` | `void CAMERA_Adjust_tilt(Camera*, int)` | Decompiled & Verified |
+| `0x0047c720` | `CAMERA_Adjust_distance` | `void CAMERA_Adjust_distance(Camera*, int)` | Decompiled & Verified |
+| `0x0047c770` | `CAMERA_Adjust_ZOffset` | `void CAMERA_Adjust_ZOffset(Camera*, int)` | Decompiled & Verified |
+| `0x0047c780` | `CAMERA_Adjust_rotation` | `void CAMERA_Adjust_rotation(Camera*, int)` | Decompiled & Verified |
+| `0x0047c820` | `CAMERA_Adjust_roll` | `void CAMERA_Adjust_roll(int, int)` | Decompiled & Verified |
+| `0x0047c990` | `CAMERA_ChangeToUnderWater` | `void CAMERA_ChangeToUnderWater(Camera*, Instance*)` | Decompiled & Verified |
+| `0x0047cab0` | `CAMERA_ChangeOutOfWade` | `void CAMERA_ChangeOutOfWade(Camera*, Instance*)` | Decompiled & Verified |
+| `0x0047acc0` | `CAMERA_SaveMode` | `void CAMERA_SaveMode(Camera*, int)` | Decompiled & Verified |
+| `0x0047b240` | `CAMERA_SetMode` | `void CAMERA_SetMode(Camera*, int)` | Decompiled & Verified |
+| `0x0047d760` | `CAMERA_SetVertigo` | `void CAMERA_SetVertigo(int, int, int)` | Decompiled & Verified |
+| `0x0047d860` | `CAMERA_SetValueByEvent` | `void CAMERA_SetValueByEvent(Camera*, int, int)` | Decompiled & Verified |
+| `0x0047dc00` | `CAMERA_SetAxisInversionX` | `void CAMERA_SetAxisInversionX(bool)` | Decompiled & Verified |
+| `0x0047dc30` | `CAMERA_SetAxisInversionY` | `void CAMERA_SetAxisInversionY(bool)` | Decompiled & Verified |
+| `0x0047dc80` | `CAMERA_GetAxisInversionX` | `bool CAMERA_GetAxisInversionX(void)` | Decompiled & Verified |
+| `0x0047dca0` | `CAMERA_GetAxisInversionY` | `bool CAMERA_GetAxisInversionY(void)` | Decompiled & Verified |
+| `0x0047dcc0` | `CAMERA_SetAimAxisInversionX` | `void CAMERA_SetAimAxisInversionX(bool)` | Decompiled & Verified |
+| `0x0047dcf0` | `CAMERA_SetAimAxisInversionY` | `void CAMERA_SetAimAxisInversionY(bool)` | Decompiled & Verified |
+| `0x0047dd20` | `CAMERA_GetAimAxisInversionX` | `bool CAMERA_GetAimAxisInversionX(void)` | Decompiled & Verified |
+| `0x0047dd40` | `CAMERA_GetAimAxisInversionY` | `bool CAMERA_GetAimAxisInversionY(void)` | Decompiled & Verified |
+| `0x0047dd60` | `CAMERA_Restore` | `void CAMERA_Restore(Camera*, int)` | Decompiled & Verified |
+| `0x0047de30` | `CAMERA_QueryMode` | `int CAMERA_QueryMode(Camera*)` | Decompiled & Verified |
+| `0x0047e0e0` | `CAMERA_SetShakeNoPadshock` | `void CAMERA_SetShakeNoPadshock(Camera*, int, int)` | Decompiled & Verified |
+| `0x0047e180` | `CAMERA_SetShake` | `void CAMERA_SetShake(Camera*, int, int)` | Decompiled & Verified |
+| `0x0047e1e0` | `CAMERA_Relocate` | `void CAMERA_Relocate(Camera*, cdc::Vector3*, int)` | Decompiled & Verified |
+| `0x0047e860` | `CAMERA_SetShakeRamp` | `void CAMERA_SetShakeRamp(int, int, int, int)` | Decompiled & Verified |
+| `0x0047ff50` | `CAMERA_RestoreMode` | `void CAMERA_RestoreMode(Camera*)` | Decompiled & Verified |
+| `0x004803e0` | `CAMERA_ChangeToOutOfWater` | `void CAMERA_ChangeToOutOfWater(Camera*, Instance*)` | Decompiled & Verified |
+| `0x0048ca00` | `CAMERA_CircleAnglef` | `float CAMERA_CircleAnglef(float)` | Decompiled & Verified |
+| `0x0048ca90` | `CAMERA_AngleDifference` | `float CAMERA_AngleDifference(float, float)` | Decompiled & Verified |
+
 ---
 
 ## Build Verification
@@ -396,10 +437,9 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **Camera Subsystem (`src/game/camera/` / `f:\tr7\game\camera\`)**:
-   - `CameraCore` (0x300 bytes) & `Camera` (0x1320 bytes) types
-   - `CAMERA_Initialize` (`0x0047c0b0`), `CAMERA_Process` (`0x0047e880`), `CAMERA_SetMode` (`0x0047b220`)
-   - Axis inversion and aim inversion routines
+1. **Camera Behind & Look Processors (`camerabehind.c`, `cameralook.c`)**:
+   - `CAMERA_FollowGoBehindPlayer` (`0x00482b20` / retail `0x00481180`)
+   - `CAMERA_LookProcess` (`0x00488a10` / retail `0x00487070`)
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:

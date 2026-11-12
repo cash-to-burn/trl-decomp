@@ -127,4 +127,18 @@ public:
     PCGamepadDevice *m_pGamepadDev;
 };
 
+// 0x00f14710
+struct AxisScaleEntry {
+    float scale;
+    void (*callback)(float);
+};
+
+extern AxisScaleEntry g_axisScaleTable[16];
+
+// 0x00452570
+void INPUT_SetAxisScale(int axis, float scale, int applyNow = 1);
+
+// 0x004525b0
+float INPUT_GetAxisScale(int axis);
+
 #endif // GAME_PC_PCINPUT_H

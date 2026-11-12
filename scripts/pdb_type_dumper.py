@@ -167,9 +167,9 @@ def dump_struct(records, target_name):
                             mname_str = fl_data[mname_start:].split(b'\x00')[0].decode('latin1', errors='ignore')
                             fl_off = (mname_start + len(mname_str) + 1 + 3) & ~3
                         elif subtype == LF_NESTTYPE:
-                            nt_off = fl_off + 6
-                            nt_name = fl_data[nt_off:].split(b'\x00')[0].decode('latin1', errors='ignore')
-                            fl_off = (nt_off + len(nt_name) + 1 + 3) & ~3
+                            nt_ti = struct.unpack_from('<I', fl_data, fl_off + 4)[0]
+                            nt_name = fl_data[fl_off + 8:].split(b'\x00')[0].decode('latin1', errors='ignore')
+                            fl_off = (fl_off + 8 + len(nt_name) + 1 + 3) & ~3
                         elif subtype == LF_VFUNCTAB:
                             fl_off = (fl_off + 8 + 3) & ~3
                         else:

@@ -378,3 +378,34 @@ void PCCombinationInputDevice::SetOverrideButtonName(int button, const cdc::UTF8
     }
     m_pOverrideButtonNames[button] = *name;
 }
+
+// 0x00f14710
+AxisScaleEntry g_axisScaleTable[16] = {
+    { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr },
+    { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr },
+    { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr },
+    { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr }, { 1.0f, nullptr }
+};
+
+// 0x00452570
+void INPUT_SetAxisScale(int axis, float scale, int applyNow)
+{
+    if (axis < 0 || axis >= 16) {
+        return;
+    }
+    if (applyNow != 0) {
+        if (g_axisScaleTable[axis].callback != nullptr) {
+            g_axisScaleTable[axis].callback(scale);
+        }
+    }
+    g_axisScaleTable[axis].scale = scale;
+}
+
+// 0x004525b0
+float INPUT_GetAxisScale(int axis)
+{
+    if (axis < 0 || axis >= 16) {
+        return 1.0f;
+    }
+    return g_axisScaleTable[axis].scale;
+}
