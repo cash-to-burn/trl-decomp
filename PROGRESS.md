@@ -51,7 +51,8 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
     │       ├── EnumWindows(FindGameEnumWindowsProc, "TOMBRAIDER") [0x00401a10 / PDB 0x00401f00]
     │       └── MessageBoxUTF8() [0x00401950 / PDB 0x00401940] (If prior instance exists without window)
     │
-    ├── D3D_InitManager() [0x00413880] (Loads d3d9.dll & initializes PCDeviceManager)
+    ├── D3D_InitManager() [0x00413880] -> PCDeviceManager::CreateInstance() [0x00ec70f0]
+    │   └── Loads d3d9.dll, creates IDirect3D9, initializes PCDeviceManager singleton
     │
     ├── OS Version Verification (Requires Windows 2000 / XP, NT 5.0+)
     │
@@ -63,7 +64,7 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
         │   ├── RegisterClassA("TOMBRAIDER", RegularWndProc) [0x00403c00]
         │   └── CreateWindowExA(WS_EX_TOPMOST, "TOMBRAIDER", "Tomb Raider: Legend", ...)
         │
-        ├── D3D_InitDevice(false) [0x004139a0]
+        ├── D3D_InitDevice(false) [0x004139a0] -> PCDeviceManager::CreateDevice() [0x00ec5f80]
         │   └── SetThreadPriority(THREAD_PRIORITY_NORMAL) & SetPriorityClass(NORMAL_PRIORITY_CLASS)
         │
         ├── MainG2(0) [0x0045cc10 / PDB 0x0045e3a0] (Core G2 Gameplay & Engine Loop)
@@ -72,9 +73,9 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
         │   └── MainG2_UpdateLoop() [0x00401ab0] (Engine frame tick & message dispatch)
         │
         └── Shutdown & Cleanup:
-            ├── RND_Shutdown() [0x00413a20] (Flush caches)
+            ├── RND_Shutdown() [0x00413a20] -> PCDeviceManager::ReleaseDevice() [0x00ec6230]
             ├── ReleaseFS() [0x0045c360 / PDB 0x0045da10] (Release Bigfile & FileSystem)
-            ├── D3D_ShutdownDevice() [0x00413930]
+            ├── D3D_ShutdownDevice() [0x00413930] -> PCDeviceManager::DestroyInstance()
             ├── GAMEWINDOW_Deinit() [0x004040c0]
             ├── SETUP_SaveRegistrySettings() [0x00404e00]
             ├── SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, oldScreensaver) [Restore screensaver]
@@ -105,6 +106,17 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x0045cc10` | `?MainG2@@YAHPAX@Z` | `int MainG2(void *appData)` | Decompiled & Verified |
 | `0x0045c940` | `?MAIN_DoMainInit@@YAXXZ` | `void MAIN_DoMainInit(void)` | Decompiled & Verified |
 | `0x0045c530` | `?ProcessArgs@@YAHPADPAUGameTracker@@PAX@Z` | `int ProcessArgs(char*, void*, void*)` | Decompiled & Verified |
+
+### `src/cdc/runtime/cdcRender/pc/shared/PCDeviceManager.cpp` & `.h` (Original: `cdcRender\pc\shared\PCDeviceManager.cpp`)
+| Address (VA) | PDB Symbol | Signature | Status |
+|---|---|---|---|
+| `0x00ec70f0` | `PCDeviceManager::Create` | `PCDeviceManager* PCDeviceManager::CreateInstance(void)` | Decompiled & Verified |
+| `0x00ec6ff0` | `PCDeviceManager::PCDeviceManager` | `PCDeviceManager::PCDeviceManager(HMODULE, void*)` | Decompiled & Verified |
+| `0x00ec6ea0` | `PCDeviceManager::~PCDeviceManager` | `PCDeviceManager::~PCDeviceManager(void)` | Decompiled & Verified |
+| `0x00ec6350` | `PCDeviceManager::SetVideoConfig` | `bool PCDeviceManager::SetVideoConfig(HWND, const PCVideoConfig*)` | Decompiled & Verified |
+| `0x00ec5f80` | `PCDeviceManager::CreateDevice` | `bool PCDeviceManager::CreateDevice(const PCVideoConfig*)` | Decompiled & Verified |
+| `0x00ec6230` | `PCDeviceManager::ReleaseDevice` | `void PCDeviceManager::ReleaseDevice(uint32_t)` | Decompiled & Verified |
+| `0x00ec62f0` | `PCDeviceManager::UpdateDeviceStatus`| `void PCDeviceManager::UpdateDeviceStatus(void)` | Decompiled & Verified |
 
 ### `src/game/archive/ArchiveFileSystem.cpp` & `src/game/archive/ArchiveFileSystem.h` (Original: `f:\tr7\game\archive\ArchiveFileSystem.cpp`)
 | Address (VA) | PDB Symbol | Signature | Status |
@@ -169,15 +181,11 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 ---
 
 ## Next Targets in Execution Queue
-1. **`cdc::PCDeviceManager` Class Decompilation**:
-   - `PCDeviceManager::PCDeviceManager` (`0x00ec6ff0`)
-   - `PCDeviceManager::~PCDeviceManager` (`0x00ec6ea0`)
-   - `PCDeviceManager::CreateInstance` (`0x00ec70f0`)
-   - `PCDeviceManager::SetVideoConfig` (`0x00ec6350`)
-   - `src/cdc/runtime/cdcRender/pc/shared/PCDeviceManager.cpp`
-2. **`DTPDataSection` Resource Management**:
+1. **`DTPDataSection` Resource Management**:
    - `DTPDataSection_Init` (`0x005bd910`)
    - `src/game/dtp.cpp`
-3. **`MainG2` State Machine Breakdown**:
+2. **`MainG2` State Machine Breakdown**:
    - Mode dispatch (`GAMELOOP_ChangeMode`, `GAMELOOP_InitRunning`)
    - Level transition handler (`GAMELOOP_LevelLoadAndInit`)
+3. **`pcmouse.cpp` Direct Input / Mouse Implementation**:
+   - `PCMOUSE_SetCursorPos`, `PCMOUSE_UpdateButtonDown`, etc.
