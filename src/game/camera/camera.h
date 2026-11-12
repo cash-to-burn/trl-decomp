@@ -561,8 +561,4 @@ void CAMERA_SetAimAxisInversionY(bool inverted);                            // 0
 bool CAMERA_GetAimAxisInversionX(void);                                     // 0x0047dd20 (PDB: 0x0047f6c0)
 bool CAMERA_GetAimAxisInversionY(void);                                     // 0x0047dd40 (PDB: 0x0047f6e0)
 
-// Math helpers
-float CAMERA_CircleAnglef(float angle);                                     // 0x0048ca00 (PDB: 0x0048e510)
-float CAMERA_AngleDifference(float a, float b);                             // 0x0048ca90 (PDB: 0x0048ee90)
-
 #endif // GAME_CAMERA_CAMERA_H

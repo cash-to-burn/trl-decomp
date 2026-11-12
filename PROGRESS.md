@@ -425,8 +425,46 @@ entry() [0x00ee6ef8 / PDB 0x00ee9878] (_WinMainCRTStartup)
 | `0x0047e860` | `CAMERA_SetShakeRamp` | `void CAMERA_SetShakeRamp(int, int, int, int)` | Decompiled & Verified |
 | `0x0047ff50` | `CAMERA_RestoreMode` | `void CAMERA_RestoreMode(Camera*)` | Decompiled & Verified |
 | `0x004803e0` | `CAMERA_ChangeToOutOfWater` | `void CAMERA_ChangeToOutOfWater(Camera*, Instance*)` | Decompiled & Verified |
+
+### Camera Support Subsystem (`src/game/camera/camerasupport.cpp`, `src/game/camera/camerasupport.h`)
+Original Module: `f:\tr7\game\camera\cameraSupport.c` (PDB -> Retail shift: `-0x1b10`)
+
+| Address (Retail) | Function / Symbol | Signature / Purpose | Status |
+| :--- | :--- | :--- | :--- |
+| `0x0048c6d0` | `CriticalDampValue` | `void CriticalDampValue(int, float*, float, float*, float*, float)` | Decompiled & Verified |
+| `0x0048c840` | `CriticalDampValueControl` | `void CriticalDampValueControl(float*, float, float*, float*, float, float)` | Decompiled & Verified |
+| `0x0048c8d0` | `CAMERA_CalcRotation` | `void CAMERA_CalcRotation(cdc::Euler*, const cdc::Vector3*, const cdc::Vector3*)` | Decompiled & Verified |
 | `0x0048ca00` | `CAMERA_CircleAnglef` | `float CAMERA_CircleAnglef(float)` | Decompiled & Verified |
-| `0x0048ca90` | `CAMERA_AngleDifference` | `float CAMERA_AngleDifference(float, float)` | Decompiled & Verified |
+| `0x0048ca60` | `CAMERA_SetZRotation` | `void CAMERA_SetZRotation(Camera*, float)` | Decompiled & Verified |
+| `0x0048ca90` | `CAMERA_SignedAngleDifference` | `float CAMERA_SignedAngleDifference(float, float)` | Decompiled & Verified |
+| `0x0048caf0` | `CAMERA_FocusInstanceMoved` | `bool CAMERA_FocusInstanceMoved(Camera*)` | Decompiled & Verified |
+| `0x0048cb80` | `CAMERA_AngleMoveTowardf` | `void CAMERA_AngleMoveTowardf(float*, float, float)` | Decompiled & Verified |
+| `0x0048cc50` | `AngleMoveToward` | `void AngleMoveToward(float*, float, float)` | Decompiled & Verified |
+| `0x0048cc70` | `Decouple_AngleMoveToward` | `void Decouple_AngleMoveToward(float*, float, float)` | Decompiled & Verified |
+| `0x0048ccc0` | `CriticalDampPosition` | `void CriticalDampPosition(int, cdc::Vector3*, const cdc::Vector3*, cdc::Vector3*, cdc::Vector3*, float)` | Decompiled & Verified |
+| `0x0048d100` | `CriticalDampPositionControl` | `void CriticalDampPositionControl(cdc::Vector3*, const cdc::Vector3*, cdc::Vector3*, cdc::Vector3*, float, float)` | Decompiled & Verified |
+| `0x0048d200` | `CriticalDampAngle` | `void CriticalDampAngle(int, float*, float, float*, float*, float)` | Decompiled & Verified |
+| `0x0048d2a0` | `CriticalDampAngleControl` | `void CriticalDampAngleControl(float*, float, float*, float*, float, float)` | Decompiled & Verified |
+| `0x0048d340` | `CAMERA_CalcZRotation` | `float CAMERA_CalcZRotation(const cdc::Vector3*, const cdc::Vector3*)` | Decompiled & Verified |
+| `0x0048d380` | `CAMERA_AngleDifference` | `float CAMERA_AngleDifference(float, float)` | Decompiled & Verified |
+| `0x0048d410` | `CAMERA_LimitRotation` | `float CAMERA_LimitRotation(Camera*, float)` | Decompiled & Verified |
+| `0x0048d580` | `CAMERA_CalcPosition` | `void CAMERA_CalcPosition(cdc::Vector3*, const cdc::Vector3*, const cdc::Euler*, float)` | Decompiled & Verified |
+
+### Camera View Volume Subsystem (`src/game/camera/cameravv.cpp`, `src/game/camera/cameravv.h`)
+Original Module: `f:\tr7\game\camera\cameraVV.c` (PDB -> Retail shift: `-0x1b10`)
+
+| Address (Retail) | Function / Symbol | Signature / Purpose | Status |
+| :--- | :--- | :--- | :--- |
+| `0x0048d650` | `CAMERA_CalculateViewVolumeNormals` | `void CAMERA_CalculateViewVolumeNormals(CameraCore*)` | Decompiled & Verified |
+| `0x0048d970` | `CAMERA_AspectAdjustMatrixf` | `void CAMERA_AspectAdjustMatrixf(cdc::Matrix*)` | Decompiled & Verified |
+| `0x0048da40` | `CAMERA_SetNewProjDistance` | `void CAMERA_SetNewProjDistance(CameraCore*, float, float)` | Decompiled & Verified |
+| `0x0048da60` | `CAMERA_SphereIntersectsViewVolume` | `int CAMERA_SphereIntersectsViewVolume(cdc::Vector3*, CameraCore*)` | Decompiled & Verified |
+| `0x0048db70` | `CAMERA_CalcVVClipInfo` | `void CAMERA_CalcVVClipInfo(CameraCore*)` | Decompiled & Verified |
+| `0x0048ddd0` | `CAMERA_CalculateWCTransform` | `void CAMERA_CalculateWCTransform(CameraCore*)` | Decompiled & Verified |
+| `0x0048e100` | `CAMERA_SetViewVolume` | `void CAMERA_SetViewVolume(CameraCore*)` | Decompiled & Verified |
+| `0x0048e120` | `CAMERA_SetDefaultViewVolume` | `void CAMERA_SetDefaultViewVolume(CameraCore*)` | Decompiled & Verified |
+| `0x0048e150` | `CAMERA_SetProjDistance2` | `void CAMERA_SetProjDistance2(CameraCore*, float)` | Decompiled & Verified |
+| `0x0048e210` | `CAMERA_SetProjDistance` | `void CAMERA_SetProjDistance(CameraCore*, float)` | Decompiled & Verified |
 
 ---
 

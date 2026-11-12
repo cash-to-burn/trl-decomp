@@ -1,4 +1,5 @@
 #include "game/camera/camera.h"
+#include "game/camera/camerasupport.h"
 #include "game/pc/pcinput.h"
 #include "game/player/player.h"
 #include <cmath>
@@ -20,39 +21,8 @@ float Cam_Vertigo_deg2 = 0.0f;
 float Cam_Vertigo_Ramp_Amount = 0.0f;
 float Cam_Vertigo_Ramp_Speed = 0.0f;
 
-static const float CAMERA_PI = 3.14159265358979323846f;
-static const float CAMERA_TWOPI = 6.28318530717958647692f;
-static const float DEG_TO_RAD = 3.14159265358979323846f / 180.0f;
-static const float RAD_TO_DEG = 180.0f / 3.14159265358979323846f;
-
-// 0x0048ca00 (PDB: 0x0048e510)
-float CAMERA_CircleAnglef(float angle)
-{
-    if (angle >= 0.0f && angle < CAMERA_TWOPI) {
-        return angle;
-    }
-    float rem = std::fmod(angle, CAMERA_TWOPI);
-    if (rem < 0.0f) {
-        rem += CAMERA_TWOPI;
-    }
-    return rem;
-}
-
-// 0x0048ca90 (PDB: 0x0048ee90)
-float CAMERA_AngleDifference(float a, float b)
-{
-    float diff = a - b;
-    if (diff >= -CAMERA_PI && diff <= CAMERA_PI) {
-        return diff;
-    }
-    diff = std::fmod(diff, CAMERA_TWOPI);
-    if (diff > CAMERA_PI) {
-        diff -= CAMERA_TWOPI;
-    } else if (diff < -CAMERA_PI) {
-        diff += CAMERA_TWOPI;
-    }
-    return diff;
-}
+static const float G2_ANGLE_TO_RAD = 6.28318530717958647692f / 4096.0f; // 0x00effb80
+static const float RAD_TO_G2_ANGLE = 4096.0f / 6.28318530717958647692f; // 0x00efe510
 
 // 0x0047c030 (PDB: 0x0047d9d0)
 void CAMERA_Initialize(Camera* camera)
@@ -107,7 +77,7 @@ void CAMERA_SetSmoothValue(Camera* camera, int smooth)
 // 0x0047c610 (PDB: 0x0047dfb0)
 void CAMERA_Adjust_tilt_stay_in_place(Camera* camera, int tilt)
 {
-    float angle = CAMERA_CircleAnglef(static_cast<float>(tilt) * DEG_TO_RAD);
+    float angle = CAMERA_CircleAnglef(static_cast<float>(tilt) * G2_ANGLE_TO_RAD);
     camera->signalRot.x = angle;
     camera->tiltState = 0;
 
@@ -115,7 +85,7 @@ void CAMERA_Adjust_tilt_stay_in_place(Camera* camera, int tilt)
         camera->TargetFocusRotation.x = angle;
         float base = CAMERA_CircleAnglef(camera->FocusRotation.x);
         float target = CAMERA_CircleAnglef(camera->tilt + camera->TargetFocusRotation.x);
-        camera->extraXRot = CAMERA_AngleDifference(base, target);
+        camera->extraXRot = CAMERA_SignedAngleDifference(base, target);
     }
 }
 
@@ -123,7 +93,7 @@ void CAMERA_Adjust_tilt_stay_in_place(Camera* camera, int tilt)
 void CAMERA_Adjust_tilt(Camera* camera, int tilt)
 {
     camera->tiltState = 1;
-    float val = CAMERA_CircleAnglef(static_cast<float>(tilt) * DEG_TO_RAD);
+    float val = CAMERA_CircleAnglef(static_cast<float>(tilt) * G2_ANGLE_TO_RAD);
     camera->signalRot.x = val;
     camera->nextCam.splinecamParams.followTilt = val;
 
@@ -162,7 +132,7 @@ void CAMERA_Adjust_rotation(Camera* camera, int rot)
 {
     camera->forced_movement = 0;
     camera->rotState = 1;
-    float val = CAMERA_CircleAnglef(static_cast<float>(rot) * DEG_TO_RAD);
+    float val = CAMERA_CircleAnglef(static_cast<float>(rot) * G2_ANGLE_TO_RAD);
     camera->signalRot.z = val;
 
     if (camera->followDragToRotateSpeed != 0.0f) {
@@ -183,7 +153,7 @@ void CAMERA_Adjust_rotation(Camera* camera, int rot)
 // 0x0047c820 (PDB: 0x0047e1c0)
 void CAMERA_Adjust_roll(int roll, int duration)
 {
-    float target = static_cast<float>(roll) * DEG_TO_RAD;
+    float target = static_cast<float>(roll) * G2_ANGLE_TO_RAD;
     if (duration == 0) {
         theCamera.current_roll_amount = target;
         theCamera.roll_inc = 0.0f;
@@ -290,10 +260,10 @@ void CAMERA_Restore(Camera* camera, int restoreBits)
         }
     }
     if (restoreBits & 2) {
-        CAMERA_Adjust_tilt(camera, static_cast<int>(camera->savedFocusRotation.x * RAD_TO_DEG));
+        CAMERA_Adjust_tilt(camera, static_cast<int>(camera->savedFocusRotation.x * RAD_TO_G2_ANGLE));
     }
     if (restoreBits & 4) {
-        CAMERA_Adjust_rotation(camera, static_cast<int>(camera->savedFocusRotation.z * RAD_TO_DEG));
+        CAMERA_Adjust_rotation(camera, static_cast<int>(camera->savedFocusRotation.z * RAD_TO_G2_ANGLE));
     }
     if (restoreBits & 0x100) {
         CAMERA_RestoreMode(camera);
