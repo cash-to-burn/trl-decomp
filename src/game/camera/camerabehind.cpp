@@ -1,6 +1,7 @@
 #include "game/camera/camerabehind.h"
 #include "game/camera/camera.h"
 #include "game/camera/camerafocus.h"
+#include "game/camera/camerastack.h"
 #include "game/camera/camerasupport.h"
 #include "game/camera/cameravv.h"
 #include "game/globalinfo.h"
@@ -27,7 +28,6 @@ extern float        MATH3D_LengthXYZ(const cdc::Vector3* a, const cdc::Vector3* 
 extern float        CAMERA_DoVertigo(Camera* camera);                                               // 0x0047cad0 (PDB: 0x0047e470)
 extern void         CAMERA_UpdateFocusRoll(Camera* camera);                                         // 0x0047fe90 (PDB: 0x00481830)
 extern int          CAMERA_DoCameraCollision(Camera* camera, cdc::Vector3* startPos, int param3);   // 0x004857b0 (PDB: 0x004871e0)
-extern void         CameraStackMain(void);                                                          // 0x0048c6a0 (PDB: 0x0048e1b0)
 extern unsigned int CHUCKABLE_Query(Instance* instance, unsigned int query);                        // 0x00527910 (PDB: 0x00529500)
 extern void*        GetGrapplingHookStateTargetInstance(void* extraData);                           // 0x0055a1f0 (PDB: 0x0055c340)
 extern bool         PLAYER_IsInWeaponCombatMode(void);                                              // 0x005a51a0 (PDB: 0x005a72f0)

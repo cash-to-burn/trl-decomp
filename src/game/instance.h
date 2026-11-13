@@ -164,6 +164,30 @@ struct Instance : public BaseInstance {
 };
 static_assert(sizeof(Instance) == 0x260, "Instance size mismatch");
 
+// 0x6f14 in PDB / size: 0x18 (24 bytes)
+struct GenericIntroData {
+    float InViewRemoveDist;                 // 0x00
+    float OutOfViewRemoveDist;              // 0x04
+    uint8_t UseModel;                       // 0x08
+    uint8_t pad0;                           // 0x09
+    uint16_t pad1;                          // 0x0a
+    uint16_t Flags;                         // 0x0c
+    int16_t AttachedInstance;               // 0x0e
+    float SwingLength;                      // 0x10
+    int DTPCameraID;                        // 0x14
+};
+static_assert(sizeof(GenericIntroData) == 0x18, "GenericIntroData size mismatch");
+
+// 0x5f99 in PDB / size: 0x4 (4 bytes, followed inline by type-specific payload)
+struct IntroData {
+    int type;                               // 0x00
+
+    GenericIntroData* AsGeneric() {
+        return reinterpret_cast<GenericIntroData*>(this + 1);
+    }
+};
+static_assert(sizeof(IntroData) == 0x4, "IntroData size mismatch");
+
 // 0x5f67 in PDB / size: 0x70 (112 bytes)
 struct Intro {
     cdc::Euler rotation;                    // 0x00

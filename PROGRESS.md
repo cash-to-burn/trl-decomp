@@ -574,9 +574,35 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Camera Stack (`src/game/camera/camerastack.h`, `src/game/camera/camerastack.cpp`, `src/game/player/markup.h`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `CameraStackCircleAnglef` | `0x0048a180` / `0x0048bc40` | [x] Done | `camerastack.cpp` |
+| `CameraStackCombineData` | `0x0048a1e0` / `0x0048bca0` | [x] Done | `camerastack.cpp` |
+| `CameraStackUpdateCameraSystem` | `0x0048b240` / `0x0048cd00` | [x] Done | `camerastack.cpp` |
+| `CameraStackRefreshCameraSystem` | `0x0048bc40` / `0x0048d700` | [x] Done | `camerastack.cpp` |
+| `CameraStackRefreshCameraSystemResetTilt` | `0x0048bc50` / `0x0048d710` | [x] Done | `camerastack.cpp` |
+| `CameraStackInit` | `0x0048bc60` / `0x0048d720` | [x] Done | `camerastack.cpp` |
+| `CameraStackInitDTPID` | `0x0048bd10` / `0x0048d7d0` | [x] Done | `camerastack.cpp` |
+| `CameraStackClearMarkupCam` | `0x0048bd40` / `0x0048d800` | [x] Done | `camerastack.cpp` |
+| `CameraStackCombineAll` | `0x0048bd70` / `0x0048d830` | [x] Done | `camerastack.cpp` |
+| `CameraStackClear` | `0x0048be70` / `0x0048d930` | [x] Done | `camerastack.cpp` |
+| `CameraStackSetBase` | `0x0048bed0` / `0x0048d990` | [x] Done | `camerastack.cpp` |
+| `CameraStackSetBaseDTPID` | `0x0048bf20` / `0x0048d9e0` | [x] Done | `camerastack.cpp` |
+| `CameraStackSetBaseDTPIDRecheck` | `0x0048bf70` / `0x0048da30` | [x] Done | `camerastack.cpp` |
+| `CameraStackAddCamera` | `0x0048bf90` / `0x0048da50` | [x] Done | `camerastack.cpp` |
+| `CameraStackRemoveCamera` | `0x0048c020` / `0x0048db10` | [x] Done | `camerastack.cpp` |
+| `CameraStackAddCameraDTPID` | `0x0048c0c0` / `0x0048dbd0` | [x] Done | `camerastack.cpp` |
+| `CameraStackRemoveCameraDTPID` | `0x0048c0f0` / `0x0048dc00` | [x] Done | `camerastack.cpp` |
+| `CameraStackProcessPlayerState` | `0x0048c110` / `0x0048dc20` | [x] Done | `camerastack.cpp` |
+| `CameraStackMain` | `0x0048c6a0` / `0x0048e1b0` | [x] Done | `camerastack.cpp` |
+- **Globals & Structs Added**: `theCameraStack` (`0x010fda98`), `safeGrabTimer` (`0x010fdd28`); `CameraDTPData` (`0x74`), `CameraStackInfo` (`0x08`), `movementCameraOverrides` (`0x10`), `CameraStack` (`0x290`) in `src/game/camera/camerastack.h`; `MarkUp` (`0x30`), `MarkUpBox` (`0x40`), `MarkupDTPCam` (`0x0c`), `PlayerMarkupCamInfo` (`0x10`) in `src/game/player/markup.h`; `GenericIntroData` (`0x18`), `IntroData` (`0x04`) in `src/game/instance.h`; markup/state fields and helper declarations in `src/game/player/player.h`.
+
+---
+
 ## Next Targets in Execution Queue
-1. **Camera Stack & Collision (`camerastack.cpp`, `cameracollide.cpp`)**:
-   - `cameraStack` (`0x0048a180`–`0x0048c6d0` retail) and `cameraCollide` (`0x00483c50`–`0x00485c50` retail)
+1. **Camera Collision (`cameracollide.cpp`)**:
+   - `cameraCollide` (`0x00483c50`–`0x00485c50` retail)
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:

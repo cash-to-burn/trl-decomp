@@ -4,6 +4,7 @@
 #include "cdc/runtime/cdcMath/Math.h"
 #include "game/instance.h"
 #include "game/gameloop.h"
+#include "game/player/markup.h"
 #include <cstdint>
 
 // Forward declarations
@@ -409,9 +410,21 @@ struct Player {
     /* 0x674 */ float effectsFade;
     /* 0x678 */ uint8_t pad678[0x760 - 0x678];
     /* 0x760 */ cdc::Vector3 LastTargetPos;
-    /* 0x770 */ uint8_t pad770[0x808 - 0x770];
+    /* 0x770 */ uint8_t pad770[0x800 - 0x770];
+    /* 0x800 */ MarkUpBox* currentWaterMarkup;
+    /* 0x804 */ Instance* currentWaterVolume;
     /* 0x808 */ float currentWaterZ;
-    /* 0x80c */ uint8_t restOfPlayer[0x1000 - 0x80c];
+    /* 0x80c */ uint8_t pad80c[0xb90 - 0x80c];
+    /* 0xb90 */ MarkUpBox* jumpTargetMarkup;
+    /* 0xb94 */ uint8_t padB94[0xc00 - 0xb94];
+    /* 0xc00 */ MarkUpBox* attachedMarkup;
+    /* 0xc04 */ uint8_t padC04[0xc74 - 0xc04];
+    /* 0xc74 */ MarkUpBox* lastAttachedMarkup;
+    /* 0xc78 */ uint8_t padC78[0xc80 - 0xc78];
+    /* 0xc80 */ int groundDetachMode;
+    /* 0xc84 */ int detachOutcome;
+    /* 0xc88 */ float tTimeToTarget;
+    /* 0xc8c */ uint8_t restOfPlayer[0x1000 - 0xc8c];
 };
 
 // Size: 0x1070 bytes (4208 bytes, TI: 0x65bb)
@@ -478,5 +491,33 @@ void RAZIEL_DebugHealthFillUp(void);                                       // 0x
 void RAZIEL_DebugHurtRaziel(void);                                         // 0x005aa7b0 (PDB: 0x005aa7b0)
 void RAZIEL_TurnHead(Instance* instance);                                  // 0x0057d930 (PDB: 0x0057d930)
 Instance* playerGetVictim(void);                                           // 0x005a8990 (PDB: 0x005ab290)
+bool IsPlayerPerformingUnsafeLedgeHang(void);                              // 0x0055b2d0 (PDB: 0x0055d360)
+bool IsPlayerDoingSafeGrabAttach(void);                                    // 0x0055b300 (PDB: 0x0055d390)
+PlayerMarkupCamInfo PLAYER_GetBestMarkupCam(void);                         // 0x00589720 (PDB: 0x0058bdb0)
+
+// Player state IDs (TI: 0x6b04)
+enum PlayerStateID {
+    ID_DeathState = 0x10,
+    ID_SwimTreadState = 0x11,
+    ID_SwimDiveInState = 0x12,
+    ID_SwimState = 0x15,
+    ID_CrouchState = 0x17,
+    ID_CompressionState = 0x27,
+    ID_CrawlState = 0x2e,
+    ID_VehicleState = 0x2f,
+    ID_TurretState = 0x30,
+    ID_SwimInteractState = 0x32,
+    ID_ThrownState = 0x33,
+    ID_HangState = 0x35,
+    ID_HorizPoleState = 0x36,
+    ID_LadderState = 0x37,
+    ID_WallVertPoleState = 0x38,
+    ID_VertPoleState = 0x39,
+    ID_RopeState = 0x3a,
+    ID_PushPullState = 0x3b,
+    ID_PhysicsRollState = 0x3c,
+    ID_ZipLineState = 0x3e,
+    ID_SkyDiveState = 0x3f,
+};
 
 #endif // GAME_PLAYER_PLAYER_H
