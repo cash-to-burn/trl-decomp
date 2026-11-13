@@ -1000,6 +1000,21 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody Collision — CollideTriAndSphere, CollideTriAndCapsule, CollideSweptSphere (`src/game/Multibody/collision/`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `CollideTriAndSphere` | `0x005012d0` / `0x00502fd0` | [x] Done | `CollideTriAndSphere.cpp` |
+| `ComputeEdgeContact` | `0x005009b0` / `0x005026b0` | [x] Done | `CollideTriAndCapsule.cpp` |
+| `CollideTriAndCapsule` | `0x00500ac0` / `0x005027c0` | [x] Done | `CollideTriAndCapsule.cpp` |
+| `Corner` | `0x004fe5c0` / `0x005002c0` | [x] Done | `CollideSweptSphere.cpp` |
+| `CollideSweptSphereAndTriangle` | `0x004fe620` / `0x00500320` | [x] Done | `CollideSweptSphere.cpp` |
+| `CollideSweptSphereAndSphere` | `0x004fe9d0` / `0x005006d0` | [x] Done | `CollideSweptSphere.cpp` |
+| `CollideSweptSphereAndAlignedBox` | `0x004fea30` / `0x00500730` | [x] Done | `CollideSweptSphere.cpp` |
+| `CollideSweptSphereAndBox` | `0x004fed10` / `0x00500a10` | [x] Done | `CollideSweptSphere.cpp` |
+- **Globals & Headers Added**: `CollideTriAndSphere.h`, `CollideTriAndCapsule.h`, `CollideSweptSphere.h`; diagnostic globals `gadj` (`0x01116150` / `0x01117300`), `gv0` (`0x01116160` / `0x01117310`), `gs` (`0x01116170` / `0x01117320`), `gv2` (`0x01116180` / `0x01117330`), `gt` (`0x01116190` / `0x01117340`), `gv1` (`0x011161a0` / `0x01117350`); updated `CollideMesh.cpp` includes.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/collision/` & `Physics.obj`)**:
-   - `CollideTriAndSphere.obj`, `CollideTriAndCapsule.obj`, `CollideTriAndBox.obj`, `CollideBoxAndCapsule.obj`, `CollideBoxAndBox.obj`, `CollideSweptSphere.obj`, and core `Physics.obj` handlers
+   - `CollideTriAndBox.obj`, `CollideBoxAndCapsule.obj`, `CollideBoxAndBox.obj`, and core `Physics.obj` handlers

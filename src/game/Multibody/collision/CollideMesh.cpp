@@ -1,30 +1,16 @@
 #include "game/Multibody/collision/CollideMesh.h"
+#include "game/Multibody/collision/CollideTriAndCapsule.h"
+#include "game/Multibody/collision/CollideTriAndSphere.h"
 
 #include <cstdint>
 
-// Cross-module Multibody collision externs
-extern int CollideTriAndSphere(
-    CPoint* cp,
-    const cdc::Vector3& spherePos,
-    float sphereRad,
-    const MTriangle& tri,
-    unsigned char adj); // 0x005012d0 (PDB: 0x00502fd0)
-
+// Cross-module Multibody collision extern
 extern int CollideTriAndBox(
     CPoint* cp,
     int maxContacts,
     const OBox& box,
     const MTriangle& tri,
     unsigned char adj); // 0x00500980 (PDB: 0x00502680)
-
-extern int CollideTriAndCapsule(
-    CPoint* cp,
-    int maxContacts,
-    const MTriangle& tri,
-    const cdc::Vector3& capA,
-    const cdc::Vector3& capB,
-    float capRad,
-    unsigned char adj); // 0x00500ac0 (PDB: 0x005027c0)
 
 namespace {
 
