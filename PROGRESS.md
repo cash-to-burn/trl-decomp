@@ -711,6 +711,24 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### AnimPatternVM (`src/game/anim/animpatternvm.h`, `src/game/anim/animpatternvm.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `VirtualMachine::VirtualMachine` | `0x0046f570` / `0x00470ee0` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PushMethodContext` | `0x0046f5f0` / `0x00470f60` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::Execute` | `0x0046f650` / `0x00470fc0` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PopFloat` | `0x0046f9e0` / `0x00471350` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PopInt` | `0x0046f9f0` / `0x00471360` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PushFloat` | `0x0046fa00` / `0x00471370` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PushInt` | `0x0046fa20` / `0x00471390` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PushNative` | `0x0046fa20` / `0x00471390` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::PushBool` | `0x0046fa40` / `0x004713b0` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::~VirtualMachine` | `0x0046fa60` / `0x004713e0` | [x] Done | `animpatternvm.cpp` |
+| `VirtualMachine::CallVirtualMethod` | `0x0046fab0` / `0x00471430` | [x] Done | `animpatternvm.cpp` |
+- **Globals & Structs Added**: `AnimScriptObject` (`0x04`), `AnimDataValue` (`0x04`), `NativePlayer` (`0x1c`), `VirtualMachine::MethodContext` (`0x0c`), `VirtualMachine` (`0x28`), `gNativeClassTable` (`0x00f15c60`) in `src/game/anim/animpatternvm.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
