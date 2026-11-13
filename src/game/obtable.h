@@ -14,13 +14,20 @@ struct Model;
 struct AnimListEntry;
 struct AnimFxHeader;
 struct AnimScriptObject;
-struct ObjectBase;
+struct AnimBlend;
 struct SFXData;
 struct ObjectEffectFXA;
 struct _GenericFXObject;
 struct ObjectDTPData;
 struct VramLink;
 struct ClothSetup;
+
+// Size: 0x8 (8 bytes, TI: 0x5aae)
+struct ObjectBase {
+    AnimBlend* animBlend;                   // 0x00
+    void* animPattern;                      // 0x04
+};
+static_assert(sizeof(ObjectBase) == 0x8, "ObjectBase size mismatch");
 
 // Callback function prototypes for objects/instances
 typedef void (*InstanceInitFunc)(Instance* instance, GameTracker* tracker);

@@ -256,7 +256,7 @@ void RNodeController::Activate(bool unlock)
     m_lastRNodeQuat = cdc::Quat::Identity();
     m_lastRNodePos = cdc::Vector3::Make(0.0f, 0.0f, 0.0f, 0.0f);
 
-    AnimProcessor* animProcessor = m_instance->animComponent->animProcessor;
+    AnimProcessor* animProcessor = m_instance->animComponent->mAnimProcessor;
     if (!animProcessor->IsControllerActive(m_rNodeJoint, 0x80)) {
         animProcessor->EnableController(m_rNodeJoint, 0x80);
     }

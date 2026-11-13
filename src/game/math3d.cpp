@@ -82,15 +82,6 @@ inline float ClampedAcosf(float value)
     return std::acos(value);
 }
 
-// 0x005ddba0 (PDB: 0x005e05d0 / cdc::OrthonormalInverse3x3)
-inline void OrthonormalInverse3x3(cdc::Matrix* out, const cdc::Matrix& m)
-{
-    out->col0 = MakeVec3(m.col0.x, m.col1.x, m.col2.x, 0.0f);
-    out->col1 = MakeVec3(m.col0.y, m.col1.y, m.col2.y, 0.0f);
-    out->col2 = MakeVec3(m.col0.z, m.col1.z, m.col2.z, 0.0f);
-    out->col3 = MakeVec3(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
 // 0x005df210 (PDB: 0x005e1c40 / cdc::Matrix::Build)
 inline void BuildMatrixFromEuler(cdc::Matrix* m, const cdc::Euler& e)
 {

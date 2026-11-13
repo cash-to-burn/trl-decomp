@@ -729,6 +729,15 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### AnimProcessor (`src/game/anim/anim.h`, `src/game/anim/animprocessor.cpp`)
+| Component / Range | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `AnimProcessor`, `AnimFragmentProcessor`, `AnimController`, `AnimTweaker`, `G2AnimAlphaTable`, & module helpers (131 functions) | `0x0046fad0`–`0x004779bf` / `0x00471450`–`0x00479340` | [x] Done | `animprocessor.cpp` |
+| Static initializers `$E7` / `$E9` / `$E11` (`sUserTransformRotation`) | `0x00efa9a0` / `0x00efa9f0` / `0x00efaa40` | [x] Done | `animprocessor.cpp` |
+- **Globals & Structs Added**: `_interpStateBlockPool` (`0x010fa300`), `_controllerPool` (`0x010fa310`), `gAnimMorphVelocityDir` (`0x010fa320`), `AnimProcessor::sUserTransformTranslation` (`0x010fa330`), `AnimProcessor::sUserTransformRotation` (`0x010fa340`), `_segValues` (`0x00f1658c`), `_segValuesAnim` (`0x010fe8a0`), `_segValuesStatic` (`0x010fe8c0`), `AnimProcessor::sNativePattern` (`0x00f15b40`), `allBones` (`0x00f013fc`); complete definitions for `AnimFragment`, `Anim`, `AnimBlend`, `AnimSequence`, `AnimTweaker`, `AnimController`, `AnimFragmentProcessor`, `AnimProcessor`, `G2AnimAlphaTable`, `G2AnimQuatInfo`, `G2AnimInterpStateBlock`, `G2AnimInterpInfo`, `G2AnimBitStream`, `Model`, `Segment`, `BoneSet` in `src/game/anim/anim.h`; `ObjectBase` (`0x08`) in `src/game/obtable.h`; `InterpoBlend` and `Player::interpoBlend` (`0xd08`) in `src/game/player/player.h`; `cdc::Vector::Len3` and `cdc::OrthonormalInverse3x3` in `src/cdc/runtime/cdcMath/Math.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems

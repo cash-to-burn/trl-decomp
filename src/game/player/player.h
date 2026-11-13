@@ -13,6 +13,7 @@ struct TuneData;
 struct Idle;
 struct __AttackItem;
 struct FatalityInterface;
+struct InterpoBlend;
 struct InterpoBlendAnim;
 struct NoHitBoneFXSegments;
 struct TargetingInfo;
@@ -428,7 +429,8 @@ struct Player {
     /* 0xc80 */ int groundDetachMode;
     /* 0xc84 */ int detachOutcome;
     /* 0xc88 */ float tTimeToTarget;
-    /* 0xc8c */ uint8_t padC8C[0xd0c - 0xc8c];
+    /* 0xc8c */ uint8_t padC8C[0xd08 - 0xc8c];
+    /* 0xd08 */ InterpoBlend* interpoBlend;
     /* 0xd0c */ RNodeController* rNodeController;
     /* 0xd10 */ FootLockController* footLockControllerLeft;
     /* 0xd14 */ FootLockController* footLockControllerRight;
@@ -482,6 +484,11 @@ static_assert(sizeof(EngagedInstance) == 0x60, "EngagedInstance size mismatch");
 static_assert(sizeof(Player) == 0x1000, "Player size mismatch");
 static_assert(sizeof(PlayerData) == 0x1070, "PlayerData size mismatch");
 static_assert(sizeof(PlayerSM) == 0x510, "PlayerSM size mismatch");
+
+struct InterpoBlend {
+    int16_t GetDesiredAnimation(int16_t animId);                       // 0x00562480 (PDB: 0x005645a0)
+    int16_t BeginAnimationWithoutAnimBlend(int16_t animId, bool mirror); // 0x00587730 (PDB: 0x00589dc0)
+};
 
 // Subsystem globals
 extern Player* gPlayer;                         // 0x0111707c (PDB: 0x0111822c)

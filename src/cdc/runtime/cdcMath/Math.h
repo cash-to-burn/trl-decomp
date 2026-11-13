@@ -28,6 +28,12 @@ struct alignas(16) Vector {
         return x * x + y * y + z * z;
     }
 
+    // 0x004125e0 (PDB: 0x004119b0)
+    inline float Len3() const
+    {
+        return std::sqrt(Len3Squared());
+    }
+
     // 0x005deba0 (PDB: 0x005e15d0 / ?Normalize3@Vector@cdc@@QAEXXZ)
     inline void Normalize3()
     {
@@ -275,8 +281,29 @@ struct alignas(16) Matrix {
         col2.z = c2.z;
     }
 
+    // 0x005dd870 (PDB: 0x005e02a0 / ?Scale@Matrix@cdc@@QAEAAV12@ABVVector3@2@@Z)
+    inline Matrix& Scale(const Vector3& s)
+    {
+        col0.x *= s.x;
+        col0.y *= s.y;
+        col0.z *= s.z;
+        col1.x *= s.x;
+        col1.y *= s.y;
+        col1.z *= s.z;
+        col2.x *= s.x;
+        col2.y *= s.y;
+        col2.z *= s.z;
+        return *this;
+    }
+
     // 0x00477f00 (PDB: 0x00479870 / ?Build@Matrix@cdc@@QAEXABVVector3@2@00@Z)
     void Build(const Vector3& c0, const Vector3& c1, const Vector3& c2);
+
+    // 0x005df210 (PDB: 0x005e1c40 / ?Build@Matrix@cdc@@QAEXABVEuler@2@@Z)
+    void Build(const Euler& euler);
+
+    // 0x005decb0 (PDB: 0x005e16e0 / ?Build_XYZOrder@Matrix@cdc@@QAEAAV12@ABVEuler@2@@Z)
+    Matrix& Build_XYZOrder(const Euler& euler);
 
     // 0x005de940 (PDB: 0x005e1370 / ?Build@Matrix@cdc@@QAEXABVQuat@2@@Z)
     inline void Build(const Quat& q)
@@ -391,6 +418,18 @@ inline void OrthonormalInverse3x4(Matrix* out, const Matrix& m)
         -(m.col2.x * m.col3.x + m.col2.y * m.col3.y + m.col2.z * m.col3.z),
         1.0f
     );
+}
+
+// 0x005ddba0 (PDB: 0x005e05d0)
+inline void OrthonormalInverse3x3(Matrix* out, const Matrix& m)
+{
+    Vector3 c0 = Vector3::Make(m.col0.x, m.col1.x, m.col2.x, 0.0f);
+    Vector3 c1 = Vector3::Make(m.col0.y, m.col1.y, m.col2.y, 0.0f);
+    Vector3 c2 = Vector3::Make(m.col0.z, m.col1.z, m.col2.z, 0.0f);
+    out->col0 = c0;
+    out->col1 = c1;
+    out->col2 = c2;
+    out->col3 = Vector3::Make(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 } // namespace cdc

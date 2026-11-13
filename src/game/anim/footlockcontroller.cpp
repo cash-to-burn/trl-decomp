@@ -624,7 +624,7 @@ void HandLockController::Activate()
     }
 
     m_active = true;
-    AnimProcessor* animProc = m_instance->animComponent->animProcessor;
+    AnimProcessor* animProc = m_instance->animComponent->mAnimProcessor;
 
     if (!animProc->IsControllerActive(m_wristJoint, 0x80)) {
         animProc->EnableController(m_wristJoint, 0x80);
