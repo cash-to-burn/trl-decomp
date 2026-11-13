@@ -1092,6 +1092,22 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody System Management (`src/game/Multibody/src/MultibodySystem.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `JointImpl::Disconnect` | `0x005155c0` / `0x005170b0` | [x] Done | `MultibodySystem.cpp` |
+| `RemoveFromList<JointImpl>` | `0x00515e10` / `0x00517900` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::Create`, `Destroy` | `0x00517400..0x00517440` / `0x00518f30..0x00518f70` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::AddMeshCollection`, `RemoveMeshCollection` | `0x00515620..0x00515670` / `0x00517110..0x00517160` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::SetNearCallback`, `SetContactCallback`, `SetLimitCallback`, `SetJointDestructionCallback`, `SetGravity`, `SetDrawContactPoints`, `SetDrawLineProbes`, `SetContactSoftness`, `SetBaumgarte`, `SetCollisionThreshold`, `SetBoundaryThickness`, `SetContactTolerance`, `SetSleepDelay`, `SetStepIterations` | `0x005156c0..0x005158b0`, `0x005164c0` / `0x005171b0..0x005173a0`, `0x00517ff0` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::GetBodyID`, `GetJointID`, `QueryBox`, `QueryGeometry` | `0x005157c0..0x00515810`, `0x00516440` / `0x005172b0..0x00517300`, `0x00517f70` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::CreateBody`, `DestroyBody`, `CreateGeometry`, `DestroyGeometry`, `CreateJoint`, `DestroyJoint` | `0x00515e80..0x005163c0` / `0x00517970..0x00517ee0` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystem::Relocate`, `Step` | `0x00517470`, `0x00517510` / `0x00518fa0`, `0x00519040` | [x] Done | `MultibodySystem.cpp` |
+| `MultibodySystemImpl::MultibodySystemImpl`, `~MultibodySystemImpl`, `CreateContactJoint`, `DestroyContactJoints`, `QueryContactCache`, `RelocateImpl`, `StoreContactForces`, `StepImpl` | `0x005158c0..0x00515ce0`, `0x005164f0..0x00517480` / `0x005173b0..0x005177d0`, `0x00518020..0x00518fb0` | [x] Done | `MultibodySystem.cpp` |
+- **Structs & Headers Updated**: `Geometry.h` (`clientDestruct` two-arg signature), `MultibodyTypes.h` (`Joint` base class, `MultibodySize` full fields `0x1c`, `MultibodySystem` public API, `MultibodySystemImpl` callback/pool fields `+0x201c..+0x203c` and constructors/methods).
+
+---
+
 ## Next Targets in Execution Queue
 1. **Multibody System & Remaining Core (`src/game/Multibody/src/` & `src/game/Physics/`)**:
-   - `MultibodySystem` / `MultibodySystemImpl`, joints, and `Physics.obj` handlers
+   - Joints (`Joint.obj`), vehicle/bike, and `Physics.obj` handlers

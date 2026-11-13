@@ -11,14 +11,21 @@ class Body;
 class Geometry;
 class Mesh;
 struct BodyImpl;
+struct ContactEntry;
 struct ContactJacobianRow;
 struct ContactJoint;
+struct ContactPair;
 struct GeometryImpl;
 struct IndexedFace;
 struct JointImpl;
+struct LimitReport;
 struct SAPBox;
 struct SweepAndPrune;
 struct TunnelReport;
+
+// PDB: Joint (size: 0x01; full API in Joint.h in later batch)
+class Joint {
+};
 
 // PDB: JointNode (size: 0x0c)
 struct JointNode {
@@ -60,7 +67,7 @@ struct JointParams {
 static_assert(sizeof(JointParams) == 0x10, "JointParams size mismatch");
 
 // PDB: JointImpl (size: 0x180)
-struct alignas(16) JointImpl {
+struct alignas(16) JointImpl : public Joint {
     enum Flags {
         FLAG_DISABLED = 0x1,
         FLAG_NO_COLLIDE = 0x2,
@@ -98,14 +105,20 @@ struct alignas(16) JointImpl {
     BodyImpl* body2;                // 0x160
     JointImpl* linkChild1;          // 0x164
     JointImpl* linkChild2;          // 0x168
-    void* clientData;               // 0x16c
-    void (*clientDestruct)(void*);  // 0x170
+    void* clientData;                       // 0x16c
+    void (*clientDestruct)(void*, Joint*);  // 0x170
     unsigned int flags;             // 0x174
     uint8_t type;                   // 0x178
     uint8_t numRowsNoLimits;        // 0x179
     uint8_t numRows;                // 0x17a
     uint8_t stepIterations;         // 0x17b
     uint32_t pad17c;                // 0x17c
+
+    // 0x0050a400 (PDB: 0x0050bef0 / ?Clear@JointImpl@@QAEXXZ)
+    void Clear();
+
+    // 0x005155c0 (PDB: 0x005170b0 / ?Disconnect@JointImpl@@QAEXXZ)
+    void Disconnect();
 
     // 0x00513780 (PDB: 0x00515270 / ?ComputeLimits@JointImpl@@QAEXPBUJointParams@@@Z)
     void ComputeLimits(const JointParams* params);
@@ -182,14 +195,24 @@ static_assert(sizeof(MeshCollection) == 0x0c, "MeshCollection size mismatch");
 
 // PDB: MultibodySize (size: 0x1c)
 struct MultibodySize {
-    uint8_t pad00[0x14];    // 0x00..0x13
-    int numMeshCollections; // 0x14
-    uint8_t pad18[0x04];    // 0x18..0x1b
+    int numBodies;               // 0x00
+    int numGeometries;           // 0x04
+    int numJoints;               // 0x08
+    int numContactPoints;        // 0x0c
+    int numPairsPerGeometry;     // 0x10
+    int numMeshCollections;      // 0x14
+    int numMeshesPerCollection;  // 0x18
 };
 static_assert(sizeof(MultibodySize) == 0x1c, "MultibodySize size mismatch");
 
 // PDB: MultibodySystem (size: 0x01)
 struct MultibodySystem {
+    // 0x00517400 (PDB: 0x00518f30 / ?Create@MultibodySystem@@SAPAV1@ABUMultibodySize@@@Z)
+    static MultibodySystem* Create(const MultibodySize& size);
+
+    // 0x00517440 (PDB: 0x00518f70 / ?Destroy@MultibodySystem@@SAXPAV1@@Z)
+    static void Destroy(MultibodySystem* system);
+
     // 0x00514db0 (PDB: 0x005168a0 / ?LineProbeGeometries@MultibodySystem@@QAE_NPAULineProbeReport@@ABVVector3@cdc@@1W4TestAxes@SweepAndPrune@@P6A_NPAVGeometry@@PAX@Z4@Z)
     bool LineProbeGeometries(
         LineProbeReport* report,
@@ -207,19 +230,111 @@ struct MultibodySystem {
         bool (*nearMeshFcn)(Mesh*, void*),
         void* userData,
         unsigned char flags);
+
+    // 0x00515620 (PDB: 0x00517110 / ?AddMeshCollection@MultibodySystem@@QAEXHPAPAVMesh@@H@Z)
+    void AddMeshCollection(int id, Mesh** meshes, int numMeshes);
+
+    // 0x00515670 (PDB: 0x00517160 / ?RemoveMeshCollection@MultibodySystem@@QAEXH@Z)
+    void RemoveMeshCollection(int id);
+
+    // 0x005156c0 (PDB: 0x005171b0 / ?SetNearCallback@MultibodySystem@@QAEXEEP6A_NPAVMesh@@PAVGeometry@@1@Z@Z)
+    void SetNearCallback(uint8_t cat1, uint8_t cat2, bool (*cb)(Mesh*, Geometry*, Geometry*));
+
+    // 0x005156f0 (PDB: 0x005171e0 / ?SetContactCallback@MultibodySystem@@QAEXEEP6A_NPAUContact@@H@Z@Z)
+    void SetContactCallback(uint8_t cat1, uint8_t cat2, bool (*cb)(Contact*, int));
+
+    // 0x00515720 (PDB: 0x00517210 / ?SetLimitCallback@MultibodySystem@@QAEXP6AXABULimitReport@@@Z@Z)
+    void SetLimitCallback(void (*cb)(const LimitReport&));
+
+    // 0x00515730 (PDB: 0x00517220 / ?SetJointDestructionCallback@MultibodySystem@@QAEXP6AXPBVJoint@@@Z@Z)
+    void SetJointDestructionCallback(void (*cb)(const Joint*));
+
+    // 0x00515740 (PDB: 0x00517230 / ?SetGravity@MultibodySystem@@QAEXABVVector3@cdc@@@Z)
+    void SetGravity(const cdc::Vector3& gravity);
+
+    // 0x005157c0 (PDB: 0x005172b0 / ?GetBodyID@MultibodySystem@@QBEHPBVBody@@@Z)
+    int GetBodyID(const Body* body) const;
+
+    // 0x005157f0 (PDB: 0x005172e0 / ?GetJointID@MultibodySystem@@QBEHPBVJoint@@@Z)
+    int GetJointID(const Joint* joint) const;
+
+    // 0x00515810 (PDB: 0x00517300 / ?QueryBox@MultibodySystem@@QAEHABVVector3@cdc@@0QAPAVGeometry@@H@Z)
+    int QueryBox(const cdc::Vector3& lo, const cdc::Vector3& hi, Geometry** results, int maxResults);
+
+    // 0x00515820 (PDB: 0x00517310 / ?SetDrawContactPoints@MultibodySystem@@QAEX_N@Z)
+    void SetDrawContactPoints(bool draw);
+
+    // 0x00515830 (PDB: 0x00517320 / ?SetDrawLineProbes@MultibodySystem@@QAEX_NABVVector3@cdc@@@Z)
+    void SetDrawLineProbes(bool draw, const cdc::Vector3& color);
+
+    // 0x00515860 (PDB: 0x00517350 / ?SetContactSoftness@MultibodySystem@@QAEXM@Z)
+    void SetContactSoftness(float gamma);
+
+    // 0x00515870 (PDB: 0x00517360 / ?SetBaumgarte@MultibodySystem@@QAEXM@Z)
+    void SetBaumgarte(float beta);
+
+    // 0x00515880 (PDB: 0x00517370 / ?SetCollisionThreshold@MultibodySystem@@QAEXM@Z)
+    void SetCollisionThreshold(float threshold);
+
+    // 0x00515890 (PDB: 0x00517380 / ?SetBoundaryThickness@MultibodySystem@@QAEXM@Z)
+    void SetBoundaryThickness(float thickness);
+
+    // 0x005158a0 (PDB: 0x00517390 / ?SetContactTolerance@MultibodySystem@@QAEXM@Z)
+    void SetContactTolerance(float tolerance);
+
+    // 0x005158b0 (PDB: 0x005173a0 / ?SetSleepDelay@MultibodySystem@@QAEXM@Z)
+    void SetSleepDelay(float delay);
+
+    // 0x00515e80 (PDB: 0x00517970 / ?CreateBody@MultibodySystem@@QAEPAVBody@@XZ)
+    Body* CreateBody();
+
+    // 0x00515f00 (PDB: 0x005179f0 / ?DestroyBody@MultibodySystem@@QAEXPAVBody@@@Z)
+    void DestroyBody(Body* body);
+
+    // 0x005161a0 (PDB: 0x00517ca0 / ?CreateGeometry@MultibodySystem@@QAEPAVGeometry@@XZ)
+    Geometry* CreateGeometry();
+
+    // 0x00516220 (PDB: 0x00517d30 / ?DestroyGeometry@MultibodySystem@@QAEXPAVGeometry@@@Z)
+    void DestroyGeometry(Geometry* geom);
+
+    // 0x00516340 (PDB: 0x00517e60 / ?CreateJoint@MultibodySystem@@QAEPAVJoint@@XZ)
+    Joint* CreateJoint();
+
+    // 0x005163c0 (PDB: 0x00517ee0 / ?DestroyJoint@MultibodySystem@@QAEXPAVJoint@@@Z)
+    void DestroyJoint(Joint* joint);
+
+    // 0x00516440 (PDB: 0x00517f70 / ?QueryGeometry@MultibodySystem@@QAEHPAUContact@@HPAVGeometry@@@Z)
+    int QueryGeometry(Contact* contacts, int maxContacts, Geometry* geom);
+
+    // 0x005164c0 (PDB: 0x00517ff0 / ?SetStepIterations@MultibodySystem@@QAEXE@Z)
+    void SetStepIterations(uint8_t iterations);
+
+    // 0x00517470 (PDB: 0x00518fa0 / ?Relocate@MultibodySystem@@QAEXABVVector3@cdc@@@Z)
+    void Relocate(const cdc::Vector3& offset);
+
+    // 0x00517510 (PDB: 0x00519040 / ?Step@MultibodySystem@@QAEXM_N@Z)
+    void Step(float dt, bool autoSleep);
 };
 
 // PDB: MultibodySystemImpl (size: 0x2130)
 struct alignas(16) MultibodySystemImpl : public MultibodySystem {
-    MultibodySize size;                 // 0x0000
-    ResponseData responseArray[32][32]; // 0x001c
-    uint8_t pad201c[0x24];              // 0x201c..0x203f
-    BodyImpl* bodyList;                 // 0x2040
-    GeometryImpl* geometryList;         // 0x2044
-    JointImpl* firstJoint;              // 0x2048
-    void* contactEntryPool;             // 0x204c
-    int freeContactEntry;               // 0x2050
-    void* contactPairs;                 // 0x2054
+    MultibodySize size;                         // 0x0000
+    ResponseData responseArray[32][32];         // 0x001c
+    void (*limitFcn)(const LimitReport&);       // 0x201c
+    void (*jointDestructionFcn)(const Joint*);  // 0x2020
+    BodyImpl* bodyPool;                         // 0x2024
+    BodyImpl* freeBody;                         // 0x2028
+    GeometryImpl* geometryPool;                 // 0x202c
+    GeometryImpl* freeGeometry;                 // 0x2030
+    JointImpl* jointPool;                       // 0x2034
+    JointImpl* freeJoint;                       // 0x2038
+    ContactJoint* contactPool;                  // 0x203c
+    BodyImpl* bodyList;                         // 0x2040
+    GeometryImpl* geometryList;                 // 0x2044
+    JointImpl* firstJoint;                      // 0x2048
+    ContactEntry* contactEntryPool;             // 0x204c
+    int freeContactEntry;                       // 0x2050
+    ContactPair* contactPairs;                  // 0x2054
     unsigned int timeStamp;             // 0x2058
     BodyImpl** bodies;                  // 0x205c
     JointImpl** joints;                 // 0x2060
@@ -266,11 +381,29 @@ struct alignas(16) MultibodySystemImpl : public MultibodySystem {
     short stepIterations;               // 0x2120
     uint8_t pad2122[0x0e];              // 0x2122..0x212f
 
-    // 0x00515c40 (PDB: 0x00517770 / ?CreateContactJoint@MultibodySystemImpl@@QAEPAUContactJoint@@XZ)
+    // 0x005164f0 (PDB: 0x00518020 / ??0MultibodySystemImpl@@QAE@ABUMultibodySize@@@Z)
+    explicit MultibodySystemImpl(const MultibodySize& size);
+
+    // 0x005158c0 (PDB: 0x005173b0 / ??1MultibodySystemImpl@@QAE@XZ)
+    ~MultibodySystemImpl();
+
+    // 0x00515c40 (PDB: 0x00517730 / ?CreateContactJoint@MultibodySystemImpl@@QAEPAVContactJoint@@XZ)
     ContactJoint* CreateContactJoint();
 
-    // 0x00515ce0 (PDB: 0x00517810 / ?QueryContactCache@MultibodySystemImpl@@QAEXPAUContact@@H@Z)
-    void QueryContactCache(Contact* contacts, int numContacts);
+    // 0x00515c80 (PDB: 0x00517770 / ?DestroyContactJoints@MultibodySystemImpl@@AAEXXZ)
+    void DestroyContactJoints();
+
+    // 0x00515ce0 (PDB: 0x005177d0 / ?QueryContactCache@MultibodySystemImpl@@QBEXPAUContact@@H@Z)
+    void QueryContactCache(Contact* contacts, int numContacts) const;
+
+    // 0x00516e70 (PDB: 0x005189a0 / ?RelocateImpl@MultibodySystemImpl@@QAEXABVVector3@cdc@@@Z)
+    void RelocateImpl(const cdc::Vector3& offset);
+
+    // 0x00517070 (PDB: 0x00518ba0 / ?StoreContactForces@MultibodySystemImpl@@AAEXXZ)
+    void StoreContactForces();
+
+    // 0x00517480 (PDB: 0x00518fb0 / ?StepImpl@MultibodySystemImpl@@QAEXM_N@Z)
+    void StepImpl(float dt, bool autoSleep);
 
     // 0x00519cb0 (PDB: 0x0051b7e0 / ?LCPSetup@MultibodySystemImpl@@QAEXHHM@Z)
     void LCPSetup(int nc, int nb, float invDt);

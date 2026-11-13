@@ -133,8 +133,8 @@ struct alignas(16) GeometryImpl : public Geometry {
     GeometryImpl* next;             // 0x78
     BodyImpl* body;                 // 0x7c
     GeometryImpl* bnext;            // 0x80
-    void* clientData;               // 0x84
-    void (*clientDestruct)(void*);  // 0x88
+    void* clientData;                   // 0x84
+    void (*clientDestruct)(void*, Geometry*); // 0x88
     SweepAndPrune* sweepAndPrune;   // 0x8c
     SAPBox* aabb;                   // 0x90
     unsigned int uniqueIndex;       // 0x94
