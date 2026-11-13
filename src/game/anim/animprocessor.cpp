@@ -17,13 +17,9 @@ extern void G2EulerAngles_FromMatrixf(_G2EulerAngles_Type* euler, cdc::Matrix* m
 extern void G2Quat_FromMatrixf(cdc::Quat* quat, cdc::Matrix* mat);        // 0x004e0280 (PDB: 0x004e1db0)
 extern void G2Quat_Slerp(float alpha, cdc::Quat* q0, cdc::Quat* q1, cdc::Quat* out, int zero); // 0x004e02b0 (PDB: 0x004e1de0)
 extern float G2Timer_GetFrameTime();                                      // 0x004e02e0 (PDB: 0x004e1e10)
-extern AnimBlend* ANIM_GetAnimBlend(Instance* inst, int animId); // 0x0041acf0
 extern AnimFragment* G2Instance_GetKeylist(BaseInstance* inst, int keylistID); // 0x004dee70 (PDB: 0x004e09a0)
 extern AnimFragment* G2Instance_GetKeylistFromObject(Object* obj, int keylistID); // 0x004deea0 (PDB: 0x004e09d0)
-extern cdc::Vector3 ANIM_GetTranslationAtTime(const AnimFragment* keylist, int seg, float time); // 0x0041b090 (PDB: 0x0041a060)
-extern void ANIM_GetTransformAtTime(cdc::Quat* outRot, cdc::Vector3* outTrans, const AnimFragment* keylist, int segOrZero, float time); // 0x0041b350 (PDB: 0x0041a320)
 extern void G2Quat_FromEulerf(cdc::Quat* quat, _G2EulerAngles_Type* euler); // 0x004e0220 (PDB: 0x004e1d50)
-extern bool ANIM_HasActiveChannels(const AnimFragment* keylist); // 0x0041abc0
 extern void playerInvProcessAimBlend(Instance* inst, bool force); // 0x005a8310 (PDB: 0x005aac10)
 extern uint32_t debugRazielFlags1;                                        // 0x01075ac8 (PDB: 0x01077e04)
 extern bool g_interpoBlendMirrorHack;                                     // 0x011187c0 (PDB: 0x0111ba20)
@@ -38,7 +34,7 @@ cdc::Vector3 AnimProcessor::sUserTransformTranslation = {}; // 0x010fa330 (PDB: 
 cdc::Quat AnimProcessor::sUserTransformRotation = cdc::Quat::Identity(); // 0x010fa340 (PDB: 0x010fd140), $E9 (PDB: 0x00efa9f0)
 G2AnimSegValue* _segValues = _segValuesStatic;         // 0x00f1658c (PDB: 0x00f188c4)
 AnimProcessor* _segValuesAnim = nullptr;               // 0x010fe8a0 (PDB: 0x01101aa0)
-G2AnimSegValue _segValuesStatic[128] = {};             // 0x010fe8c0 (PDB: 0x01101ac0)
+G2AnimSegValue _segValuesStatic[180] = {};             // 0x010fe8c0 / 0x01032820 (PDB: 0x01101ac0 / 0x01034b60)
 AnimPattern* AnimProcessor::sNativePattern[4] = {};    // 0x00f15b40 (PDB: 0x00f17e78)
 
 // 0x0046fad0 (PDB: 0x00471450)
@@ -691,7 +687,7 @@ void AnimProcessor::SetUnpaused()
 float AnimProcessor::GetAnimDuration(const Anim& anim)
 {
     Instance* inst = mAnimComponent->mInstance;
-    AnimBlend* blend = ANIM_GetAnimBlend(inst, anim.mAnimId);
+    AnimBlend* blend = ANIM_AnimBlendFromIndex(inst, anim.mAnimId);
     AnimFragment* frag = G2Instance_GetKeylistFromObject(inst->object, blend->animFragment[0]);
     return static_cast<float>(frag->mTimePerKey * frag->mKeyCount);
 }
@@ -1091,36 +1087,6 @@ static cdc::Vector3 QuatVec3(const cdc::Quat& q)
     return cdc::Vector3::Make(q.x, q.y, q.z, 0.0f);
 }
 
-// 0x005de6b0 (PDB: 0x005e10e0)
-static cdc::Quat QuatLog(const cdc::Quat& q)
-{
-    float w = q.w;
-    if (w < -1.0f) {
-        w = -1.0f;
-    } else if (w > 1.0f) {
-        w = 1.0f;
-    }
-    const float halfAngle = std::acos(w);
-    const float s = std::sin(halfAngle);
-    if (s != 0.0f) {
-        const float scale = (2.0f * halfAngle) / s;
-        return MakeQuat(q.x * scale, q.y * scale, q.z * scale, 0.0f);
-    }
-    return MakeQuat(0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-// 0x005de7c0 (PDB: 0x005e11f0)
-static cdc::Quat QuatExp(const cdc::Vector& q)
-{
-    const float len = std::sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-    if (len != 0.0f) {
-        const float halfAngle = len * 0.5f;
-        const float s = std::sin(halfAngle) / len;
-        return MakeQuat(q.x * s, q.y * s, q.z * s, std::cos(halfAngle));
-    }
-    return MakeQuat(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
 static uint32_t ReadBitStream3(G2AnimBitStream* bs)
 {
     if (!bs->stream) {
@@ -1305,7 +1271,7 @@ void AnimFragmentProcessor::SwitchToKeylistAtTimeWithoutAdvancing(AnimFragment* 
 
     mFlags &= static_cast<uint16_t>(~1);
     mSwAlarmTable = nullptr;
-    if (ANIM_HasActiveChannels(keylist)) {
+    if (ANIM_HasRootMotion(keylist)) {
         mFlags |= 0x40;
     } else {
         mFlags &= static_cast<uint16_t>(~0x40);

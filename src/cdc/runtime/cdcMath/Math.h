@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include <cfloat>
 
 namespace cdc {
 
@@ -56,6 +57,22 @@ struct alignas(16) Vector {
         z += rhs.z;
         w += rhs.w;
         return *this;
+    }
+
+    // 0x0041af40 (PDB: 0x00419f10 / ??XVector@cdc@@QAEAAV01@M@Z)
+    inline Vector& operator*=(float s)
+    {
+        x *= s;
+        y *= s;
+        z *= s;
+        w *= s;
+        return *this;
+    }
+
+    // 0x005dcea0 (PDB: 0x005df8d0)
+    inline bool IsZero3() const
+    {
+        return x == 0.0f && y == 0.0f && z == 0.0f;
     }
 };
 
@@ -112,9 +129,28 @@ inline Vector3 operator*(const Vector& v, float s)
     return Vector3::Make(v.x * s, v.y * s, v.z * s, v.w * s);
 }
 
-struct alignas(16) Euler : public Vector {};
+// 0x0041a740 (PDB: 0x004196a0 / ??Kcdc@@YA?AVVector3@0@ABV10@M@Z)
+inline Vector3 operator/(const Vector& v, float s)
+{
+    return Vector3::Make(v.x / s, v.y / s, v.z / s, v.w / s);
+}
 
 struct Matrix;
+
+struct alignas(16) Euler : public Vector {
+    Euler() = default;
+    // 0x005dd2a0 (PDB: 0x005dfcd0 / ??0Euler@cdc@@QAE@ABVMatrix@1@@Z)
+    inline Euler(const Matrix& mat);
+
+    // PDB: 0x00419dd0 / ?SetZero@Euler@cdc@@QAEXXZ
+    inline void SetZero()
+    {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+        w = 0.0f;
+    }
+};
 
 struct alignas(16) Quat : public Vector {
     static inline Quat Identity()
@@ -200,6 +236,71 @@ inline Quat QuatMul(const Quat& a, const Quat& b)
 inline Quat operator*(const Quat& a, const Quat& b)
 {
     return QuatMul(a, b);
+}
+
+// 0x0041ae50 (PDB: 0x00419e20 / ??9cdc@@YA_NABVQuat@0@0@Z)
+inline bool operator!=(const Quat& a, const Quat& b)
+{
+    return a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w;
+}
+
+// 0x0041aed0 (PDB: 0x00419ea0 / ??Scdc@@YA?AVQuat@0@ABV10@@Z)
+inline Quat operator~(const Quat& q)
+{
+    Quat out;
+    out.x = -q.x;
+    out.y = -q.y;
+    out.z = -q.z;
+    out.w = q.w;
+    return out;
+}
+
+// 0x005de6b0 (PDB: 0x005e10e0 / ?QuatLog@cdc@@YA?AVQuat@1@ABV21@@Z)
+inline Quat QuatLog(const Quat& q)
+{
+    float clampedW = q.w;
+    if (clampedW < -1.0f) {
+        clampedW = -1.0f;
+    } else if (clampedW > 1.0f) {
+        clampedW = 1.0f;
+    }
+    const float theta = std::acos(clampedW);
+    const float s = std::sin(theta);
+    Quat out;
+    if (s != 0.0f) {
+        const float scale = (theta + theta) / s;
+        out.x = q.x * scale;
+        out.y = q.y * scale;
+        out.z = q.z * scale;
+        out.w = 0.0f;
+    } else {
+        out.x = 0.0f;
+        out.y = 0.0f;
+        out.z = 0.0f;
+        out.w = 0.0f;
+    }
+    return out;
+}
+
+// 0x005de7c0 (PDB: 0x005e11f0 / ?QuatExp@cdc@@YA?AVQuat@1@ABVVector@1@@Z)
+inline Quat QuatExp(const Vector& v)
+{
+    const float len = v.Len4();
+    Quat out;
+    if (len != 0.0f) {
+        const float half = len * 0.5f;
+        const float scale = std::sin(half) / len;
+        out.x = v.x * scale;
+        out.y = v.y * scale;
+        out.z = v.z * scale;
+        out.w = std::cos(half);
+    } else {
+        out.x = 0.0f;
+        out.y = 0.0f;
+        out.z = 0.0f;
+        out.w = 1.0f;
+    }
+    return out;
 }
 
 // 0x005dee30 (PDB: 0x005e1860 / ?Slerp@cdc@@YA?AVQuat@1@ABV21@0M@Z)
@@ -430,6 +531,40 @@ inline void OrthonormalInverse3x3(Matrix* out, const Matrix& m)
     out->col1 = c1;
     out->col2 = c2;
     out->col3 = Vector3::Make(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+inline Euler::Euler(const Matrix& mat)
+{
+    const float cy = std::sqrt(mat.col0.x * mat.col0.x + mat.col0.y * mat.col0.y);
+    if (cy > 16.0f * FLT_EPSILON) {
+        x = std::atan2(mat.col1.z, mat.col2.z);
+        y = std::atan2(-mat.col0.z, cy);
+        z = std::atan2(mat.col0.y, mat.col0.x);
+        w = 0.0f;
+    } else {
+        x = std::atan2(-mat.col2.y, mat.col1.y);
+        y = std::atan2(-mat.col0.z, cy);
+        z = 0.0f;
+        w = 0.0f;
+    }
+}
+
+// 0x005dd3e0 (PDB: 0x005dfe10 / ?Transpose@cdc@@YAXPAVMatrix@1@ABV21@@Z)
+inline void Transpose(Matrix* out, const Matrix& m)
+{
+    const Matrix tmp = m;
+    out->col0 = Vector3::Make(tmp.col0.x, tmp.col1.x, tmp.col2.x, tmp.col3.x);
+    out->col1 = Vector3::Make(tmp.col0.y, tmp.col1.y, tmp.col2.y, tmp.col3.y);
+    out->col2 = Vector3::Make(tmp.col0.z, tmp.col1.z, tmp.col2.z, tmp.col3.z);
+    out->col3 = Vector3::Make(tmp.col0.w, tmp.col1.w, tmp.col2.w, tmp.col3.w);
+}
+
+// 0x004125a0
+inline Matrix operator*(const Matrix& a, const Matrix& b)
+{
+    Matrix out;
+    Mul4x4(&out, a, b);
+    return out;
 }
 
 } // namespace cdc

@@ -3,6 +3,7 @@
 #ifndef GAME_ANIM_ANIM_H
 #define GAME_ANIM_ANIM_H
 
+#include "cdc/cdcSys/Array.h"
 #include "cdc/runtime/cdcMath/Math.h"
 #include "game/instance.h"
 #include <cstddef>
@@ -208,6 +209,9 @@ struct AnimFragment {
 
     int* SectionDataOffsets() { return reinterpret_cast<int*>(this + 1); }
     const int* SectionDataOffsets() const { return reinterpret_cast<const int*>(this + 1); }
+
+    cdc::Vector3 GetTrans() const; // 0x0041a770 (PDB: 0x004196d0)
+    cdc::Quat GetRot() const;      // 0x0041a7c0 (PDB: 0x00419720)
 };
 static_assert(sizeof(AnimFragment) == 0x20, "AnimFragment size mismatch");
 
@@ -256,9 +260,26 @@ struct AnimSequence {
     /* 0x110 */ cdc::Vector3 mTranslation;
     /* 0x120 */ cdc::Matrix mRotation;
 
-    Anim GetAnim(int index) const; // 0x0041a860 (PDB: 0x004197c0)
-    int Size() const;              // 0x0041a880 (PDB: 0x004197e0)
+    AnimSequence();                                                                              // 0x0041bb90 (PDB: 0x0041ab60)
+    AnimSequence& operator<<(const Anim& anim);                                                  // 0x0041a830 (PDB: 0x00419790)
+    Anim GetAnim(int index) const;                                                               // 0x0041a860 (PDB: 0x004197c0)
+    int Size() const;                                                                            // 0x0041a880 (PDB: 0x004197e0)
+    bool SolveTranslationRotation(BaseInstance* instance, const cdc::Vector3& targetPos, const cdc::Euler& targetRot); // 0x0041bc30 (PDB: 0x0041ac00)
 };
+
+// Size: 0x14 (20 bytes, TI: 0x664e)
+struct AnimSequenceList {
+    /* 0x000 */ AnimSequence* mAnimSequenceList[4];
+    /* 0x010 */ int mSize;
+
+    AnimSequenceList();                                             // 0x0041a890 (PDB: 0x004197f0)
+    void Add(AnimSequence* seq);                                    // 0x0041a8a0 (PDB: 0x00419800)
+    int Size() const;                                               // PDB: 0x00419810
+    AnimSequence* GetAnimSequence(int index) const { return mAnimSequenceList[index]; }
+};
+
+static_assert(sizeof(AnimSequenceList) == 0x14, "AnimSequenceList size mismatch");
+static_assert(offsetof(AnimSequenceList, mSize) == 0x10, "AnimSequenceList::mSize offset mismatch");
 static_assert(sizeof(AnimSequence) == 0x160, "AnimSequence size mismatch");
 static_assert(offsetof(AnimSequence, mCount) == 0x100, "AnimSequence::mCount offset mismatch");
 static_assert(offsetof(AnimSequence, mTranslation) == 0x110, "AnimSequence::mTranslation offset mismatch");
@@ -522,6 +543,7 @@ struct AnimProcessor {
     int CurrentBlendId() const;                                                                    // 0x004707f0 (PDB: 0x00472170)
     void SetCurrentBlendId(int id);                                                                // 0x00470800 (PDB: 0x00472180)
     bool GetPatternMirrorMode() const;                                                             // 0x00470810 (PDB: 0x00472190)
+    void SetMirrorMode(bool mirror);                                                               // 0x0041a810 (PDB: 0x00419770)
     void DisableRootTranslation();                                                                 // 0x00470820 (PDB: 0x004721a0)
     void EnableRootTranslation();                                                                  // 0x00470830 (PDB: 0x004721b0)
     float GetElapsedTime();                                                                        // 0x00470840 (PDB: 0x004721c0)
@@ -606,14 +628,47 @@ static_assert(offsetof(AnimProcessor, mVirtualMachine) == 0x5c0, "AnimProcessor:
 static_assert(offsetof(AnimProcessor, mAnimComponent) == 0x5d0, "AnimProcessor::mAnimComponent offset mismatch");
 static_assert(offsetof(AnimProcessor, mMirror) == 0x5e4, "AnimProcessor::mMirror offset mismatch");
 
+// Size: 0x04 (4 bytes, TI: 0x6602)
+struct BlendProcessor {
+    /* 0x000 */ AnimComponent* mAnimComponent;
+
+    void SetAnimComponent(AnimComponent* comp) { mAnimComponent = comp; }
+    void UpdateStoredFrame();                                       // 0x0041a9c0 (PDB: 0x00419930)
+    void NextKeyframe();                                            // 0x0041aa10 (PDB: 0x00419980)
+    void NextKeyframeTimeDelta(float delta);                        // 0x0041aa90 (PDB: 0x00419a00)
+    void ApplyRagdoll();                                            // 0x0041c230 (PDB: 0x0041b200)
+    void BuildTransforms();                                         // 0x0041cad0 (PDB: 0x0041baa0)
+};
+
+static_assert(sizeof(BlendProcessor) == 0x04, "BlendProcessor size mismatch");
+
 // Size: 0x14 (20 bytes, TI: 0x6677)
 struct AnimComponent {
-    /* 0x000 */ void* mBlendProcessor;
+    /* 0x000 */ BlendProcessor mBlendProcessor;
     /* 0x004 */ AnimProcessor* mAnimProcessor;
     /* 0x008 */ int mAnimProcessorCount;
     /* 0x00c */ Instance* mInstance;
     /* 0x010 */ Model* mModel;
+
+    AnimComponent(BaseInstance* instance, int processorCount);      // 0x0041af70 (PDB: 0x00419f40)
+    ~AnimComponent();                                               // 0x0041b020 (PDB: 0x00419ff0)
+    void PlayAnimation(AnimBlend* blend, int processorIdx, bool mirror);                                  // 0x0041a8b0 (PDB: 0x00419820)
+    void PlayHostedAnimation(Object* host, AnimBlend* blend, int processorIdx, bool mirror);              // 0x0041a8e0 (PDB: 0x00419850)
+    void Stop();                                                    // 0x0041a910 (PDB: 0x00419880)
+    bool IsAnimationPlaying(int animBlendId, int processorIdx);     // 0x0041a940 (PDB: 0x004198b0)
 };
+
+// Size: 0x10 (16 bytes, TI: 0x87d6)
+class AnimTarget {
+public:
+    virtual ~AnimTarget();                                          // 0x004779c0 (PDB: 0x00479340)
+    virtual void PickSequence(AnimProcessor* animProcessor);        // 0x00613790 (PDB: 0x00450370)
+    void AddSequence(AnimSequence* sequence);                       // 0x00477a10 (PDB: 0x005e7d10)
+
+    /* 0x004 */ cdc::Array<AnimSequence*> mSequences;
+};
+
+static_assert(sizeof(AnimTarget) == 0x10, "AnimTarget size mismatch");
 static_assert(sizeof(AnimComponent) == 0x14, "AnimComponent size mismatch");
 static_assert(offsetof(AnimComponent, mAnimProcessor) == 0x04, "AnimComponent::mAnimProcessor offset mismatch");
 static_assert(offsetof(AnimComponent, mInstance) == 0x0c, "AnimComponent::mInstance offset mismatch");
@@ -630,5 +685,15 @@ extern BoneSet sBoneSet[][4];                            // 0x00f15ac0 (PDB: 0x0
 extern G2AnimSegValue* _segValues;                       // 0x00f1658c (PDB: 0x00f188c4)
 extern AnimProcessor* _segValuesAnim;                    // 0x010fe8a0 (PDB: 0x01101aa0)
 extern G2AnimSegValue _segValuesStatic[];                // 0x010fe8c0 (PDB: 0x01101ac0)
+
+AnimSequence* ANIM_MinimumErrorSequence(AnimSequenceList& list);                                // PDB: 0x00419a80
+cdc::Euler ANIM_GetRotationAtTime(const AnimFragment* keylist, int seg, float time);            // 0x0041ab70 (PDB: 0x00419af0)
+bool ANIM_HasRootMotion(const AnimFragment* keylist);                                           // 0x0041abc0 (PDB: 0x00419b40)
+AnimBlend* ANIM_AnimBlendFromIndex(BaseInstance* inst, int16_t index);                          // 0x0041acf0 (PDB: 0x00419c70)
+cdc::Vector3 ANIM_GetTranslationFromBlendId(Instance* inst, int16_t blendId);                   // 0x0041ad20 (PDB: 0x00419ca0)
+cdc::Quat ANIM_GetRotationFromBlendId(Instance* inst, int16_t blendId);                         // 0x0041adb0 (PDB: 0x00419d30)
+cdc::Vector3 ANIM_GetTranslationAtTime(const AnimFragment* keylist, int seg, float time);       // 0x0041b090 (PDB: 0x0041a060)
+void ANIM_GetTransformAtTime(cdc::Quat* outRot, cdc::Vector3* outTrans, const AnimFragment* keylist, int segOrZero, float time); // 0x0041b350 (PDB: 0x0041a320)
+void ANIM_GetAnimBlendTransformAtTime(AnimProcessor* ap, const Anim& anim, cdc::Quat* outRot, cdc::Vector3* outTrans, int targetSeg, float time, bool applyMirror); // 0x0041b780 (PDB: 0x0041a750)
 
 #endif // GAME_ANIM_ANIM_H

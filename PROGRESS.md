@@ -738,6 +738,65 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### AnimTarget (`src/game/anim/anim.h`, `src/game/anim/animtarget.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::Array::reserve` (`ArrayImpl::reserve`) | `0x00415e90` | [x] Done | `cdcSys/Array.h` |
+| `AnimTarget::PickSequence` | `0x00613790` / `0x00450370` | [x] Done | `animtarget.cpp` |
+| `AnimTarget::~AnimTarget` | `0x004779c0` / `0x00479340` | [x] Done | `animtarget.cpp` |
+| `AnimTarget::AddSequence` | `0x00477a10` / `0x005e7d10` | [x] Done | `animtarget.cpp` |
+- **Structs Added**: `cdc::Array<T>` (`0x0c`) in `src/cdc/cdcSys/Array.h`; `AnimTarget` (`0x10`) in `src/game/anim/anim.h`.
+
+---
+
+### Animation (`src/game/anim/anim.h`, `src/game/animation.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::Vector::operator*=` | `0x0041af40` / `0x00419f10` | [x] Done | `cdcMath/Math.h` |
+| `cdc::Vector::IsZero3` | `0x005dcea0` / `0x005df8d0` | [x] Done | `cdcMath/Math.h` |
+| `cdc::Euler::Euler(const Matrix&)` | `0x005dd2a0` / `0x005dfcd0` | [x] Done | `cdcMath/Math.h` |
+| `cdc::Euler::SetZero` | `0x00419dd0` (PDB) | [x] Done | `cdcMath/Math.h` |
+| `cdc::operator/(Vector, float)` | `0x0041a740` / `0x004196a0` | [x] Done | `cdcMath/Math.h` |
+| `cdc::operator!=(Quat, Quat)` | `0x0041ae50` / `0x00419e20` | [x] Done | `cdcMath/Math.h` |
+| `cdc::operator~(Quat)` | `0x0041aed0` / `0x00419ea0` | [x] Done | `cdcMath/Math.h` |
+| `cdc::QuatLog` / `cdc::QuatExp` | `0x005de6b0` / `0x005e10e0`, `0x005de7c0` / `0x005e11f0` | [x] Done | `cdcMath/Math.h` |
+| `cdc::Transpose` / `cdc::operator*(Matrix, Matrix)` | `0x005dd3e0` / `0x005dfe10`, `0x004125a0` | [x] Done | `cdcMath/Math.h` |
+| `AnimFragment::GetTrans` | `0x0041a770` / `0x004196d0` | [x] Done | `animation.cpp` |
+| `AnimFragment::GetRot` | `0x0041a7c0` / `0x00419720` | [x] Done | `animation.cpp` |
+| `AnimProcessor::SetMirrorMode` | `0x0041a810` / `0x00419770` | [x] Done | `animation.cpp` |
+| `AnimSequence::AnimSequence` | `0x0041bb90` / `0x0041ab60` | [x] Done | `animation.cpp` |
+| `AnimSequence::operator<<` | `0x0041a830` / `0x00419790` | [x] Done | `animation.cpp` |
+| `AnimSequence::GetAnim` | `0x0041a860` / `0x004197c0` | [x] Done | `animation.cpp` |
+| `AnimSequence::Size` | `0x0041a880` / `0x004197e0` | [x] Done | `animation.cpp` |
+| `AnimSequence::SolveTranslationRotation` | `0x0041bc30` / `0x0041ac00` | [x] Done | `animation.cpp` |
+| `AnimSequenceList::AnimSequenceList` | `0x0041a890` / `0x004197f0` | [x] Done | `animation.cpp` |
+| `AnimSequenceList::Add` | `0x0041a8a0` / `0x00419800` | [x] Done | `animation.cpp` |
+| `AnimSequenceList::Size` | `0x00419810` (PDB) | [x] Done | `animation.cpp` |
+| `ANIM_MinimumErrorSequence` | `0x00419a80` (PDB) | [x] Done | `animation.cpp` |
+| `GetNextThreeBits` | `0x0041ab10` / `0x00419a90` | [x] Done | `animation.cpp` |
+| `ANIM_GetRotationAtTime` | `0x0041ab70` / `0x00419af0` | [x] Done | `animation.cpp` |
+| `ANIM_HasRootMotion` | `0x0041abc0` / `0x00419b40` | [x] Done | `animation.cpp` |
+| `ANIM_AnimBlendFromIndex` | `0x0041acf0` / `0x00419c70` | [x] Done | `animation.cpp` |
+| `ANIM_GetTranslationFromBlendId` | `0x0041ad20` / `0x00419ca0` | [x] Done | `animation.cpp` |
+| `ANIM_GetRotationFromBlendId` | `0x0041adb0` / `0x00419d30` | [x] Done | `animation.cpp` |
+| `ANIM_GetTranslationAtTime` | `0x0041b090` / `0x0041a060` | [x] Done | `animation.cpp` |
+| `ANIM_GetTransformAtTime` | `0x0041b350` / `0x0041a320` | [x] Done | `animation.cpp` |
+| `ANIM_GetAnimBlendTransformAtTime` | `0x0041b780` / `0x0041a750` | [x] Done | `animation.cpp` |
+| `AnimComponent::AnimComponent` | `0x0041af70` / `0x00419f40` | [x] Done | `animation.cpp` |
+| `AnimComponent::~AnimComponent` | `0x0041b020` / `0x00419ff0` | [x] Done | `animation.cpp` |
+| `AnimComponent::PlayAnimation` | `0x0041a8b0` / `0x00419820` | [x] Done | `animation.cpp` |
+| `AnimComponent::PlayHostedAnimation` | `0x0041a8e0` / `0x00419850` | [x] Done | `animation.cpp` |
+| `AnimComponent::Stop` | `0x0041a910` / `0x00419880` | [x] Done | `animation.cpp` |
+| `AnimComponent::IsAnimationPlaying` | `0x0041a940` / `0x004198b0` | [x] Done | `animation.cpp` |
+| `BlendProcessor::UpdateStoredFrame` | `0x0041a9c0` / `0x00419930` | [x] Done | `animation.cpp` |
+| `BlendProcessor::NextKeyframe` | `0x0041aa10` / `0x00419980` | [x] Done | `animation.cpp` |
+| `BlendProcessor::NextKeyframeTimeDelta` | `0x0041aa90` / `0x00419a00` | [x] Done | `animation.cpp` |
+| `BlendProcessor::ApplyRagdoll` | `0x0041c230` / `0x0041b200` | [x] Done | `animation.cpp` |
+| `BlendProcessor::BuildTransforms` | `0x0041cad0` / `0x0041baa0` | [x] Done | `animation.cpp` |
+- **Globals & Structs Added**: `AnimSequenceList` (`0x14`), `BlendProcessor` (`0x04`) in `src/game/anim/anim.h`; `Body`, `RagdollBone` (`0xc0`), `Ragdoll` (`0xb70`), `RagdollClientBone` (`0x20`), `RagdollClient` (`0x130`) in `src/game/ragdoll.h`; resized `_segValuesStatic` to 180 entries in `src/game/anim/animprocessor.cpp`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
