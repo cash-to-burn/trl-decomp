@@ -812,7 +812,7 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
-### G2 Subsystem (`src/game/g2/poolmmg2.h`, `poolmmg2.cpp`, `quatg2.h`, `quatg2.cpp`, `timerg2.h`, `timerg2.cpp`)
+### G2 Subsystem (`src/game/g2/poolmmg2.h`, `poolmmg2.cpp`, `quatg2.h`, `quatg2.cpp`, `timerg2.h`, `timerg2.cpp`, `instncg2.h`, `instncg2.cpp`, `emulateg2.h`, `emulateg2.cpp`)
 | Function | Address (Retail / PDB) | Status | Source File |
 |---|---|---|---|
 | `G2PoolMem_ResetPool` | `0x004dffd0` / `0x004e1b00` | [x] Done | `poolmmg2.cpp` |
@@ -826,12 +826,68 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 | `G2Quat_FromMatrixf` | `0x004e0280` / `0x004e1db0` | [x] Done | `quatg2.cpp` |
 | `G2Quat_Slerp` | `0x004e02b0` / `0x004e1de0` | [x] Done | `quatg2.cpp` |
 | `G2Timer_GetFrameTime` | `0x004e02e0` / `0x004e1e10` | [x] Done | `timerg2.cpp` |
-- **Structs & Math Helpers Added**: `G2PoolMemPool` (`0x10`) in `src/game/g2/poolmmg2.h`; unified `_G2EulerAngles_Type` (`0x10`) in `src/game/g2/quatg2.h` across `anim.h`, `animprocessor.cpp`, `cameracinematic.cpp`, and `math3d.cpp`; added `cdc::Quat::Quat(const cdc::Euler&)` (`0x005de3d0`) in `src/cdc/runtime/cdcMath/Math.h`.
+| `G2EmulationInit` | `0x004de560` / `0x004e0090` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceToInstanceSwitchAnimation` | `0x004de670` / `0x004e01b0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSwitchAnimation` | `0x004de730` / `0x004e0270` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceToInstanceSwitchAnimationCharacter` | `0x004de7e0` / `0x004e0320` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetAnimation` | `0x004de8b0` / `0x004e03f0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetAnimationLastFrame` | `0x004de960` / `0x004e04a0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetAnimation` | `0x004de9d0` / `0x004e0510` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetMode` | `0x004dea10` / `0x004e0550` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetAnimSpeed` | `0x004dea60` / `0x004e05a0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetControllerAlpha` | `0x004dea90` / `0x004e05d0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceQueryAnimation` | `0x004dead0` / `0x004e0610` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceQueryAnimLength` | `0x004deaf0` / `0x004e0630` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceEventAnimPlaying` | `0x004deb30` / `0x004e0670` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetEventAnimPlaying` | `0x004deb60` / `0x004e06a0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceQueryMode` | `0x004deb90` / `0x004e06d0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetStartAndEndSegment` | `0x004debd0` / `0x004e0710` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceSetTotalSections` | `0x004dec00` / `0x004e0740` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceInitSection` | `0x004dec50` / `0x004e0790` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetInterpController_Vector` | `0x004dec80` / `0x004e07c0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetMode` | `0x004decd0` / `0x004e0810` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationQueryAnimation` | `0x004ded20` / `0x004e0860` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetStartAndEndSegment` | `0x004ded50` / `0x004e0890` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationSetTotalSections` | `0x004ded90` / `0x004e08d0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationQueryInstanceAnimation` | `0x004deda0` / `0x004e08e0` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstancePlayAnimation` | `0x004dedc0` / `0x004e0900` | [x] Done | `emulateg2.cpp` |
+| `G2EmulatePlayAnimation` | `0x004dede0` / `0x004e0920` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationInstanceQueryFrame` | `0x004dee00` / `0x004e0940` | [x] Done | `emulateg2.cpp` |
+| `G2EmulationQueryFrame` | `0x004dee30` / `0x004e0970` | [x] Done | `emulateg2.cpp` |
+| `G2Instance_Reset` | `0x004702f0` | [x] Done | `instncg2.cpp` |
+| `G2Instance_GetKeylist` | `0x004dee70` / `0x004e09a0` | [x] Done | `instncg2.cpp` |
+| `G2Instance_GetKeylistFromObject` | `0x004deea0` / `0x004e09d0` | [x] Done | `instncg2.cpp` |
+| `G2Instance_BuildClothTransforms` | `0x004deed0` / `0x004e0a00` | [x] Done | `instncg2.cpp` |
+| `G2Instance_BuildVirtualTransforms` | `0x004deef0` / `0x004e0a20` | [x] Done | `instncg2.cpp` |
+| `G2Instance_NextKeyframe` | `0x004defd0` / `0x004e0b00` | [x] Done | `instncg2.cpp` |
+| `G2Instance_GetNumSections` | `0x004df020` / `0x004e0b50` | [x] Done | `instncg2.cpp` |
+| `_G2Instance_RebuildAnimatedTransforms` | `0x004df060` / `0x004e0b90` | [x] Done | `instncg2.cpp` |
+| `G2Instance_SetTransformsToIdentity` | `0x004df4b0` / `0x004e0fe0` | [x] Done | `instncg2.cpp` |
+| `_G2Instance_BuildFacadeTransforms` | `0x004df760` / `0x004e1290` | [x] Done | `instncg2.cpp` |
+| `_G2Instance_RebuildNonAnimatedTransforms` | `0x004dfa40` / `0x004e1570` | [x] Done | `instncg2.cpp` |
+| `G2Instance_BuildTransforms` | `0x004dfc60` / `0x004e1790` | [x] Done | `instncg2.cpp` |
+| `G2Instance_RebuildTransforms` | `0x004dff40` / `0x004e1a70` | [x] Done | `instncg2.cpp` |
+| `G2Instance_BuildTransformsForList` | `0x004dff60` / `0x004e1a90` | [x] Done | `instncg2.cpp` |
+- **Structs, Globals & Math Helpers Added**: `G2PoolMemPool` (`0x10`) in `src/game/g2/poolmmg2.h`; unified `_G2EulerAngles_Type` (`0x10`) in `src/game/g2/quatg2.h` across `anim.h`, `animprocessor.cpp`, `cameracinematic.cpp`, and `math3d.cpp`; added `cdc::Quat::Quat(const cdc::Euler&)` (`0x005de3d0`) and `cdc::Matrix::RotX`/`RotY`/`RotZ` (`0x005dd8d0`/`0x005dd980`/`0x005dda20`) in `src/cdc/runtime/cdcMath/Math.h`; `G2AlphaTables[8]` (`0x010fe7c0`), `VirtSegment` (`0x40`) in `src/game/anim/anim.h`; `int16_t` `Object::sectionA/B/C` (`src/game/obtable.h`), `int16_t` `Instance::ParentLinkNode/linkMarkerIndex` (`src/game/instance.h`), `Player::currentRope` (`0xf5c`, `src/game/player/player.h`), and `GameTracker::activeCinematic` (`0x42c`, `src/game/main.h`).
+
+---
+
+### AnimationSection (`src/game/resolve/resolvesection.h`, `src/game/resolve/animationsection.h`, `src/game/resolve/animationsection.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `AnimationSection::StartResource` | `0x005b97a0` / `0x005bc110` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::HandleResourceData` | `0x005b97d0` / `0x005bc140` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::ReleaseResource` | `0x005b9800` / `0x005bc170` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::HandleResourceCancel` | `0x005b9800` / `0x005bc170` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::HandleResourceEnd` | `0x004693a0` / `0x0055d060` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::GetBasePointer` | `0x005b9810` / `0x005bc180` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::GetSize` | `0x005b9820` / `0x005bc190` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::GetRefCount` | `0x005b9840` / `0x005bc1b0` | [x] Done | `animationsection.cpp` |
+| `AnimationSection::FindResourceA` | `0x005b9850` / `0x005bc1c0` | [x] Done | `animationsection.cpp` |
+- **Structs Added**: `SectionType`, `SectionInfo` (`0x14`), `ResolveSection` (`0x04`) in `src/game/resolve/resolvesection.h`; `AnimationSection` (`0x04`, vtable `0x00f0614c`) in `src/game/resolve/animationsection.h`.
 
 ---
 
 ## Next Targets in Execution Queue
-1. **G2 & Animation Subsystem (`src/game/g2/`, `src/game/resolve/`)**:
-   - `InstncG2` (`G2Instance_*`), `EmulateG2` (`G2Emulation*`), and `AnimationSection`
-2. **Collision / Physics Subsystem (`src/game/collide/`)**:
+1. **Collision / Physics Subsystem (`src/game/collide/`)**:
    - Instance physical query and collision resolution

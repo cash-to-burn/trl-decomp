@@ -460,7 +460,9 @@ struct Player {
     /* 0xd14 */ FootLockController* footLockControllerRight;
     /* 0xd18 */ HandLockController* handLockControllerLeft;
     /* 0xd1c */ HandLockController* handLockControllerRight;
-    /* 0xd20 */ uint8_t padD20[0xfa0 - 0xd20];
+    /* 0xd20 */ uint8_t padD20[0xf5c - 0xd20];
+    /* 0xf5c */ Instance* currentRope;
+    /* 0xf60 */ uint8_t padF60[0xfa0 - 0xf60];
     /* 0xfa0 */ bool isStuckToGround;
     /* 0xfa1 */ bool isAirBraking;
     /* 0xfa2 */ bool isSlopeSliding;

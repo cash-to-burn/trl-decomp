@@ -63,12 +63,9 @@ struct Object {
     void* data;                             // 0x44
     char* name;                             // 0x48
     SFXData* soundData;                     // 0x4c
-    unsigned char sectionA;                 // 0x50
-    unsigned char pad051;                   // 0x51
-    unsigned char sectionB;                 // 0x52
-    unsigned char pad053;                   // 0x53
-    unsigned char sectionC;                 // 0x54
-    unsigned char pad055;                   // 0x55
+    int16_t sectionA;                       // 0x50
+    int16_t sectionB;                       // 0x52
+    int16_t sectionC;                       // 0x54
     unsigned char numberOfEffects;          // 0x56
     unsigned char pad057;                   // 0x57
     ObjectEffectFXA* effectList;            // 0x58

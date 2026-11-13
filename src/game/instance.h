@@ -72,10 +72,8 @@ struct BaseInstance {
     unsigned char pad0b3;                   // 0x0b3
     SoundInstanceData* soundInstances;      // 0x0b4
     Instance* LinkParent;                   // 0x0b8
-    unsigned char ParentLinkNode;           // 0x0bc
-    unsigned char pad0bd;                   // 0x0bd
-    unsigned char linkMarkerIndex;          // 0x0be
-    unsigned char pad0bf;                   // 0x0bf
+    int16_t ParentLinkNode;                 // 0x0bc
+    int16_t linkMarkerIndex;                // 0x0be
     int vvRemoveDist;                       // 0x0c0
     int removeDist;                         // 0x0c4
     _CVECTOR* perVertexColor;               // 0x0c8

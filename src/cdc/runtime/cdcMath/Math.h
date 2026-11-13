@@ -401,6 +401,45 @@ struct alignas(16) Matrix {
         return *this;
     }
 
+    // 0x005dd8d0 (PDB: 0x005e0300 / ?RotX@Matrix@cdc@@QAEAAV12@MM@Z)
+    inline Matrix& RotX(float sinA, float cosA)
+    {
+        Vector* cols[4] = { &col0, &col1, &col2, &col3 };
+        for (int i = 0; i < 4; ++i) {
+            const float y = cols[i]->y;
+            const float z = cols[i]->z;
+            cols[i]->y = y * cosA - z * sinA;
+            cols[i]->z = z * cosA + y * sinA;
+        }
+        return *this;
+    }
+
+    // 0x005dd980 (PDB: 0x005e03b0 / ?RotY@Matrix@cdc@@QAEAAV12@MM@Z)
+    inline Matrix& RotY(float sinA, float cosA)
+    {
+        Vector* cols[4] = { &col0, &col1, &col2, &col3 };
+        for (int i = 0; i < 4; ++i) {
+            const float x = cols[i]->x;
+            const float z = cols[i]->z;
+            cols[i]->x = x * cosA + z * sinA;
+            cols[i]->z = z * cosA - x * sinA;
+        }
+        return *this;
+    }
+
+    // 0x005dda20 (PDB: 0x005e0450 / ?RotZ@Matrix@cdc@@QAEAAV12@MM@Z)
+    inline Matrix& RotZ(float sinA, float cosA)
+    {
+        Vector* cols[4] = { &col0, &col1, &col2, &col3 };
+        for (int i = 0; i < 4; ++i) {
+            const float x = cols[i]->x;
+            const float y = cols[i]->y;
+            cols[i]->x = x * cosA - y * sinA;
+            cols[i]->y = y * cosA + x * sinA;
+        }
+        return *this;
+    }
+
     // 0x00477f00 (PDB: 0x00479870 / ?Build@Matrix@cdc@@QAEXABVVector3@2@00@Z)
     void Build(const Vector3& c0, const Vector3& c1, const Vector3& c2);
 

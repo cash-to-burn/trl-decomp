@@ -1,5 +1,6 @@
 #include "game/anim/anim.h"
 #include "game/anim/animpatternvm.h"
+#include "game/g2/instncg2.h"
 #include "game/g2/poolmmg2.h"
 #include "game/g2/quatg2.h"
 #include "game/g2/timerg2.h"
@@ -11,8 +12,6 @@
 #include <cstring>
 
 // G2 / game external helpers
-extern AnimFragment* G2Instance_GetKeylist(BaseInstance* inst, int keylistID); // 0x004dee70 (PDB: 0x004e09a0)
-extern AnimFragment* G2Instance_GetKeylistFromObject(Object* obj, int keylistID); // 0x004deea0 (PDB: 0x004e09d0)
 extern void playerInvProcessAimBlend(Instance* inst, bool force); // 0x005a8310 (PDB: 0x005aac10)
 extern uint32_t debugRazielFlags1;                                        // 0x01075ac8 (PDB: 0x01077e04)
 extern bool g_interpoBlendMirrorHack;                                     // 0x011187c0 (PDB: 0x0111ba20)

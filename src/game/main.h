@@ -8,6 +8,7 @@
 
 struct Level;
 struct StreamUnit;
+class CinematicHandlerHost;
 
 struct ScreenWipe {
     float current;
@@ -81,6 +82,9 @@ struct GameTracker {
     int birthStreamUnitID;
     int attachedID;
     void *face;
+    unsigned char pad170[0x42c - 0x170];
+    CinematicHandlerHost* activeCinematic; // 0x42c
+    unsigned char pad430[0x4b8 - 0x430];
 
     void ResetOverrides();
     void ChangeMode(int mode);

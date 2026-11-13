@@ -1,4 +1,5 @@
 #include "game/anim/anim.h"
+#include "game/g2/instncg2.h"
 #include "game/math3d.h"
 #include "game/obtable.h"
 #include "game/player/player.h"
@@ -6,9 +7,6 @@
 
 #include <cmath>
 #include <cstdint>
-
-extern AnimFragment* G2Instance_GetKeylist(BaseInstance* inst, int keylistID);             // 0x004dee70 (PDB: 0x004e09a0)
-extern AnimFragment* G2Instance_GetKeylistFromObject(Object* obj, int keylistID);          // 0x004deea0 (PDB: 0x004e09d0)
 
 namespace {
 

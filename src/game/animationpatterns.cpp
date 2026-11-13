@@ -1,11 +1,10 @@
 #include "game/anim/anim.h"
+#include "game/g2/instncg2.h"
 #include "game/math3d.h"
 #include "game/obtable.h"
 #include "game/player/player.h"
 #include <cmath>
 #include <cstdint>
-
-extern AnimFragment* G2Instance_GetKeylist(BaseInstance* inst, int keylistID); // 0x004dee70 (PDB: 0x004e09a0)
 
 AnimPattern_RunAndJump gAnimPattern_RunAndJump;                   // 0x00f127e8 (PDB seg 3:0x00002208)
 AnimPattern_RunToSlide gAnimPattern_RunToSlide;                   // 0x00f127ec (PDB seg 3:0x0000220c)

@@ -77,6 +77,20 @@ struct Segment {
 };
 static_assert(sizeof(Segment) == 0x40, "Segment size mismatch");
 
+// Size: 0x40 (64 bytes, TI: 0x9cfb)
+struct VirtSegment {
+    /* 0x00 */ cdc::Vector3 min;
+    /* 0x10 */ cdc::Vector3 max;
+    /* 0x20 */ cdc::Vector3 pivot;
+    /* 0x30 */ uint32_t flags;
+    /* 0x34 */ int16_t firstVertex;
+    /* 0x36 */ int16_t lastVertex;
+    /* 0x38 */ int16_t index;
+    /* 0x3a */ int16_t weightIndex;
+    /* 0x3c */ float weight;
+};
+static_assert(sizeof(VirtSegment) == 0x40, "VirtSegment size mismatch");
+
 // Size: 0xa0 (160 bytes, TI: 0x5bde)
 struct Model {
     /* 0x00 */ int version;
