@@ -269,6 +269,9 @@ Instance* INSTANCE_Find(int instanceID);
 // 0x00455130 (PDB: 0x00456770 / ?INSTANCE_Query@@YAIPAUInstance@@I@Z)
 unsigned int INSTANCE_Query(Instance* instance, unsigned int query);
 
+// 0x00455180 (PDB: 0x004567c0 / ?INSTANCE_Post@@YAXPAUInstance@@HH@Z)
+void INSTANCE_Post(Instance* instance, int message, int data);
+
 // 0x00455bb0 (PDB: 0x004571f0 / ?INSTANCE_SetModel@@YAXPAUInstance@@H@Z)
 void INSTANCE_SetModel(Instance* instance, int modelNum);
 

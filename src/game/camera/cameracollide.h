@@ -44,21 +44,58 @@ struct MTriangle {
 };
 static_assert(sizeof(MTriangle) == 0x30, "MTriangle size mismatch");
 
+// Size: 0x20 (32 bytes, TI: 0x6e15)
+struct BBox {
+    /* 0x000 */ cdc::Vector3 bMin;
+    /* 0x010 */ cdc::Vector3 bMax;
+};
+static_assert(sizeof(BBox) == 0x20, "BBox size mismatch");
+
+// Size: 0x0c (12 bytes, TI: 0x6f0e)
+struct KDNode {
+    /* 0x000 */ float m_negOffset;
+    /* 0x004 */ float m_posOffset;
+    /* 0x008 */ uint16_t m_index;
+    /* 0x00a */ uint8_t m_axis;
+    /* 0x00b */ uint8_t m_numFaces;
+
+    uint8_t GetAxis() const { return m_axis; }
+    bool IsLeaf() const { return m_numFaces != 0; }
+    uint8_t GetNumFaces() const { return m_numFaces; }
+    uint16_t GetFaceIndex() const { return m_index; }
+    float GetNegOffset() const { return m_negOffset; }
+    float GetPosOffset() const { return m_posOffset; }
+    const KDNode* GetNegChild() const { return this + 1; }
+    const KDNode* GetPosChild() const { return this + m_index; }
+};
+static_assert(sizeof(KDNode) == 0x0c, "KDNode size mismatch");
+
 // Size: 0x50 (80 bytes, TI: 0x6f46)
 struct Mesh {
-    /* 0x000 */ uint8_t pad000[0x20];
+    /* 0x000 */ BBox m_box;
     /* 0x020 */ cdc::Vector3 m_position;
     /* 0x030 */ void* m_vertices;
     /* 0x034 */ IndexedFace* m_faces;
-    /* 0x038 */ uint8_t pad038[8];
+    /* 0x038 */ KDNode* m_root;
+    /* 0x03c */ void* m_clientData;
     /* 0x040 */ uint16_t m_vertexType;
-    /* 0x042 */ uint8_t pad042[14];
+    /* 0x042 */ uint16_t m_numNodes;
+    /* 0x044 */ uint16_t m_numFaces;
+    /* 0x046 */ uint16_t m_numVertices;
+    /* 0x048 */ uint16_t m_height;
+    /* 0x04a */ uint16_t m_numDegenerateFaces;
+    /* 0x04c */ uint16_t m_numNonManifoldEdges;
+    /* 0x04e */ uint16_t pad04e;
 
     void GetTriangle(MTriangle* out, const IndexedFace* face); // 0x00424130 (PDB: 0x004231a0)
+    uint16_t Query(uint16_t* faceIndices, uint16_t maxFaces, const BBox& box, uint8_t flags); // 0x00502f10 (PDB: 0x00504bb0)
     int CollideSegment(SegmentResult* results, int maxResults, const cdc::Vector3& start, const cdc::Vector3& end, unsigned char flags); // 0x005030a0 (PDB: 0x00504d40)
+    IndexedFace* CollideSegment(cdc::Vector3* hitPoint, cdc::Vector3* hitNormal, const cdc::Vector3& start, const cdc::Vector3& end, unsigned char flags); // 0x00503350 (PDB: 0x00504ff0)
 };
 static_assert(offsetof(Mesh, m_position) == 0x20, "Mesh::m_position offset mismatch");
 static_assert(offsetof(Mesh, m_faces) == 0x34, "Mesh::m_faces offset mismatch");
+static_assert(offsetof(Mesh, m_root) == 0x38, "Mesh::m_root offset mismatch");
+static_assert(offsetof(Mesh, m_vertexType) == 0x40, "Mesh::m_vertexType offset mismatch");
 static_assert(sizeof(Mesh) == 0x50, "Mesh size mismatch");
 
 // Size: 0xb0 (176 bytes, TI: 0x5e5e)

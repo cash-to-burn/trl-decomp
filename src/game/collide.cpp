@@ -1,4 +1,5 @@
 #include "game/collide.h"
+#include "game/signal.h"
 #include "game/anim/anim.h"
 #include "game/camera/camera.h"
 #include "game/main.h"
@@ -6,11 +7,6 @@
 #include <cstring>
 
 // Cross-subsystem externs
-extern void INSTANCE_Post(Instance* instance, int message, int data);                                                              // 0x00455180 (PDB: 0x004567c0)
-extern void SIGNAL_HandleOutSignal(Instance* instance, Level* level, Signal* signal, int signalID);                                // 0x00467490 (PDB: 0x00468e50)
-extern void SIGNAL_HandleSignal(Instance* instance, Level* level, Signal* signal, int signalID);                                   // 0x004675a0 (PDB: 0x00468f60)
-extern int SIGNAL_IsStreamSignal(Signal* signal);                                                                                  // 0x004679d0 (PDB: 0x00469390)
-extern void SIGNAL_AddSignalToReset(Signal* signal);                                                                               // 0x00467ba0 (PDB: 0x00469560)
 extern int RBUTIL_GetMovingMarker(BaseInstance** outInst, BaseInstance* instance, int markerID, cdc::Matrix* mat, bool useOldMat); // 0x0053bf20 (PDB: 0x0053dd60)
 
 namespace cdc {

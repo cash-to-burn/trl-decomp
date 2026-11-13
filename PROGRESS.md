@@ -936,6 +936,43 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Signal (`src/game/signal.h`, `src/game/signal.cpp`, `src/game/collide.h`, `src/game/camera/camera.h`, `src/game/instance.h`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `SIGNAL_HandleStreamLevelBaseCam` | `0x00467250` / `0x00468c10` | [x] Done | `signal.cpp` |
+| `SIGNAL_HandleStreamLevel` | `0x004672d0` / `0x00468c90` | [x] Done | `signal.cpp` |
+| `SIGNAL_HandleOutSignal` | `0x00467490` / `0x00468e50` | [x] Done | `signal.cpp` |
+| `SIGNAL_HandleSignal` | `0x004675a0` / `0x00468f60` | [x] Done | `signal.cpp` |
+| `SIGNAL_IsStreamSignal` | `0x004679d0` / `0x00469390` | [x] Done | `signal.cpp` |
+| `SIGNAL_FindSignal` | `0x004679e0` / `0x004693a0` | [x] Done | `signal.cpp` |
+| `SIGNAL_FindSignalStream` | `0x00467a20` / `0x004693e0` | [x] Done | `signal.cpp` |
+| `SIGNAL_FindSignalEvent` | `0x00467a60` / `0x00469420` | [x] Done | `signal.cpp` |
+| `SIGNAL_OutOfWater` | `0x00467aa0` / `0x00469460` | [x] Done | `signal.cpp` |
+| `SIGNAL_InWater` | `0x00467af0` / `0x004694b0` | [x] Done | `signal.cpp` |
+| `SIGNAL_ClearResetSignals` | `0x00467b40` / `0x00469500` | [x] Done | `signal.cpp` |
+| `SIGNAL_ResetSignals` | `0x00467b60` / `0x00469520` | [x] Done | `signal.cpp` |
+| `SIGNAL_AddSignalToReset` | `0x00467ba0` / `0x00469560` | [x] Done | `signal.cpp` |
+| `SIGNAL_FixStreamSignal` | `0x00467be0` / `0x004695a0` | [x] Done | `signal.cpp` |
+- **Globals & Structs Added**: `ResetSignalArray[48]` (`0x010f0da8` / `0x010f1ba8`), `NumSignalsToReset` (`0x010f0f28` / `0x010f1d28`), `dtp::UnitData` (`0x1dc`, nested `FSFXLink` `0x0c` & `baseCamera` `0x18`), `AttackWaveRuntime` (`0x290`), and `SignalResetStruct` (`0x08`) in `src/game/signal.h`; `emergencyLoadingCamDataPtr` (`0x010fc590` / `0x010fd790`), `CAMERA_Save` (`0x0047b060` / `0x0047ca00`), `CAMERA_ClearNextCamData` (`0x0047b100` / `0x0047caa0`) in `src/game/camera/camera.h`; `Signal::splineCamParams` typed as `SplineCameraLevelData` in `src/game/collide.h`; `INSTANCE_Post` declaration moved to `src/game/instance.h`.
+
+---
+
+### Multibody Collision — CollideSegment & Mesh (`src/game/Multibody/collision/CollideSegment.h`, `src/game/Multibody/collision/CollideSegment.cpp`, `src/game/Multibody/collision/Mesh.cpp`, `src/game/camera/cameracollide.h`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `CollideSegmentAndSphere` | `0x004fd850` / `0x004ff550` | [x] Done | `CollideSegment.cpp` |
+| `CollideSegmentAndTri` | `0x004fd9b0` / `0x004ff6b0` | [x] Done | `CollideSegment.cpp` |
+| `CollideSegmentAndAlignedBox` | `0x004fdb80` / `0x004ff880` | [x] Done | `CollideSegment.cpp` |
+| `CollideSegmentAndBox` | `0x004fdd10` / `0x004ffa10` | [x] Done | `CollideSegment.cpp` |
+| `CollideSegmentAndCapsule` | `0x004fde00` / `0x004ffb00` | [x] Done | `CollideSegment.cpp` |
+| `TestAlignedBoxAndAlignedBox` | `0x00502ea0` / `0x00504b40` | [x] Done | `Mesh.cpp` |
+| `Mesh::Query` | `0x00502f10` / `0x00504bb0` | [x] Done | `Mesh.cpp` |
+| `Mesh::CollideSegment` (IndexedFace array) | `0x005030a0` / `0x00504d40` | [x] Done | `Mesh.cpp` |
+| `Mesh::CollideSegment` (KDTree) | `0x00503350` / `0x00504ff0` | [x] Done | `Mesh.cpp` |
+- **Structs & Types Added**: `CollideCode`, `MSphere` (`0x20`), `MBox` (`0x30`) in `src/game/Multibody/collision/CollideSegment.h`; `BBox` (`0x20`), `KDNode` (`0x0c`), and full `Mesh` (`0x50`) layout + declarations in `src/game/camera/cameracollide.h`.
+
+---
+
 ## Next Targets in Execution Queue
-1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/`, `Physics.obj`, `Signal.obj`)**:
-   - Multibody / Mesh collision and core Signal/Physics handlers
+1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/collision/` & `Physics.obj`)**:
+   - `CollideUtils.obj` (`CrossTrick`, `LineLineMidpoint`, `TestSegmentAndBox`, `ClipPolyToPlane`, distance/overlap helpers), `CollideSphere.obj`, `CollideBox.obj`, and core `Physics.obj` handlers

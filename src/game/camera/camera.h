@@ -522,9 +522,10 @@ static_assert(sizeof(CameraDataUnion) == 0x160, "CameraDataUnion size mismatch")
 static_assert(sizeof(Camera) == 0x1320, "Camera size mismatch");
 
 // Subsystem globals
-extern Camera theCamera;                // 0x010fc5a0 (PDB: 0x010fd7a0)
-extern uint32_t g_cameraAxisFlags;      // 0x01075ac8
-extern float zOffsetUndo;               // 0x010fc578 (PDB: 0x010fd778)
+extern Camera theCamera;                                   // 0x010fc5a0 (PDB: 0x010fd7a0)
+extern SplineCameraLevelData* emergencyLoadingCamDataPtr;  // 0x010fc590 (PDB: 0x010fd790)
+extern uint32_t g_cameraAxisFlags;                         // 0x01075ac8
+extern float zOffsetUndo;                                  // 0x010fc578 (PDB: 0x010fd778)
 
 // Camera lifecycle & configuration routines (Original: f:\tr7\game\camera\camera.c)
 void CAMERA_Initialize(Camera* camera);                                     // 0x0047c030 (PDB: 0x0047d9d0)
@@ -541,6 +542,8 @@ void CAMERA_ChangeToUnderWater(Camera* camera, Instance* instance);         // 0
 void CAMERA_ChangeOutOfWade(Camera* camera, Instance* instance);            // 0x0047cab0 (PDB: 0x0047e450)
 void CAMERA_ChangeToOutOfWater(Camera* camera, Instance* instance);         // 0x004803e0 (PDB: 0x00481d80)
 void CAMERA_SetMode(Camera* camera, int mode);                              // 0x0047b240 (PDB: 0x0047cbe0)
+void CAMERA_ClearNextCamData(NextCamData* nextCam);                         // 0x0047b100 (PDB: 0x0047caa0)
+void CAMERA_Save(Camera* camera, int saveBits);                             // 0x0047b060 (PDB: 0x0047ca00)
 void CAMERA_SaveMode(Camera* camera, int mode);                             // 0x0047acc0 (PDB: 0x0047c660)
 void CAMERA_RestoreMode(Camera* camera);                                    // 0x0047ff50 (PDB: 0x004818f0)
 void CAMERA_Restore(Camera* camera, int restoreBits);                       // 0x0047dd60 (PDB: 0x0047f700)

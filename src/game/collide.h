@@ -6,6 +6,7 @@
 #include "common.h"
 #include "cdc/runtime/cdcMath/Math.h"
 #include "game/camera/cameracollide.h"
+#include "game/camera/cameraspline.h"
 #include "game/instance.h"
 #include "game/Stream/stream.h"
 #include <cstddef>
@@ -20,7 +21,6 @@ struct HBox;
 struct HCapsule;
 struct HSphere;
 struct Intro;
-struct SplineCameraLevelData;
 struct TerrainAnimTexture;
 struct TerrainRenderVertex;
 struct TerrainVMORenderVertex;
@@ -123,7 +123,7 @@ struct Signal {
     /* 0x01a */ int16_t CameraRestore;
     /* 0x01c */ uint16_t CameraShakeScale;
     /* 0x01e */ int16_t CameraShakeTime;
-    /* 0x020 */ uint8_t splineCamParams[0x58];
+    /* 0x020 */ SplineCameraLevelData splineCamParams;
     /* 0x078 */ char streamName[20];
     /* 0x08c */ int streamPortalIndex;
     /* 0x090 */ int SetSlideAngle;
