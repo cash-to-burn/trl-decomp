@@ -3,28 +3,10 @@
 #include <cmath>
 #include <cstring>
 #include "game/Multibody/src/Geometry.h"
+#include "game/Multibody/src/MultibodyTypes.h"
 
 // External diagnostics handler (0x00552e70)
 extern void MB_Warning(const char* fmt, ...);
-
-// Minimal MultibodySystemImpl view until MultibodySystem.obj is decompiled
-struct MultibodySystemImpl {
-    uint8_t pad00[0x20ec];
-    float sleepTimerInit; // 0x20ec
-
-    // 0x0051b5e0 (PDB: 0x0051d110 / ?CheckTunnel@MultibodySystemImpl@@QAE_NPAUTunnelReport@@PAVGeometryImpl@@ABVVector3@cdc@@ABVQuat@5@M@Z)
-    bool CheckTunnel(
-        TunnelReport* report,
-        GeometryImpl* geom,
-        const cdc::Vector3& pos,
-        const cdc::Quat& rot,
-        float radius);
-};
-
-// Linked list node prefix shared by JointNode (0x00503de0 / 0x00503e00)
-struct JointNode {
-    JointNode* next;
-};
 
 namespace {
 

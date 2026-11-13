@@ -14,4 +14,7 @@ int CollideBoxAndBox(
     const cdc::Quat& qA,
     const cdc::Quat& qB);
 
+// 0x005060a0 (PDB: 0x004fad10 / LPROC ComputeSkewedBasis)
+void ComputeSkewedBasis(cdc::Vector3* u, cdc::Vector3* v, const cdc::Vector3& n);
+
 #endif // GAME_MULTIBODY_COLLISION_COLLIDEBOXANDBOX_H

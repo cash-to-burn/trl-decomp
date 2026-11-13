@@ -122,7 +122,7 @@ inline const cdc::Vector& MatrixCol(const cdc::Matrix& m, int col)
 }
 
 // 0x005060a0 (PDB: 0x004fad10 / LPROC ComputeSkewedBasis)
-static void ComputeSkewedBasis(cdc::Vector3* u, cdc::Vector3* v, const cdc::Vector3& n)
+void ComputeSkewedBasis(cdc::Vector3* u, cdc::Vector3* v, const cdc::Vector3& n)
 {
     if (std::fabs(n.z) > 0.5f) {
         *u = cdc::Vector3::Make(2.0f * n.z, n.z, -(2.0f * n.x + n.y), 0.0f);

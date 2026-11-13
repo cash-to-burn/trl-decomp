@@ -1059,6 +1059,18 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody Broadphase & Contact Pipeline (`src/game/Multibody/src/`)
+| Function / Group | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `SweepAndPrune` & `SweepAndPruneImpl` (`Create`, `Destroy`, `CreateBox`, `DestroyBox`, `MoveBox`, `QueryBox`, `Relocate`, `LineProbe`, `GetMemoryUsed`, `Overlap`, `LowerBound`, `UpperBound`, `BumpTimeStamp`, `FindHits`, `*Impl`, pair helpers) | `0x00517520..0x005190ae` / `0x00519050..0x0051abd0`, `0x00611e20` | [x] Done | `SweepAndPrune.cpp` |
+| `CollideSphereAndSphereWrapper`, `CollideSphereAndBoxWrapper`, `CollideSphereAndPlaneWrapper`, `CollideBoxAndBoxWrapper`, `CollideCapsuleAndSphereWrapper`, `CollideCapsuleAndBoxWrapper`, `CollideCapsuleAndCapsuleWrapper`, `CollideCapsuleAndPlaneWrapper`, `CollideBoxAndPlaneWrapper` | `0x005052b0..0x00505971` / `0x00506ef0..0x00507520` | [x] Done | `CollisionBroker.cpp` |
+| `ContactPair::FitForces` | `0x00507920` / `0x005093f0` | [x] Done | `ContactCache.cpp` |
+| `ComputeBasis`, `ContactJoint::Set`, `ContactJoint::ComputeJacobian` | `0x0050cd80`, `0x00507a50`, `0x00508030` / `0x0050e870`, `0x00509520`, `0x00509b00` | [x] Done | `ContactJoint.cpp` |
+| `DoesJointTrumpCollision`, `ClusterContacts`, `InitColliderArray`, `CollideGeometryPair`, `DrawContactPoint`, `CollideGeometryAndMesh`, `CollideMesh`, `CollideGeometryAndGeometries`, `CollideGeometries` | `0x00505980..0x0050791f` / `0x005075c0..0x00508f70` | [x] Done | `CollisionManager.cpp` |
+- **Structs & Headers Added**: `SweepAndPrune.h` (`BoxPair` `0x08`, `SAPBox` `0x50`, `EndPoint` `0x14`, `SweepAndPrune`, `SweepAndPruneImpl`), `MultibodyTypes.h` (`JointNode` `0x0c`, `JointImpl` `0x180`, `ContactNode` `0x0c`, `Contact` `0x80`, `ResponseData` `0x08`, `MeshCollection` `0x0c`, `MultibodySize` `0x1c`, `MultibodySystemImpl` `0x2130`), `CollisionBroker.h`, `ContactCache.h` (`ContactEntry` `0x30`, `ContactPair`), `ContactJoint.h` (`ContactJacobianRow` `0x40`, `ContactStepParams`, `ContactJoint` `0xf0`), `CollisionManager.h`; exported `ComputeSkewedBasis` in `CollideBoxAndBox.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Multibody System & Remaining Core (`src/game/Multibody/src/` & `src/game/Physics/`)**:
-   - `MultibodySystem` / `MultibodySystemImpl`, `SweepAndPrune`, joints, collision broker/manager, and `Physics.obj` handlers
+   - `MultibodySystem` / `MultibodySystemImpl`, joints, and `Physics.obj` handlers

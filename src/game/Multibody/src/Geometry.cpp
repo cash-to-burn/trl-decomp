@@ -6,33 +6,8 @@
 #include "game/Multibody/collision/CollideUtils.h"
 #include "game/Multibody/src/Body.h"
 #include "game/Multibody/src/Buoyancy.h"
-
-// Minimal forward interface matching SAPBox (size: 0x50) and SweepAndPrune
-struct alignas(16) SAPBox {
-    cdc::Vector3 lo;        // 0x00
-    cdc::Vector3 hi;        // 0x10
-    unsigned int flags;     // 0x20
-    void* clientData;       // 0x24
-    SAPBox* next;           // 0x28
-    void* pairList;         // 0x2c
-    int loIndex[3];         // 0x30
-    int hiIndex[3];         // 0x3c
-    int hitCount;           // 0x48
-    unsigned int timeStamp; // 0x4c
-};
-static_assert(sizeof(SAPBox) == 0x50, "SAPBox size mismatch");
-
-struct SweepAndPrune {
-    SAPBox* CreateBox(const cdc::Vector3& lo, const cdc::Vector3& hi, unsigned int flags);
-    void DestroyBox(SAPBox* box);
-    void MoveBox(SAPBox* box, const cdc::Vector3& lo, const cdc::Vector3& hi);
-};
-
-// Minimal MultibodySystemImpl view until MultibodySystem.obj is decompiled
-struct MultibodySystemImpl {
-    uint8_t pad00[0x20d0];
-    float gravityMagnitude; // 0x20d0
-};
+#include "game/Multibody/src/MultibodyTypes.h"
+#include "game/Multibody/src/SweepAndPrune.h"
 
 namespace {
 
