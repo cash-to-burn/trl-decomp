@@ -1034,6 +1034,31 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody Core — MultiBodySettings, MassProperties, Buoyancy, Body, Geometry (`src/game/Multibody/`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::Vector::IsValid` | `0x005dcfa0` / `0x005df9d0` | [x] Done | `Math.h` |
+| `cdc::Quat::IsValid` | `0x005dd040` / `0x005dfa70` | [x] Done | `Math.h` |
+| `MB_DrawLine` | `0x004f9160` / `0x004fac90` | [x] Done | `MultiBodySettings.cpp` |
+| `MassProperties::CheckValidity` | `0x00515020` / `0x00516b10` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::SetZero` | `0x00515070` / `0x00516b60` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::SetSphere` | `0x005150b0` / `0x00516ba0` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::SetBox` | `0x00515110` / `0x00516c00` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::SetCapsule` | `0x00515230` / `0x00516d20` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::Translate` | `0x00515360` / `0x00516e50` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::Rotate` | `0x00515470` / `0x00516f60` | [x] Done | `MassProperties.cpp` |
+| `MassProperties::Add` | `0x00515510` / `0x00517000` | [x] Done | `MassProperties.cpp` |
+| `SphereBuoyancy` | `0x00504820` / `0x00506460` | [x] Done | `Buoyancy.cpp` |
+| `TetVolume` | `0x00504920` / `0x00506560` | [x] Done | `Buoyancy.cpp` |
+| `ClipConfiguration` | `0x005049d0` / `0x00506610` | [x] Done | `Buoyancy.cpp` |
+| `BoxBuoyancy` | `0x00504ba0` / `0x005067e0` | [x] Done | `Buoyancy.cpp` |
+| `InvertSymmetric3x3` | `0x00503770` / `0x00505410` | [x] Done | `Body.cpp` |
+| `Body` & `BodyImpl` methods (client data, name, mass/sleep/damping, transforms, velocities, forces/impulses, `Clear`, `ComputeQuaternionUpdate`, `UpdatePosition`, `AttachGeometry`, `RemoveGeometry`, `AddJoint`, `RemoveJoint`) | `0x00503880..0x0050480e` / `0x00505520..0x00506451` | [x] Done | `Body.cpp` |
+| `Geometry` & `GeometryImpl` methods (`GetType`, flags, category, client data, shape radii/dimensions/surface area, friction/restitution, `GetQuaternion`, `Clear`, `CheckTunnelRisk`, `AddBuoyancyForce`, `GetClosestPoint`, `CreateAABB`, `UpdatePosition`, setters/`MoveTo`) | `0x00508790..0x0050998d` / `0x0050a260..0x0050b47e` | [x] Done | `Geometry.cpp` |
+- **Structs & Headers Added**: `MultiBodySettings.h`, `MassProperties.h` (`MassProperties`, `0x60`), `Buoyancy.h`, `Body.h` (`SleepProperties` `0x0c`, `TunnelReport` `0x20`, `Body`, `BodyImpl` `0x170`), `Geometry.h` (`Geometry`, `GeometryImpl` `0xa0`).
+
+---
+
 ## Next Targets in Execution Queue
-1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/collision/` & `Physics.obj`)**:
-   - Core `Physics.obj` handlers and any remaining `game/Multibody/collision/` modules
+1. **Multibody System & Remaining Core (`src/game/Multibody/src/` & `src/game/Physics/`)**:
+   - `MultibodySystem` / `MultibodySystemImpl`, `SweepAndPrune`, joints, collision broker/manager, and `Physics.obj` handlers

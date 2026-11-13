@@ -74,6 +74,12 @@ struct alignas(16) Vector {
     {
         return x == 0.0f && y == 0.0f && z == 0.0f;
     }
+
+    // 0x005dcfa0 (PDB: 0x005df9d0 / ?IsValid@Vector@cdc@@QBE_NXZ)
+    inline bool IsValid() const
+    {
+        return std::isfinite(x) && std::isfinite(y) && std::isfinite(z);
+    }
 };
 
 struct alignas(16) Vector3 : public Vector {
@@ -222,6 +228,12 @@ struct alignas(16) Quat : public Vector {
             v.z + qw * tz + (qx * ty - qy * tx),
             0.0f
         );
+    }
+
+    // 0x005dd040 (PDB: 0x005dfa70 / ?IsValid@Quat@cdc@@QBE_NXZ)
+    inline bool IsValid() const
+    {
+        return std::isfinite(x) && std::isfinite(y) && std::isfinite(z) && std::isfinite(w);
     }
 };
 
