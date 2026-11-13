@@ -1071,6 +1071,27 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody Queries, Sweeps, Tunnels & LCP Solver (`src/game/Multibody/src/`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `LineProbeNarrowPhase` | `0x00514b20` / `0x00516610` | [x] Done | `LineProbe.cpp` |
+| `MultibodySystem::LineProbeGeometries` | `0x00514db0` / `0x005168a0` | [x] Done | `LineProbe.cpp` |
+| `MultibodySystem::LineProbeMeshes` | `0x00514eb0` / `0x005169a0` | [x] Done | `LineProbe.cpp` |
+| `CollidePhantomAndMesh` | `0x005190b0` / `0x0051abe0` | [x] Done | `SweptSphere.cpp` |
+| `CollidePhantomAndGeometries` | `0x00519760` / `0x0051b290` | [x] Done | `SweptSphere.cpp` |
+| `CollidePhantoms` | `0x00519b30` / `0x0051b660` | [x] Done | `SweptSphere.cpp` |
+| `Compute_fc` | `0x00519bb0` / `0x0051b6e0` | [x] Done | `TimeStep.cpp` |
+| `MultibodySystemImpl::LCPSetup` | `0x00519cb0` / `0x0051b7e0` | [x] Done | `TimeStep.cpp` |
+| `UpdateIslandSleep` | `0x0051a150` / `0x0051bc80` | [x] Done | `TimeStep.cpp` |
+| `MultibodySystemImpl::LCPIter` | `0x0051a310` / `0x0051be40` | [x] Done | `TimeStep.cpp` |
+| `MultibodySystemImpl::TimeStep` | `0x0051a5a0` / `0x0051c0d0` | [x] Done | `TimeStep.cpp` |
+| `MultibodySystemImpl::TimeStepIslands` | `0x0051b2d0` / `0x0051ce00` | [x] Done | `TimeStep.cpp` |
+| `RegulateNearGeometryCallback` | `0x0051b570` / `0x0051d0a0` | [x] Done | `Tunnel.cpp` |
+| `MultibodySystemImpl::CheckTunnel` | `0x0051b5e0` / `0x0051d110` | [x] Done | `Tunnel.cpp` |
+- **Structs & Headers Added**: `LineProbe.h` (`LineProbeGeometryData` `0x08`), `SweptSphere.h`, `Tunnel.h` (`RegulateTunnelData`); expanded `SweepAndPrune.h` (`SweepAndPrune::TestAxes`) and `MultibodyTypes.h` (`JointLimit` `0x10`, `JointMotor` `0x08`, `JointParams` `0x10`, full `JointImpl` `0x180`, `LineProbeReport` `0x40`, `MultibodySystem`, full `MultibodySystemImpl` `0x2130`).
+
+---
+
 ## Next Targets in Execution Queue
 1. **Multibody System & Remaining Core (`src/game/Multibody/src/` & `src/game/Physics/`)**:
    - `MultibodySystem` / `MultibodySystemImpl`, joints, and `Physics.obj` handlers

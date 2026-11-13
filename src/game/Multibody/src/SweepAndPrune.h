@@ -49,6 +49,16 @@ struct EndPoint {
 static_assert(sizeof(EndPoint) == 0x14, "EndPoint size mismatch");
 
 struct SweepAndPrune {
+    enum TestAxes {
+        TEST_X = 0x1,
+        TEST_Y = 0x2,
+        TEST_Z = 0x4,
+        TEST_XY = TEST_X | TEST_Y,
+        TEST_XZ = TEST_X | TEST_Z,
+        TEST_YZ = TEST_Y | TEST_Z,
+        TEST_ALL = TEST_X | TEST_Y | TEST_Z
+    };
+
     typedef bool (*LineProbeCallback)(
         float* t,
         cdc::Vector3* normal,
