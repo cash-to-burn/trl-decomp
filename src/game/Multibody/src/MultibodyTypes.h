@@ -5,6 +5,7 @@
 #include <cstdint>
 #include "cdc/runtime/cdcMath/Math.h"
 #include "game/Multibody/collision/CollideUtils.h"
+#include "game/Multibody/src/Joint.h"
 #include "game/Multibody/src/SweepAndPrune.h"
 
 class Body;
@@ -18,14 +19,9 @@ struct ContactPair;
 struct GeometryImpl;
 struct IndexedFace;
 struct JointImpl;
-struct LimitReport;
 struct SAPBox;
 struct SweepAndPrune;
 struct TunnelReport;
-
-// PDB: Joint (size: 0x01; full API in Joint.h in later batch)
-class Joint {
-};
 
 // PDB: JointNode (size: 0x0c)
 struct JointNode {
@@ -69,6 +65,25 @@ static_assert(sizeof(JointParams) == 0x10, "JointParams size mismatch");
 // PDB: JointImpl (size: 0x180)
 struct alignas(16) JointImpl : public Joint {
     enum Flags {
+        COLLIDE = 0x1,
+        LIMIT1 = 0x2,
+        LIMIT2 = 0x4,
+        LIMIT3 = 0x8,
+        ANY_LIMITS = 0xe,
+        MOTOR1 = 0x10,
+        MOTOR2 = 0x20,
+        MOTOR3 = 0x40,
+        ANY_MOTORS = 0x70,
+        ANY_LIMITS_OR_MOTORS = 0x7e,
+        LINK_POS1 = 0x80,
+        LINK_POS2 = 0x100,
+        LINK_ROT1 = 0x200,
+        LINK_ROT2 = 0x400,
+        HAS_LIMIT_LISTENER = 0x800,
+        SMOOTH_LIMITS = 0x1000,
+        TAG1 = 0x2000,
+        TAG2 = 0x4000,
+        TAGS = 0x6000,
         FLAG_DISABLED = 0x1,
         FLAG_NO_COLLIDE = 0x2,
         FLAG_TAG1 = 0x2000,
@@ -76,19 +91,19 @@ struct alignas(16) JointImpl : public Joint {
         FLAG_TAGS = 0x6000
     };
 
-    cdc::Vector3 anchor1;           // 0x000
-    cdc::Vector3 anchor2;           // 0x010
-    cdc::Vector3 bx1;               // 0x020
-    cdc::Vector3 by1;               // 0x030
-    cdc::Vector3 bz1;               // 0x040
-    cdc::Vector3 bx2;               // 0x050
-    cdc::Vector3 by2;               // 0x060
-    cdc::Vector3 bz2;               // 0x070
-    float linkCoord1;               // 0x080
-    float linkCoord2;               // 0x084
-    float ratio;                    // 0x088
-    float length;                   // 0x08c
-    void (*splineCallback)(void*);  // 0x090
+    cdc::Vector3 anchor1;                                            // 0x000
+    cdc::Vector3 anchor2;                                            // 0x010
+    cdc::Vector3 bx1;                                                // 0x020
+    cdc::Vector3 by1;                                                // 0x030
+    cdc::Vector3 bz1;                                                // 0x040
+    cdc::Vector3 bx2;                                                // 0x050
+    cdc::Vector3 by2;                                                // 0x060
+    cdc::Vector3 bz2;                                                // 0x070
+    float linkCoord1;                                                // 0x080
+    float linkCoord2;                                                // 0x084
+    float ratio;                                                     // 0x088
+    float length;                                                    // 0x08c
+    void (*splineCallback)(SplineJointParams*, const Joint*, float); // 0x090
     uint32_t pad094[3];             // 0x094..0x09f
     cdc::Vector3 force;             // 0x0a0
     cdc::Vector3 torque;            // 0x0b0
@@ -114,11 +129,287 @@ struct alignas(16) JointImpl : public Joint {
     uint8_t stepIterations;         // 0x17b
     uint32_t pad17c;                // 0x17c
 
+    // 0x005099b0 (PDB: 0x0050b4a0 / ?IsLimitNumberValid@JointImpl@@QBE_NH@Z)
+    bool IsLimitNumberValid(int n) const;
+
+    // 0x00509a10 (PDB: 0x0050b500 / ?IsMotorNumberValid@JointImpl@@QBE_NH@Z)
+    bool IsMotorNumberValid(int n) const;
+
     // 0x0050a400 (PDB: 0x0050bef0 / ?Clear@JointImpl@@QAEXXZ)
     void Clear();
 
+    // 0x0050b750 (PDB: 0x0050d220 / ?Connect@JointImpl@@QAEXPAVBodyImpl@@0@Z)
+    void Connect(BodyImpl* b1, BodyImpl* b2);
+
     // 0x005155c0 (PDB: 0x005170b0 / ?Disconnect@JointImpl@@QAEXXZ)
     void Disconnect();
+
+    // 0x0050a990 (PDB: 0x0050cc00 / ?ComputeRevoluteAngle@JointImpl@@QBEMXZ)
+    float ComputeRevoluteAngle() const;
+
+    // 0x0050b0c0 (PDB: 0x0050c010 / ?ComputeRevoluteAngleSpeed@JointImpl@@QBEMXZ)
+    float ComputeRevoluteAngleSpeed() const;
+
+    // 0x0050a540 (PDB: 0x0050c0a0 / ?ComputePrismaticTranslation@JointImpl@@QBEMXZ)
+    float ComputePrismaticTranslation() const;
+
+    // 0x0050a630 (PDB: 0x0050c190 / ?ComputePrismaticTranslationSpeed@JointImpl@@QBEMXZ)
+    float ComputePrismaticTranslationSpeed() const;
+
+    // 0x0050a750 (PDB: 0x0050c2b0 / ?ComputePlanarTranslation1@JointImpl@@QBEMXZ)
+    float ComputePlanarTranslation1() const;
+
+    // 0x0050a870 (PDB: 0x0050c3d0 / ?ComputePlanarTranslation2@JointImpl@@QBEMXZ)
+    float ComputePlanarTranslation2() const;
+
+    // 0x0050a990 (PDB: 0x0050cc00 / ?ComputePlanarAngle@JointImpl@@QBEMXZ)
+    float ComputePlanarAngle() const;
+
+    // 0x0050aac0 (PDB: 0x0050c4f0 / ?ComputePlanarTranslationSpeed1@JointImpl@@QBEMXZ)
+    float ComputePlanarTranslationSpeed1() const;
+
+    // 0x0050ac20 (PDB: 0x0050c650 / ?ComputePlanarTranslationSpeed2@JointImpl@@QBEMXZ)
+    float ComputePlanarTranslationSpeed2() const;
+
+    // 0x0050ad80 (PDB: 0x0050c7b0 / ?ComputePlanarAngleSpeed@JointImpl@@QBEMXZ)
+    float ComputePlanarAngleSpeed() const;
+
+    // 0x0050ae10 (PDB: 0x0050c840 / ?ComputeUniversalAngle1@JointImpl@@QBEMXZ)
+    float ComputeUniversalAngle1() const;
+
+    // 0x0050af40 (PDB: 0x0050c970 / ?ComputeUniversalAngle2@JointImpl@@QBEMXZ)
+    float ComputeUniversalAngle2() const;
+
+    // 0x0050b030 (PDB: 0x0050ca60 / ?ComputeUniversalAngleSpeed1@JointImpl@@QBEMXZ)
+    float ComputeUniversalAngleSpeed1() const;
+
+    // 0x0050b0c0 (PDB: 0x0050c010 / ?ComputeUniversalAngleSpeed2@JointImpl@@QBEMXZ)
+    float ComputeUniversalAngleSpeed2() const;
+
+    // 0x0050b150 (PDB: 0x0050caf0 / ?ComputeSwingTranslation@JointImpl@@QBEMXZ)
+    float ComputeSwingTranslation() const;
+
+    // 0x0050a990 (PDB: 0x0050cc00 / ?ComputeSwingAngle1@JointImpl@@QBEMXZ)
+    float ComputeSwingAngle1() const;
+
+    // 0x0050b260 (PDB: 0x0050cd30 / ?ComputeSwingAngle2@JointImpl@@QBEMXZ)
+    float ComputeSwingAngle2() const;
+
+    // 0x0050b350 (PDB: 0x0050ce20 / ?ComputeSwingTranslationSpeed@JointImpl@@QBEMXZ)
+    float ComputeSwingTranslationSpeed() const;
+
+    // 0x0050b470 (PDB: 0x0050cf40 / ?ComputeSwingAngleSpeed1@JointImpl@@QBEMXZ)
+    float ComputeSwingAngleSpeed1() const;
+
+    // 0x0050b500 (PDB: 0x0050cfd0 / ?ComputeSwingAngleSpeed2@JointImpl@@QBEMXZ)
+    float ComputeSwingAngleSpeed2() const;
+
+    // 0x0050b590 (PDB: 0x0050d060 / ?ComputeCartesianTranslation@JointImpl@@QBE?AVVector3@cdc@@XZ)
+    cdc::Vector3 ComputeCartesianTranslation() const;
+
+    // 0x0050b640 (PDB: 0x0050d110 / ?ComputeCartesianTranslationSpeed@JointImpl@@QBE?AVVector3@cdc@@XZ)
+    cdc::Vector3 ComputeCartesianTranslationSpeed() const;
+
+    // 0x0050eef0 (PDB: 0x005109c0 / ?ComputeAngularAxis@JointImpl@@QBEHPAVVector3@cdc@@PAM111ABUJointAxisParams@@@Z)
+    int ComputeAngularAxis(
+        ContactJacobianRow* row,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        const JointAxisParams& axisParams) const;
+
+    // 0x0050f3c0 (PDB: 0x00510e90 / ?ComputeLinearAxis@JointImpl@@QBEHPAVVector3@cdc@@PAM111ABUJointAxisParams@@@Z)
+    int ComputeLinearAxis(
+        ContactJacobianRow* row,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        const JointAxisParams& axisParams) const;
+
+    // 0x0050b7b0 (PDB: 0x0050d280 / ?ComputeSpherical@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeSpherical(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050ba90 (PDB: 0x0050d560 / ?ComputeRope@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeRope(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050bdc0 (PDB: 0x0050d890 / ?ComputeWeld@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeWeld(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050c3e0 (PDB: 0x0050deb0 / ?ComputePointMotor@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputePointMotor(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050c690 (PDB: 0x0050e160 / ?ComputeLink@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeLink(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050c950 (PDB: 0x0050e420 / ?ComputeWheel@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeWheel(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050cb60 (PDB: 0x0050e630 / ?ComputeConicalLimit@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeConicalLimit(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050ccc0 (PDB: 0x0050e790 / ?ComputeAngularMotor@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeAngularMotor(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x0050fac0 (PDB: 0x00511590 / ?ComputeRevolute@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeRevolute(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x005100a0 (PDB: 0x00511b70 / ?ComputePrismatic@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputePrismatic(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00510810 (PDB: 0x005122e0 / ?ComputePlanar@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputePlanar(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00510f40 (PDB: 0x00512a10 / ?ComputePulley@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputePulley(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00511230 (PDB: 0x00512d00 / ?ComputeUniversal@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeUniversal(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00511740 (PDB: 0x00513210 / ?ComputeSwing@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeSwing(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00511e20 (PDB: 0x005138f0 / ?ComputeCartesian@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeCartesian(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x005123e0 (PDB: 0x00513eb0 / ?ComputeWheel2@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeWheel2(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00512710 (PDB: 0x005141e0 / ?ComputeSpline@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeSpline(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00512ef0 (PDB: 0x005149e0 / ?ComputeShoulder@JointImpl@@ABEXPAVVector3@cdc@@PAM111HABUJointParams@@@Z)
+    void ComputeShoulder(
+        ContactJacobianRow* J,
+        float* err,
+        float* vel,
+        float* lo,
+        float* hi,
+        int rowIndex,
+        const JointParams* params) const;
+
+    // 0x00513560 (PDB: 0x00515050 / ?ComputeShoulderLimits@JointImpl@@AAEXPBUJointParams@@@Z)
+    void ComputeShoulderLimits(const JointParams* params);
 
     // 0x00513780 (PDB: 0x00515270 / ?ComputeLimits@JointImpl@@QAEXPBUJointParams@@@Z)
     void ComputeLimits(const JointParams* params);

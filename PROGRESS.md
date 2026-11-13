@@ -1106,8 +1106,14 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 | `MultibodySystemImpl::MultibodySystemImpl`, `~MultibodySystemImpl`, `CreateContactJoint`, `DestroyContactJoints`, `QueryContactCache`, `RelocateImpl`, `StoreContactForces`, `StepImpl` | `0x005158c0..0x00515ce0`, `0x005164f0..0x00517480` / `0x005173b0..0x005177d0`, `0x00518020..0x00518fb0` | [x] Done | `MultibodySystem.cpp` |
 - **Structs & Headers Updated**: `Geometry.h` (`clientDestruct` two-arg signature), `MultibodyTypes.h` (`Joint` base class, `MultibodySize` full fields `0x1c`, `MultibodySystem` public API, `MultibodySystemImpl` callback/pool fields `+0x201c..+0x203c` and constructors/methods).
 
+### Multibody Joints (`src/game/Multibody/src/Joint.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `Joint` accessors, setters (`SetRevolute`..`SetShoulder`), updaters (`Update*`), limit/motor/link controls, and `JointImpl` (`IsLimitNumberValid`, `IsMotorNumberValid`, `Connect`, `Compute*Axis`, `Compute*`, `ComputeLimits`, `ComputeShoulderLimits`, `ComputeJacobian`) | `0x005099b0..0x00514640+` / `0x0050b4a0..0x00516130+` | [x] Done | `Joint.cpp` |
+- **Structs & Headers Updated**: `Joint.h` (`UpdateUniversal`, `SetPulley` parameter names) and `MultibodyTypes.h` (`JointImpl::IsLimitNumberValid`, `JointImpl::IsMotorNumberValid`).
+
 ---
 
 ## Next Targets in Execution Queue
 1. **Multibody System & Remaining Core (`src/game/Multibody/src/` & `src/game/Physics/`)**:
-   - Joints (`Joint.obj`), vehicle/bike, and `Physics.obj` handlers
+   - Vehicle/bike, and `Physics.obj` handlers
