@@ -1013,8 +1013,27 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 | `CollideSweptSphereAndBox` | `0x004fed10` / `0x00500a10` | [x] Done | `CollideSweptSphere.cpp` |
 - **Globals & Headers Added**: `CollideTriAndSphere.h`, `CollideTriAndCapsule.h`, `CollideSweptSphere.h`; diagnostic globals `gadj` (`0x01116150` / `0x01117300`), `gv0` (`0x01116160` / `0x01117310`), `gs` (`0x01116170` / `0x01117320`), `gv2` (`0x01116180` / `0x01117330`), `gt` (`0x01116190` / `0x01117340`), `gv1` (`0x011161a0` / `0x01117350`); updated `CollideMesh.cpp` includes.
 
+### Multibody Collision — CollideTriAndBox, CollideBoxAndCapsule, CollideBoxAndBox (`src/game/Multibody/collision/`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `TriAndBox::ComputeBoxFaceContact` | `0x004feea0` / `0x00500ba0` | [x] Done | `CollideTriAndBox.cpp` |
+| `TriAndBox::BuildBoxPolygon` | `0x004ff620` / `0x00501320` | [x] Done | `CollideTriAndBox.cpp` |
+| `TriAndBox::ComputeTriFaceContact` | `0x004ffad0` / `0x005017d0` | [x] Done | `CollideTriAndBox.cpp` |
+| `TriAndBox::Collide` | `0x00500000` / `0x00501d00` | [x] Done | `CollideTriAndBox.cpp` |
+| `CollideTriAndBox` | `0x00500980` / `0x00502680` | [x] Done | `CollideTriAndBox.cpp` |
+| `ComputeArvoContact` | `0x004fb5c0` / `0x004fd2c0` | [x] Done | `CollideBoxAndCapsule.cpp` |
+| `ComputeFaceContact` | `0x004fb7a0` / `0x004fd4a0` | [x] Done | `CollideBoxAndCapsule.cpp` |
+| `ComputeEdgeContact` | `0x004fbbb0` / `0x004fd8b0` | [x] Done | `CollideBoxAndCapsule.cpp` |
+| `CollideBoxAndCapsule` | `0x004fbd40` / `0x004fda40` | [x] Done | `CollideBoxAndCapsule.cpp` |
+| `ComputeSkewedBasis` | `0x005060a0` / `0x004fad10` | [x] Done | `CollideBoxAndBox.cpp` |
+| `ComputeIncidentFace` | `0x004f91e0` / `0x004fae80` | [x] Done | `CollideBoxAndBox.cpp` |
+| `ComputeFaceContact` | `0x004f9730` / `0x004fb3d0` | [x] Done | `CollideBoxAndBox.cpp` |
+| `ComputeEdgeEdgeContact` | `0x004f9ed0` / `0x004fbb70` | [x] Done | `CollideBoxAndBox.cpp` |
+| `CollideBoxAndBox` | `0x004fa270` / `0x004fbf10` | [x] Done | `CollideBoxAndBox.cpp` |
+- **Globals & Headers Added**: `CollideTriAndBox.h`, `CollideBoxAndCapsule.h`, `CollideBoxAndBox.h`.
+
 ---
 
 ## Next Targets in Execution Queue
 1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/collision/` & `Physics.obj`)**:
-   - `CollideTriAndBox.obj`, `CollideBoxAndCapsule.obj`, `CollideBoxAndBox.obj`, and core `Physics.obj` handlers
+   - Core `Physics.obj` handlers and any remaining `game/Multibody/collision/` modules
