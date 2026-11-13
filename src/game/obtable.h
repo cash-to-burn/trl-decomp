@@ -45,12 +45,10 @@ struct Object {
     unsigned int guiID;                     // 0x0c
     int functionTableID;                    // 0x10
     void* obsoleteSoundBank;                // 0x14
-    unsigned char numModels;                // 0x18
-    unsigned char pad019;                   // 0x19
-    unsigned char numAnims;                 // 0x1a
-    unsigned char pad01b;                   // 0x1b
-    unsigned char numAnimPatterns;          // 0x1c
-    unsigned char pad01d[3];                // 0x1d
+    int16_t numModels;                      // 0x18
+    int16_t numAnims;                       // 0x1a
+    int16_t numAnimPatterns;                // 0x1c
+    int16_t pad01e;                         // 0x1e
     Model** modelList;                      // 0x20
     AnimListEntry* animList;                // 0x24
     AnimFxHeader** animFXList;              // 0x28

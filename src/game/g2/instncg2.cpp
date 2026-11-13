@@ -3,6 +3,7 @@
 #include "game/anim/anim.h"
 #include "game/anim/anitracker.h"
 #include "game/camera/camera.h"
+#include "game/collide.h"
 #include "game/instance.h"
 #include "game/main.h"
 #include "game/obtable.h"
@@ -17,7 +18,6 @@ extern void* getScratchAddr(int size);                                          
 extern void freeScratchAddr(int size);                                                                      // 0x004019f0 (PDB: 0x00401a20)
 extern void TRANS_BuildWeightedMatrix(cdc::Matrix* dst, cdc::Matrix* src1, cdc::Matrix* src2, float weight); // 0x00402e90 (PDB: 0x00403400)
 extern void TRANS_ApplyWeightedOffset(cdc::Matrix* dst, cdc::Matrix* src, cdc::Vector3* offset, float weight); // 0x00402f90 (PDB: 0x00403500)
-extern int COLLIDE_GetHMarkerTransformFromID(BaseInstance* inst, int markerID, cdc::Matrix* mat, bool useOldMatrix); // 0x00425720 (PDB: 0x00424790)
 extern void CLOTH_UpdateAllCloth(Instance* inst);                                                           // 0x00435730 (PDB: 0x00436a70)
 
 struct AnimatedGeoms {

@@ -888,6 +888,54 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Collision (`src/game/collide.h`, `src/game/collide.cpp`, `src/game/camera/cameracollide.h`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::operator%` | `0x00423ff0` / `0x00423060` | [x] Done | `collide.cpp` |
+| `MTriangle::GetNormal` | `0x00424040` / `0x004230b0` | [x] Done | `collide.cpp` |
+| `VertexInt16::operator cdc::Vector3` | `0x004240b0` / `0x00423120` | [x] Done | `collide.cpp` |
+| `Mesh::GetTriangle` | `0x00424130` / `0x004231a0` | [x] Done | `collide.cpp` |
+| `COLLIDE_SegmentCollisionOn` | `0x00424280` / `0x004232f0` | [x] Done | `collide.cpp` |
+| `COLLIDE_SegmentCollisionOff` | `0x004242f0` / `0x00423360` | [x] Done | `collide.cpp` |
+| `COLLIDE_ResetCollisionFlag` | `0x00424370` / `0x004233e0` | [x] Done | `collide.cpp` |
+| `COLLIDE_SetTerrainGroupFlag` | `0x004243b0` / `0x00423420` | [x] Done | `collide.cpp` |
+| `COLLIDE_GetNextDynamicMarker` | `0x004243d0` / `0x00423440` | [x] Done | `collide.cpp` |
+| `COLLIDE_GetNextDynamicMarkers` | `0x00424520` / `0x00423590` | [x] Done | `collide.cpp` |
+| `COLLIDE_InsertDynamicMarker` | `0x00424680` / `0x004236f0` | [x] Done | `collide.cpp` |
+| `COLLIDE_InsertDynamicWorldPosMarker` | `0x00424710` / `0x00423780` | [x] Done | `collide.cpp` |
+| `COLLIDE_InsertDynamicWorldPosMarkers` | `0x004247a0` / `0x00423810` | [x] Done | `collide.cpp` |
+| `COLLIDE_SetDynamicWorldPosMarker` | `0x004249c0` / `0x00423a30` | [x] Done | `collide.cpp` |
+| `COLLIDE_RelocateDynamicWorldPosMarkers` | `0x00424a30` / `0x00423aa0` | [x] Done | `collide.cpp` |
+| `COLLIDE_DeleteDynamicMarker` | `0x00424ab0` / `0x00423b20` | [x] Done | `collide.cpp` |
+| `COLLIDE_DeleteDynamicMarkerList` | `0x00424bb0` / `0x00423c20` | [x] Done | `collide.cpp` |
+| `COLLIDE_Signals` | `0x00424c20` / `0x00423c90` | [x] Done | `collide.cpp` |
+| `COLLIDE_FindCollisionFaceNormal` | `0x00424e30` / `0x00423ea0` | [x] Done | `collide.cpp` |
+| `COLLIDE_CameraWithStreamSignals` | `0x00424ec0` / `0x00423f30` | [x] Done | `collide.cpp` |
+| `COLLIDE_InstanceListWithSignals` | `0x00425060` / `0x004240d0` | [x] Done | `collide.cpp` |
+| `COLLIDE_UpdateAllTransformsf` | `0x004252b0` / `0x00424320` | [x] Done | `collide.cpp` |
+| `COLLIDE_MoveAllTransformsf` | `0x00425390` / `0x00424400` | [x] Done | `collide.cpp` |
+| `COLLIDE_GetHMarkerTransformFromID` (5-arg) | `0x00425450` / `0x004244c0` | [x] Done | `collide.cpp` |
+| `COLLIDE_GetHMarkerTransformFromID` (4-arg) | `0x00425720` / `0x00424790` | [x] Done | `collide.cpp` |
+- **Structs & Header Fixes Added**: `VertexInt16` (`0x06`), `SegmentResult` (`0x08`), `SignalResults` (`0x0c`), `HMarker` (`0x20`), `HPrim` (`0x08`), `HModel` (`0x10`), `CollideInfo` (`0x50`), `Signal` (`0xd0`), `StreamUnitPortal` (`0xa0`), `Terrain` (`0x68`) in `src/game/collide.h`; `IndexedFace::GetSignalIndex`, `MTriangle::GetNormal`, `Mesh::CollideSegment`, `TerrainGroup::flags` (`0x20`) in `src/game/camera/cameracollide.h`; `int16_t` `Object::numModels/numAnims/numAnimPatterns` in `src/game/obtable.h`; `int16_t` `BaseInstance::currentStreamUnitID` in `src/game/instance.h`.
+
+---
+
+### Legacy Physics (`src/game/physicslegacy.h`, `src/game/physicslegacy.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `PHYSICS_ForceSetWater` | `0x00462270` / `0x00463c30` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_SetVelFromZRot` | `0x00462310` / `0x00463cd0` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_FindAFromDAndT` | `0x00462340` / `0x00463d00` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_FindVFromAAndD` | `0x00462370` / `0x00463d30` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_StopAcceleratingIfCloseToTargetVelocity` | `0x004623a0` / `0x00463d60` | [x] Done | `physicslegacy.cpp` |
+| `PhysicsMove` | `0x004624b0` / `0x00463e70` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_SetVelFromRot` | `0x00462540` / `0x00463f00` | [x] Done | `physicslegacy.cpp` |
+| `PHYSICS_SetVAndAFromRot` | `0x004625e0` / `0x00463fa0` | [x] Done | `physicslegacy.cpp` |
+| `PhysicsMoveLocalZClamp` | `0x00462750` / `0x00464110` | [x] Done | `physicslegacy.cpp` |
+| `PhysicsMoveLocalFall` | `0x00462840` / `0x00464200` | [x] Done | `physicslegacy.cpp` |
+
+---
+
 ## Next Targets in Execution Queue
-1. **Collision / Physics Subsystem (`src/game/collide/`)**:
-   - Instance physical query and collision resolution
+1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/`, `Physics.obj`, `Signal.obj`)**:
+   - Multibody / Mesh collision and core Signal/Physics handlers

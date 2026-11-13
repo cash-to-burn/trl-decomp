@@ -68,8 +68,7 @@ struct BaseInstance {
     int iflags3;                            // 0x0ac
     signed char currentRenderModel;         // 0x0b0
     signed char currentBaseModel;           // 0x0b1
-    unsigned char currentStreamUnitID;      // 0x0b2
-    unsigned char pad0b3;                   // 0x0b3
+    int16_t currentStreamUnitID;            // 0x0b2
     SoundInstanceData* soundInstances;      // 0x0b4
     Instance* LinkParent;                   // 0x0b8
     int16_t ParentLinkNode;                 // 0x0bc

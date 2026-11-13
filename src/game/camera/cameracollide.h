@@ -7,12 +7,15 @@
 #include "game/camera/camera.h"
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 struct BaseInstance;
 struct Instance;
 struct Level;
 
 // Size: 0x0a (10 bytes, TI: 0x668d)
+struct SegmentResult;
+
 struct IndexedFace {
     /* 0x000 */ uint16_t i0;
     /* 0x002 */ uint16_t i1;
@@ -21,6 +24,13 @@ struct IndexedFace {
     /* 0x007 */ uint8_t collisionFlags;
     /* 0x008 */ uint8_t clientFlags;
     /* 0x009 */ uint8_t materialType;
+
+    uint16_t GetSignalIndex() const
+    {
+        uint16_t idx = 0;
+        std::memcpy(&idx, &clientFlags, sizeof(idx));
+        return idx;
+    }
 };
 static_assert(sizeof(IndexedFace) == 0x0a, "IndexedFace size mismatch");
 
@@ -29,6 +39,8 @@ struct MTriangle {
     /* 0x000 */ cdc::Vector3 v0;
     /* 0x010 */ cdc::Vector3 v1;
     /* 0x020 */ cdc::Vector3 v2;
+
+    cdc::Vector3 GetNormal(); // 0x00424040 (PDB: 0x004230b0)
 };
 static_assert(sizeof(MTriangle) == 0x30, "MTriangle size mismatch");
 
@@ -42,7 +54,8 @@ struct Mesh {
     /* 0x040 */ uint16_t m_vertexType;
     /* 0x042 */ uint8_t pad042[14];
 
-    void GetTriangle(MTriangle* out, const IndexedFace* face); // 0x00424130
+    void GetTriangle(MTriangle* out, const IndexedFace* face); // 0x00424130 (PDB: 0x004231a0)
+    int CollideSegment(SegmentResult* results, int maxResults, const cdc::Vector3& start, const cdc::Vector3& end, unsigned char flags); // 0x005030a0 (PDB: 0x00504d40)
 };
 static_assert(offsetof(Mesh, m_position) == 0x20, "Mesh::m_position offset mismatch");
 static_assert(offsetof(Mesh, m_faces) == 0x34, "Mesh::m_faces offset mismatch");
@@ -50,11 +63,15 @@ static_assert(sizeof(Mesh) == 0x50, "Mesh size mismatch");
 
 // Size: 0xb0 (176 bytes, TI: 0x5e5e)
 struct TerrainGroup {
-    /* 0x000 */ uint8_t pad000[0x34];
+    /* 0x000 */ cdc::Vector3 globalOffset;
+    /* 0x010 */ cdc::Vector3 localOffset;
+    /* 0x020 */ int flags;
+    /* 0x024 */ uint8_t pad024[0x10];
     /* 0x034 */ Level* level;
     /* 0x038 */ Mesh* mesh;
     /* 0x03c */ uint8_t pad03c[0x74];
 };
+static_assert(offsetof(TerrainGroup, flags) == 0x20, "TerrainGroup::flags offset mismatch");
 static_assert(offsetof(TerrainGroup, level) == 0x34, "TerrainGroup::level offset mismatch");
 static_assert(offsetof(TerrainGroup, mesh) == 0x38, "TerrainGroup::mesh offset mismatch");
 static_assert(sizeof(TerrainGroup) == 0xb0, "TerrainGroup size mismatch");
