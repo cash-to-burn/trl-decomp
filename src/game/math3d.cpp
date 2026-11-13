@@ -82,17 +82,6 @@ inline float ClampedAcosf(float value)
     return std::acos(value);
 }
 
-// 0x005dd7d0 (PDB: 0x005e0200 / cdc::Mul3x3)
-inline cdc::Vector3 Mul3x3(const cdc::Matrix& m, const cdc::Vector& v)
-{
-    return MakeVec3(
-        m.col0.x * v.x + m.col1.x * v.y + m.col2.x * v.z,
-        m.col0.y * v.x + m.col1.y * v.y + m.col2.y * v.z,
-        m.col0.z * v.x + m.col1.z * v.y + m.col2.z * v.z,
-        m.col0.w * v.x + m.col1.w * v.y + m.col2.w * v.z
-    );
-}
-
 // 0x005ddba0 (PDB: 0x005e05d0 / cdc::OrthonormalInverse3x3)
 inline void OrthonormalInverse3x3(cdc::Matrix* out, const cdc::Matrix& m)
 {

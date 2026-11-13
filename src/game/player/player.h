@@ -424,7 +424,19 @@ struct Player {
     /* 0xc80 */ int groundDetachMode;
     /* 0xc84 */ int detachOutcome;
     /* 0xc88 */ float tTimeToTarget;
-    /* 0xc8c */ uint8_t restOfPlayer[0x1000 - 0xc8c];
+    /* 0xc8c */ uint8_t padC8C[0xd0c - 0xc8c];
+    /* 0xd0c */ void* rNodeController;
+    /* 0xd10 */ void* footLockControllerLeft;
+    /* 0xd14 */ void* footLockControllerRight;
+    /* 0xd18 */ void* handLockControllerLeft;
+    /* 0xd1c */ void* handLockControllerRight;
+    /* 0xd20 */ uint8_t padD20[0xfa0 - 0xd20];
+    /* 0xfa0 */ bool isStuckToGround;
+    /* 0xfa1 */ bool isAirBraking;
+    /* 0xfa2 */ bool isSlopeSliding;
+    /* 0xfa3 */ uint8_t padFA3;
+    /* 0xfa4 */ float physicsKickTimer;
+    /* 0xfa8 */ uint8_t restOfPlayer[0x1000 - 0xfa8];
 };
 
 // Size: 0x1070 bytes (4208 bytes, TI: 0x65bb)

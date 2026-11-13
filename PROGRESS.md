@@ -661,6 +661,38 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### FootLockController / HandLockController (`src/game/anim/footlockcontroller.h`, `src/game/anim/footlockcontroller.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `FootLockController::Deactivate` | `0x00477bf0` / `0x00479530` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::IsActive` | `0x00477c00` / `0x00479540` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::SetSlideLock` | `0x00477c10` / `0x00479580` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::Reposition` | `0x00477c30` / `0x004795a0` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::SetHipLimits` | `0x00477d80` / `0x004796f0` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::SetLockPointCallback` | `0x00477d80` / `0x004796f0` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::DeactivateWithoutInterp` | `0x00477da0` / `0x00479710` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::Deactivate` | `0x00477dc0` / `0x00479730` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::IsActive` | `0x00477de0` / `0x00479750` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::SetLockPoint` | `0x00477df0` / `0x00479760` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::SkipSecondaryIkThisFrame` | `0x00477e10` / `0x00479780` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::RelocateLockPoint` | `0x00477e20` / `0x00479790` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::AdvanceInterp` | `0x00477e40` / `0x004797b0` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::FootLockController` | `0x00477fd0` / `0x00479940` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::FindLockPoint` | `0x004780f0` / `0x00479a60` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::Activate` | `0x004783f0` / `0x00479d60` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::HandLockController` | `0x00478450` / `0x00479dc0` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::CallbackImpl` | `0x00478540` / `0x00479eb0` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::HelperCallbackImpl` | `0x00478a00` / `0x0047a370` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::SolveIK` | `0x00478ab0` / `0x0047a420` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::SetBones` | `0x00479250` / `0x0047abc0` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::Callback` | `0x00479810` / `0x0047b180` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::HelperCallback` | `0x00479830` / `0x0047b1a0` | [x] Done | `footlockcontroller.cpp` |
+| `FootLockController::Apply` | `0x00479850` / `0x0047b1c0` | [x] Done | `footlockcontroller.cpp` |
+| `HandLockController::Activate` | `0x004798b0` / `0x0047b220` | [x] Done | `footlockcontroller.cpp` |
+- **Globals & Structs Added**: `g_useSecondaryIK` (`0x010fc358`), `g_useToePitch` (`0x010fc359`); `LimbLockController` (`0x04`), `FootLockController` (`0x110`), `HandLockController` (`0x100`) in `src/game/anim/footlockcontroller.h`; `G2AnimSegValue` (`0x40`), `AnimController` (`0x70`), `AnimProcessor` (`0x5f0`), `AnimComponent` (`0x14`) in `src/game/anim/anim.h`; `cdc::` math methods (`Quat`, `Matrix`, `Vector3`, `Slerp`, `OrthonormalInverse3x4`) in `src/cdc/runtime/cdcMath/Math.h`; exposed `Player` controller pointers (`0xd0c`–`0xd1c`) and `isStuckToGround` (`0xfa0`) in `src/game/player/player.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
