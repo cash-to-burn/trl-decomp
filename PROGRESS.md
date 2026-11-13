@@ -618,6 +618,19 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Animation Tracker (`src/game/anim/anitracker.h`, `src/game/anim/anitracker.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `ANITRACKER_AllocateAnimation` (`static`) | `0x00477a50` / `0x00479390` | [x] Done | `anitracker.cpp` |
+| `ANITRACKER_FreeAnimation` | `0x00477ab0` / `0x004793f0` | [x] Done | `anitracker.cpp` |
+| `ANITRACKER_FindAnimation` | `0x00477af0` / `0x00479430` | [x] Done | `anitracker.cpp` |
+| `ANITRACKER_TranslateAnimationList` | `0x00477b30` / `0x00479470` | [x] Done | `anitracker.cpp` |
+| `ANITRACKER_Init` | `0x00477b80` / `0x004794c0` | [x] Done | `anitracker.cpp` |
+| `ANITRACKER_ResolveAnimation` | `0x00477ba0` / `0x004794e0` | [x] Done | `anitracker.cpp` |
+- **Globals & Structs Added**: `gFirstEmptyAnimation` (`0x010fa350`), `gNumLoadedAnimations` (`0x010fa354`), `aniTracker[1024]` (`0x010fa358`); `AnimListEntry` (`0x04`), `_AniTracker` (`0x08`) in `src/game/anim/anitracker.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
