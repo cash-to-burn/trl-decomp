@@ -600,10 +600,26 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Camera Collide (`src/game/camera/cameracollide.h`, `src/game/camera/cameracollide.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `CAMERA_update_dist_debounced` | `0x00483c50` / `0x00485680` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_CalcIntersectAngle` | `0x00483c80` / `0x004856b0` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_SetupColInfo` | `0x00483d40` / `0x00485770` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_dampgetline` | `0x00483ec0` / `0x004858f0` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_GetLineAngle` | `0x00483f90` / `0x004859c0` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_ACNoForcedMovement` | `0x00484200` / `0x00485c30` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_AbsoluteCollision` | `0x00484830` / `0x00486260` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_SphereToSphereWithLines` | `0x00484910` / `0x00486340` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_DoPanicCheck` | `0x00485570` / `0x00486fa0` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_Panic` | `0x00485600` / `0x00487030` | [x] Done | `cameracollide.cpp` |
+| `CAMERA_DoCameraCollision` | `0x004857b0` / `0x004871e0` | [x] Done | `cameracollide.cpp` |
+- **Globals & Structs Added**: `previousCollision` (`0x010fd970`), `CameraLine_startPt[5]` (`0x010fd980`), `CameraLine_endPt[5]` (`0x010fd9d0`); `IndexedFace` (`0x0a`), `MTriangle` (`0x30`), `Mesh` (`0x50`), `TerrainGroup` (`0xb0`), `PCollideInfo` (`0x60`), `CameraCollisionInfo` (`0x90`) in `src/game/camera/cameracollide.h`; replaced manual `CAMERA_DoCameraCollision` externs in `cameralook.cpp` and `camerabehind.cpp` with `#include "game/camera/cameracollide.h"`.
+
+---
+
 ## Next Targets in Execution Queue
-1. **Camera Collision (`cameracollide.cpp`)**:
-   - `cameraCollide` (`0x00483c50`–`0x00485c50` retail)
-2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
+1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
-3. **Collision / Physics Subsystem (`src/game/collide/`)**:
+2. **Collision / Physics Subsystem (`src/game/collide/`)**:
    - Instance physical query and collision resolution
