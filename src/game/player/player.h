@@ -131,6 +131,28 @@ struct GeneralAttributes {
     /* 0x024 */ float rightFootLockHipLimitMax;
 };
 
+// Size: 0x24 bytes (36 bytes, TI: 0x75f5)
+struct AnimFragmentTable {
+    /* 0x00 */ float junk2;
+    /* 0x04 */ int16_t shortCompress;
+    /* 0x06 */ int16_t compress;
+    /* 0x08 */ int16_t longCompress;
+    /* 0x0a */ int16_t extend;
+    /* 0x0c */ int16_t flail;
+    /* 0x0e */ int16_t absorb;
+    /* 0x10 */ int16_t absorbAndTrip;
+    /* 0x12 */ int16_t step;
+    /* 0x14 */ int16_t longLeftStep;
+    /* 0x16 */ int16_t longRightStep;
+    /* 0x18 */ int16_t shortLeftStep;
+    /* 0x1a */ int16_t shortRightStep;
+    /* 0x1c */ int16_t slide;
+    /* 0x1e */ int16_t slopeJump2;
+    /* 0x20 */ int16_t slopeBackJump2;
+    /* 0x22 */ uint16_t pad22;
+};
+static_assert(sizeof(AnimFragmentTable) == 0x24, "AnimFragmentTable size mismatch");
+
 // Size: 0xc68 bytes (3176 bytes, TI: 0x774e)
 struct OldRazielData {
     /* 0x000 */ ControlMode* controlModeList;
@@ -235,7 +257,9 @@ struct OldRazielData {
     /* 0x7f8 */ float fAimAssistOuterHeight;
     /* 0x7fc */ float fAimAssistTimeSlowH;
     /* 0x800 */ float fAimAssistTimeSlowV;
-    /* 0x804 */ uint8_t pad_data804[0xc68 - 0x804];
+    /* 0x804 */ uint8_t pad_data804[0xbac - 0x804];
+    /* 0xbac */ AnimFragmentTable animFragmentTable;
+    /* 0xbd0 */ uint8_t pad_databd0[0xc68 - 0xbd0];
 };
 
 // Size: 0xc98 bytes (3224 bytes, TI: 0x7eab)

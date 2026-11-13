@@ -1,14 +1,6 @@
 #include "game/math3d.h"
+#include "game/g2/quatg2.h"
 #include <cmath>
-
-struct G2EulerAngles {
-    float x;
-    float y;
-    float z;
-    int order;
-};
-
-extern void G2EulerAngles_FromMatrixf(G2EulerAngles* euler, cdc::Matrix* mat, int order); // 0x004e0120 (PDB: 0x004e1c50)
 
 namespace {
 
@@ -282,7 +274,7 @@ void MATH3D_ZYXtoXYZf(cdc::Euler* euler)
     cdc::Matrix mat;
     BuildMatrixFromEuler(&mat, *euler);
 
-    G2EulerAngles g2Euler;
+    _G2EulerAngles_Type g2Euler;
     G2EulerAngles_FromMatrixf(&g2Euler, &mat, 0x15);
 
     euler->x = g2Euler.x;

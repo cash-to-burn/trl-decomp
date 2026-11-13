@@ -5,6 +5,7 @@
 
 #include "cdc/cdcSys/Array.h"
 #include "cdc/runtime/cdcMath/Math.h"
+#include "game/g2/quatg2.h"
 #include "game/instance.h"
 #include <cstddef>
 #include <cstdint>
@@ -36,14 +37,7 @@ enum RootInterpMode {
     kRootInterpMode_UserTransform = 3,
 };
 
-// Size: 0x10 (16 bytes)
-struct _G2EulerAngles_Type {
-    /* 0x00 */ float x;
-    /* 0x04 */ float y;
-    /* 0x08 */ float z;
-    /* 0x0c */ int order;
-};
-static_assert(sizeof(_G2EulerAngles_Type) == 0x10, "_G2EulerAngles_Type size mismatch");
+// _G2EulerAngles_Type is defined in game/g2/quatg2.h
 
 // Size: 0x40 (64 bytes, TI: 0x59e9)
 struct G2AnimSegValue {
@@ -459,6 +453,37 @@ public:
     virtual bool Process(AnimProcessor* ap) { (void)ap; return false; } // 0x0049a3a0
     virtual bool Exit(AnimProcessor* ap) { (void)ap; return false; }    // 0x0049a3a0
 };
+
+// Size: 0x04 (4 bytes, TI: 0xbbc8)
+class AnimPattern_RunAndJump : public AnimPattern {
+public:
+    bool RunToEdge(AnimProcessor* ap, const cdc::Vector3& pos, const cdc::Vector3& rot); // 0x0041cdd0 (PDB: 0x0041bda0)
+    bool JumpToEdge(AnimProcessor* ap, const cdc::Vector3& pos, float zRot);             // 0x0041cf60 (PDB: 0x0041bf30)
+    bool Entry(AnimProcessor* ap) override;                                              // 0x0041d020 (PDB: 0x0041bff0)
+};
+
+// Size: 0x04 (4 bytes, TI: 0xc37d)
+class AnimPattern_RunToSlide : public AnimPattern {
+public:
+    bool Entry(AnimProcessor* ap) override; // 0x0041d0c0 (PDB: 0x0041c090)
+};
+
+// Size: 0x04 (4 bytes, TI: 0xbbd3)
+class AnimPattern_SlopeJumpToLedge : public AnimPattern {
+public:
+    bool Entry(AnimProcessor* ap) override; // 0x0041d2f0 (PDB: 0x0041c2c0)
+};
+
+// Size: 0x04 (4 bytes, TI: 0xbbde)
+class AnimPattern_SlopeBackJumpToLedge : public AnimPattern {
+public:
+    bool Entry(AnimProcessor* ap) override; // 0x0041d470 (PDB: 0x0041c440)
+};
+
+extern AnimPattern_RunAndJump gAnimPattern_RunAndJump;                   // 0x00f127e8 (PDB seg 3:0x00002208)
+extern AnimPattern_RunToSlide gAnimPattern_RunToSlide;                   // 0x00f127ec (PDB seg 3:0x0000220c)
+extern AnimPattern_SlopeJumpToLedge gAnimPattern_SlopeJumpToLedge;       // 0x00f127f0 (PDB seg 3:0x00002210)
+extern AnimPattern_SlopeBackJumpToLedge gAnimPattern_SlopeBackJumpToLedge; // 0x00f127f4 (PDB seg 3:0x00002214)
 
 struct AnimProcessor {
     /* 0x000 */ cdc::Vector3 mRootTrans;

@@ -797,8 +797,41 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### AnimationPatterns (`src/game/anim/anim.h`, `src/game/animationpatterns.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `AnimPattern::Process` | `0x0049a3a0` (PDB) | [x] Done | `anim.h` |
+| `AnimPattern::Exit` | `0x0049a3a0` (PDB) | [x] Done | `anim.h` |
+| `AnimPattern_RunAndJump::RunToEdge` | `0x0041cdd0` / `0x0041bda0` | [x] Done | `animationpatterns.cpp` |
+| `AnimPattern_RunAndJump::JumpToEdge` | `0x0041cf60` / `0x0041bf30` | [x] Done | `animationpatterns.cpp` |
+| `AnimPattern_RunAndJump::Entry` | `0x0041d020` / `0x0041bff0` | [x] Done | `animationpatterns.cpp` |
+| `AnimPattern_RunToSlide::Entry` | `0x0041d0c0` / `0x0041c090` | [x] Done | `animationpatterns.cpp` |
+| `AnimPattern_SlopeJumpToLedge::Entry` | `0x0041d2f0` / `0x0041c2c0` | [x] Done | `animationpatterns.cpp` |
+| `AnimPattern_SlopeBackJumpToLedge::Entry` | `0x0041d470` / `0x0041c440` | [x] Done | `animationpatterns.cpp` |
+- **Globals & Structs Added**: `AnimPattern_RunAndJump`, `AnimPattern_RunToSlide`, `AnimPattern_SlopeJumpToLedge`, `AnimPattern_SlopeBackJumpToLedge`, `gAnimPattern_RunAndJump` (`0x00f127e8`), `gAnimPattern_RunToSlide` (`0x00f127ec`), `gAnimPattern_SlopeJumpToLedge` (`0x00f127f0`), `gAnimPattern_SlopeBackJumpToLedge` (`0x00f127f4`); wired `AnimProcessor::sNativePattern` (`0x00f15b40`) in `src/game/anim/animprocessor.cpp`; `AnimFragmentTable` (`0x24`) and `OldRazielData::animFragmentTable` (`0xbac`) in `src/game/player/player.h`.
+
+---
+
+### G2 Subsystem (`src/game/g2/poolmmg2.h`, `poolmmg2.cpp`, `quatg2.h`, `quatg2.cpp`, `timerg2.h`, `timerg2.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `G2PoolMem_ResetPool` | `0x004dffd0` / `0x004e1b00` | [x] Done | `poolmmg2.cpp` |
+| `G2PoolMem_Allocate` | `0x004e0000` / `0x004e1b30` | [x] Done | `poolmmg2.cpp` |
+| `G2PoolMem_Free` | `0x004e0030` / `0x004e1b60` | [x] Done | `poolmmg2.cpp` |
+| `G2PoolMem_InitPool` | `0x004e0060` / `0x004e1b90` | [x] Done | `poolmmg2.cpp` |
+| `G2Quat_ToMatrixf` | `0x004e00f0` / `0x004e1c20` | [x] Done | `quatg2.cpp` |
+| `G2EulerAngles_FromMatrixf` | `0x004e0120` / `0x004e1c50` | [x] Done | `quatg2.cpp` |
+| `G2Quat_ToEuler` | `0x004e01e0` / `0x004e1d10` | [x] Done | `quatg2.cpp` |
+| `G2Quat_FromEulerf` | `0x004e0220` / `0x004e1d50` | [x] Done | `quatg2.cpp` |
+| `G2Quat_FromMatrixf` | `0x004e0280` / `0x004e1db0` | [x] Done | `quatg2.cpp` |
+| `G2Quat_Slerp` | `0x004e02b0` / `0x004e1de0` | [x] Done | `quatg2.cpp` |
+| `G2Timer_GetFrameTime` | `0x004e02e0` / `0x004e1e10` | [x] Done | `timerg2.cpp` |
+- **Structs & Math Helpers Added**: `G2PoolMemPool` (`0x10`) in `src/game/g2/poolmmg2.h`; unified `_G2EulerAngles_Type` (`0x10`) in `src/game/g2/quatg2.h` across `anim.h`, `animprocessor.cpp`, `cameracinematic.cpp`, and `math3d.cpp`; added `cdc::Quat::Quat(const cdc::Euler&)` (`0x005de3d0`) in `src/cdc/runtime/cdcMath/Math.h`.
+
+---
+
 ## Next Targets in Execution Queue
-1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
-   - Animation blending and character motion systems
+1. **G2 & Animation Subsystem (`src/game/g2/`, `src/game/resolve/`)**:
+   - `InstncG2` (`G2Instance_*`), `EmulateG2` (`G2Emulation*`), and `AnimationSection`
 2. **Collision / Physics Subsystem (`src/game/collide/`)**:
    - Instance physical query and collision resolution

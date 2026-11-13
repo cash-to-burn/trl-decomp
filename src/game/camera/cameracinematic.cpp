@@ -1,19 +1,12 @@
 #include "game/camera/cameracinematic.h"
 #include "game/camera/camerafocus.h"
 #include "game/camera/camerasupport.h"
+#include "game/g2/quatg2.h"
 #include "game/spline.h"
 #include <cmath>
 #include <cstdint>
 
-// 0x0048e1a8.. (G2 / UI / GameValue / Camera helpers declared externally until their modules are decompiled)
-struct G2EulerAngles {
-    float x;
-    float y;
-    float z;
-    int order;
-};
-
-extern void G2Quat_ToEuler(cdc::Quat* quat, G2EulerAngles* euler, int order); // 0x004e01e0 (PDB: 0x004e1d10)
+// 0x0048e1a8.. (UI / GameValue / Camera helpers declared externally until their modules are decompiled)
 extern float CAMERA_DoVertigo(Camera* camera);                                 // 0x0047cad0 (PDB: 0x0047e470)
 extern void CAMERA_UpdateFocusRoll(Camera* camera);                            // 0x0047fe90 (PDB: 0x00481830)
 extern bool UIScreenManager_HasStackedScreen(int screenId);                  // 0x004f7340 (PDB: 0x004f8b70 / UIScreenManager::HasStackedScreen)
@@ -58,7 +51,7 @@ void CAMERA_CinematicProcess(Camera* camera)
 
             if (sourceSpline->rotational != nullptr) {
                 cdc::Quat quat = sourceSpline->GetQuaternion();
-                G2EulerAngles g2Euler;
+                _G2EulerAngles_Type g2Euler;
                 G2Quat_ToEuler(&quat, &g2Euler, 0x15);
                 targetRotation.x = g2Euler.x;
                 targetRotation.y = g2Euler.y;

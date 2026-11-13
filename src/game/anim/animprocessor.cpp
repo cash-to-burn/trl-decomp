@@ -1,5 +1,8 @@
 #include "game/anim/anim.h"
 #include "game/anim/animpatternvm.h"
+#include "game/g2/poolmmg2.h"
+#include "game/g2/quatg2.h"
+#include "game/g2/timerg2.h"
 #include "game/main.h"
 #include "game/math3d.h"
 #include "game/obtable.h"
@@ -7,19 +10,9 @@
 #include <cmath>
 #include <cstring>
 
-// Pool / G2 external helpers
-extern void G2PoolMem_ResetPool(void* pool);                 // 0x004dffd0 (PDB: 0x004e1b00)
-extern void* G2PoolMem_Allocate(void* pool);                 // 0x004e0000 (PDB: 0x004e1b30)
-extern void G2PoolMem_Free(void* pool, void* block);         // 0x004e0030 (PDB: 0x004e1b60)
-extern void G2PoolMem_InitPool(void* pool, int numBlocks, int blockSize); // 0x004e0060 (PDB: 0x004e1b90)
-extern void G2Quat_ToMatrixf(cdc::Quat* quat, cdc::Matrix* mat);          // 0x004e00f0 (PDB: 0x004e1c20)
-extern void G2EulerAngles_FromMatrixf(_G2EulerAngles_Type* euler, cdc::Matrix* mat, int order); // 0x004e0120 (PDB: 0x004e1c50)
-extern void G2Quat_FromMatrixf(cdc::Quat* quat, cdc::Matrix* mat);        // 0x004e0280 (PDB: 0x004e1db0)
-extern void G2Quat_Slerp(float alpha, cdc::Quat* q0, cdc::Quat* q1, cdc::Quat* out, int zero); // 0x004e02b0 (PDB: 0x004e1de0)
-extern float G2Timer_GetFrameTime();                                      // 0x004e02e0 (PDB: 0x004e1e10)
+// G2 / game external helpers
 extern AnimFragment* G2Instance_GetKeylist(BaseInstance* inst, int keylistID); // 0x004dee70 (PDB: 0x004e09a0)
 extern AnimFragment* G2Instance_GetKeylistFromObject(Object* obj, int keylistID); // 0x004deea0 (PDB: 0x004e09d0)
-extern void G2Quat_FromEulerf(cdc::Quat* quat, _G2EulerAngles_Type* euler); // 0x004e0220 (PDB: 0x004e1d50)
 extern void playerInvProcessAimBlend(Instance* inst, bool force); // 0x005a8310 (PDB: 0x005aac10)
 extern uint32_t debugRazielFlags1;                                        // 0x01075ac8 (PDB: 0x01077e04)
 extern bool g_interpoBlendMirrorHack;                                     // 0x011187c0 (PDB: 0x0111ba20)
@@ -35,7 +28,12 @@ cdc::Quat AnimProcessor::sUserTransformRotation = cdc::Quat::Identity(); // 0x01
 G2AnimSegValue* _segValues = _segValuesStatic;         // 0x00f1658c (PDB: 0x00f188c4)
 AnimProcessor* _segValuesAnim = nullptr;               // 0x010fe8a0 (PDB: 0x01101aa0)
 G2AnimSegValue _segValuesStatic[180] = {};             // 0x010fe8c0 / 0x01032820 (PDB: 0x01101ac0 / 0x01034b60)
-AnimPattern* AnimProcessor::sNativePattern[4] = {};    // 0x00f15b40 (PDB: 0x00f17e78)
+AnimPattern* AnimProcessor::sNativePattern[4] = {
+    &gAnimPattern_SlopeJumpToLedge,
+    &gAnimPattern_SlopeBackJumpToLedge,
+    &gAnimPattern_RunAndJump,
+    nullptr,
+}; // 0x00f15b40 (PDB: 0x00f17e78)
 
 // 0x0046fad0 (PDB: 0x00471450)
 void MATH3D_InterpOnePlusAlpha(cdc::Vector3* dst, cdc::Vector3* a, cdc::Vector3* b, float alpha)

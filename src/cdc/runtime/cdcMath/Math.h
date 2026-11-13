@@ -153,6 +153,10 @@ struct alignas(16) Euler : public Vector {
 };
 
 struct alignas(16) Quat : public Vector {
+    Quat() = default;
+    // 0x005de3d0
+    inline explicit Quat(const Euler& e);
+
     static inline Quat Identity()
     {
         Quat q;
@@ -547,6 +551,21 @@ inline Euler::Euler(const Matrix& mat)
         z = 0.0f;
         w = 0.0f;
     }
+}
+
+inline Quat::Quat(const Euler& e)
+{
+    const float cx = std::cos(e.x * 0.5f);
+    const float cy = std::cos(e.y * 0.5f);
+    const float cz = std::cos(e.z * 0.5f);
+    const float sx = std::sin(e.x * 0.5f);
+    const float sy = std::sin(e.y * 0.5f);
+    const float sz = std::sin(e.z * 0.5f);
+
+    x = cz * cy * sx - sz * sy * cx;
+    y = sy * cz * cx + sx * sz * cy;
+    z = sz * cy * cx - sy * sx * cz;
+    w = cz * cy * cx + sx * sz * sy;
 }
 
 // 0x005dd3e0 (PDB: 0x005dfe10 / ?Transpose@cdc@@YAXPAVMatrix@1@ABV21@@Z)
