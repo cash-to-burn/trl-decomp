@@ -693,6 +693,24 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### RNodeController (`src/game/anim/rnodecontroller.h`, `src/game/anim/rnodecontroller.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::Quat::Build(Vector3, float)` | `0x005df360` / `0x005e1d90` | [x] Done | `cdcMath/Math.h` |
+| `RNodeController::RNodeController` | `0x004799d0` / `0x0047b340` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::SetSlewTarget` | `0x00479a80` / `0x0047b3f0` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::DeactivateSlewing` | `0x00479ab0` / `0x0047b420` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::Deactivate` | `0x00479af0` / `0x0047b460` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::Relocate` | `0x00479b10` / `0x0047b480` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::CallbackImpl` | `0x00479b40` / `0x0047b4b0` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::Callback` | `0x0047a360` / `0x0047bcd0` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::Activate` | `0x0047a380` / `0x0047bcf0` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::SetLeaning` | `0x0047a460` / `0x0047bdd0` | [x] Done | `rnodecontroller.cpp` |
+| `RNodeController::ActivateSlewing` | `0x0047a4b0` / `0x0047be20` | [x] Done | `rnodecontroller.cpp` |
+- **Globals & Structs Added**: `RNodeController` (`0xd0`) in `src/game/anim/rnodecontroller.h`; exposed `InterpoBlendSlewAdjustRate` (`0x4b0`), `InterpoBlendSlewRadius` (`0x4b4`), `InterpoBlendSlewExaggeration` (`0x4b8`) on `OldRazielData` and typed `Player` controller pointers (`0xd0c`–`0xd1c`) in `src/game/player/player.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems

@@ -148,6 +148,20 @@ struct alignas(16) Quat : public Vector {
     // 0x005ded10 (PDB: 0x005e1740 / ?Build@Quat@cdc@@QAEXABVMatrix@2@@Z)
     inline void Build(const Matrix& mat);
 
+    // 0x005df360 (PDB: 0x005e1d90 / ?Build@Quat@cdc@@QAEXABVVector3@2@M@Z)
+    inline void Build(const Vector3& axis, float angle)
+    {
+        const float half = angle * 0.5f;
+        const float s = std::sin(half);
+        const float c = std::cos(half);
+        const float lenSq = axis.x * axis.x + axis.y * axis.y + axis.z * axis.z;
+        const float invLen = 1.0f / std::sqrt(lenSq);
+        x = axis.x * invLen * s;
+        y = axis.y * invLen * s;
+        z = axis.z * invLen * s;
+        w = c;
+    }
+
     // 0x005de8d0 (PDB: 0x005e1300 / ?Rotate@Quat@cdc@@QBE?AVVector3@2@ABV32@@Z)
     inline Vector3 Rotate(const Vector3& v) const
     {

@@ -28,9 +28,9 @@ struct MarkUpBox;
 struct SMeleeMove;
 struct CCombatReticle;
 struct SenseTarget;
-struct RNodeController;
-struct FootLockController;
-struct HandLockController;
+class RNodeController;
+class FootLockController;
+class HandLockController;
 
 #pragma pack(push, 1)
 
@@ -208,7 +208,11 @@ struct OldRazielData {
     /* 0x0fc */ float SwimPhysicsSurfMinRotation;
     /* 0x100 */ float SwimPhysicsSurfMaxRotation;
     /* 0x104 */ float SwimPhysicsSurfKickDecel;
-    /* 0x108 */ uint8_t pad_data108[0x7b0 - 0x108];
+    /* 0x108 */ uint8_t pad_data108[0x4b0 - 0x108];
+    /* 0x4b0 */ float InterpoBlendSlewAdjustRate;
+    /* 0x4b4 */ float InterpoBlendSlewRadius;
+    /* 0x4b8 */ float InterpoBlendSlewExaggeration;
+    /* 0x4bc */ uint8_t pad_data4bc[0x7b0 - 0x4bc];
     /* 0x7b0 */ float fAimAnchorOffset;
     /* 0x7b4 */ float vAimBoom[3];
     /* 0x7c0 */ float fAimPanHRate;
@@ -425,11 +429,11 @@ struct Player {
     /* 0xc84 */ int detachOutcome;
     /* 0xc88 */ float tTimeToTarget;
     /* 0xc8c */ uint8_t padC8C[0xd0c - 0xc8c];
-    /* 0xd0c */ void* rNodeController;
-    /* 0xd10 */ void* footLockControllerLeft;
-    /* 0xd14 */ void* footLockControllerRight;
-    /* 0xd18 */ void* handLockControllerLeft;
-    /* 0xd1c */ void* handLockControllerRight;
+    /* 0xd0c */ RNodeController* rNodeController;
+    /* 0xd10 */ FootLockController* footLockControllerLeft;
+    /* 0xd14 */ FootLockController* footLockControllerRight;
+    /* 0xd18 */ HandLockController* handLockControllerLeft;
+    /* 0xd1c */ HandLockController* handLockControllerRight;
     /* 0xd20 */ uint8_t padD20[0xfa0 - 0xd20];
     /* 0xfa0 */ bool isStuckToGround;
     /* 0xfa1 */ bool isAirBraking;
