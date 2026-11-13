@@ -13,6 +13,12 @@ struct alignas(16) Vector {
         struct { float x, y, z, w; };
         float m[4];
     };
+
+    // 0x0045f5f0 (PDB: 0x00460da0 / ?Len4@Vector@cdc@@QBEMXZ)
+    inline float Len4() const
+    {
+        return std::sqrt(x * x + y * y + z * z + w * w);
+    }
 };
 
 struct alignas(16) Vector3 : public Vector {};

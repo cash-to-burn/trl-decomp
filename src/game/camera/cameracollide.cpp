@@ -1,5 +1,6 @@
 #include "game/camera/cameracollide.h"
 #include "game/camera/camerasupport.h"
+#include "game/math3d.h"
 #include "game/Stream/stream.h"
 #include "game/globalinfo.h"
 #include "game/instance.h"
@@ -113,7 +114,6 @@ struct MultibodySystem {
 extern MultibodySystem* gMultibodySystem; // 0x01116f50 (PDB: 0x0111a100)
 extern cdc::Vector3 gLineProbeColor;      // 0x01116f60 (PDB: 0x0111a110)
 
-extern int  MATH3D_IntersectLineAndPlane(cdc::Vector3* intersection, const cdc::Vector3* pos0, const cdc::Vector3* pos1, const cdc::Vector3* planeNormal, float planeD); // 0x0045fba0 (PDB: 0x00461350)
 extern void MULTIBODY_LegacyLineProbe(unsigned int flags, PCollideInfo* info, BaseInstance* player); // 0x00556060 (PDB: 0x00558150)
 
 // Globals defined in cameraCollide.cpp

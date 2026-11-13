@@ -631,6 +631,36 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Math3D (`src/game/math3d.h`, `src/game/math3d.cpp`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `cdc::Vector::Len4` | `0x0045f5f0` / `0x00460da0` | [x] Done | `cdcMath/Math.h` |
+| `MATH3D_QuatLogToMatrix` | `0x0045f690` / `0x00460e40` | [x] Done | `math3d.cpp` |
+| `MATH3D_AngleFromVector` | `0x0045f800` / `0x00460fb0` | [x] Done | `math3d.cpp` |
+| `MATH3D_AngleFromPosToPosf` | `0x0045f840` / `0x00460ff0` | [x] Done | `math3d.cpp` |
+| `MATH3D_ElevationFromPosToPosf` | `0x0045f880` / `0x00461030` | [x] Done | `math3d.cpp` |
+| `MATH3D_ElevationFromVector` | `0x0045f900` / `0x004610b0` | [x] Done | `math3d.cpp` |
+| `MATH3D_RotationFromPosToPosf` | `0x0045f970` / `0x00461120` | [x] Done | `math3d.cpp` |
+| `MATH3D_ZYXtoXYZf` | `0x0045f9d0` / `0x00461180` | [x] Done | `math3d.cpp` |
+| `MATH3D_AngleDifff` | `0x0045fa20` / `0x004611d0` | [x] Done | `math3d.cpp` |
+| `MATH3D_CheckAngleInRange` | `0x0045fa60` / `0x00461210` | [x] Done | `math3d.cpp` |
+| `MATH3D_NearestPointOnPlane` | `0x0045fb40` / `0x004612f0` | [x] Done | `math3d.cpp` |
+| `MATH3D_IntersectLineAndPlane` | `0x0045fba0` / `0x00461350` | [x] Done | `math3d.cpp` |
+| `MATH3D_NearestPointOnLine` | `0x0045fc90` / `0x00461440` | [x] Done | `math3d.cpp` |
+| `MATH3D_DistanceFromPointToLineSegment` | `0x0045fdb0` / `0x00461560` | [x] Done | `math3d.cpp` |
+| `MATH3D_AngleBetweenVectorsf` | `0x0045fe20` / `0x004615d0` | [x] Done | `math3d.cpp` |
+| `MATH3D_ConvertAngleToVector` | `0x0045feb0` / `0x00461660` | [x] Done | `math3d.cpp` |
+| `MATH3D_EulerFromPosToPos` | `0x0045ff00` / `0x004616b0` | [x] Done | `math3d.cpp` |
+| `MATH3D_ClampAngleInRange` | `0x0045ffc0` / `0x00461770` | [x] Done | `math3d.cpp` |
+| `MATH3D_AngleMoveTowardf` | `0x00460060` / `0x00461810` | [x] Done | `math3d.cpp` |
+| `MATH3D_RelativePositionf` | `0x00460120` / `0x004618d0` | [x] Done | `math3d.cpp` |
+| `MATH3D_ConeDetectf` | `0x00460190` / `0x00461940` | [x] Done | `math3d.cpp` |
+| `MATH3D_Solve2BoneIK` | `0x00460270` / `0x00461a20` | [x] Done | `math3d.cpp` |
+| `MATH3D_CheckMatrixAxisAlignment` | `0x00460500` / `0x00461cb0` | [x] Done | `math3d.cpp` |
+- **Notes**: Added `cdc::Vector::Len4()` in `src/cdc/runtime/cdcMath/Math.h`; replaced manual `MATH3D_IntersectLineAndPlane` extern in `cameracollide.cpp` with `#include "game/math3d.h"`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
