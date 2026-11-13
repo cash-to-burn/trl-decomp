@@ -557,6 +557,15 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 | `SplineKey` / `RSplineKey` / `SplineState` / `Spline` / `RSpline` / `MultiSpline` | Spline data structs (`0x40` / `0x20` / `0x08` / `0x50` / `0x30` / `0x70` bytes) | Documented |
 | `SplineCameraLevelData` / `Level` | Level spline camera data & Level structs (`0x58` / `0x130` bytes) | Documented |
 
+### Camera Cinematic & Support (`f:\tr7\game\camera\cameracinematic.cpp`, `src/game/camera/camerasupport.cpp`)
+
+| Address | Symbol | Signature / Type | Status |
+| :--- | :--- | :--- | :--- |
+| `0x00483420` | `CAMERA_CinematicDone` | `int CAMERA_CinematicDone(Camera*)` | Decompiled & Verified |
+| `0x00483440` | `CAMERA_CinematicProcess` | `void CAMERA_CinematicProcess(Camera*)` | Decompiled & Verified |
+| `0x0048c980` | `CAMERA_SetTarget` | `void CAMERA_SetTarget(Camera*, const cdc::Vector3*)` | Decompiled & Verified |
+| `0x010fd960` | `Cinematic_lastPosition` | `cdc::Vector3` (last cinematic camera position) | Documented |
+
 ---
 
 ## Build Verification
@@ -566,8 +575,8 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 ---
 
 ## Next Targets in Execution Queue
-1. **Camera Cine & Stack Processors (`cameraCine.c`, `cameraStack.c`)**:
-   - `CAMERA_CinematicDone` / `CAMERA_CinematicProcess` (`0x004833e0` retail) and `cameraStack.c` (`0x0048a180` retail)
+1. **Camera Stack & Collision (`camerastack.cpp`, `cameracollide.cpp`)**:
+   - `cameraStack` (`0x0048a180`–`0x0048c6d0` retail) and `cameraCollide` (`0x00483c50`–`0x00485c50` retail)
 2. **Animation Subsystem (`src/game/anim/` / `f:\tr7\game\anim\`)**:
    - Animation blending and character motion systems
 3. **Collision / Physics Subsystem (`src/game/collide/`)**:

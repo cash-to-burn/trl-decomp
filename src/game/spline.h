@@ -83,6 +83,10 @@ struct MultiSpline {
     float GetNumFrames() const;
     // 0x00469160 (PDB: 0x0046ab20 / ?SetFrameNumber@MultiSpline@@QAEXM@Z)
     void SetFrameNumber(float frame);
+    // 0x00469110 (PDB: 0x0046aad0 / ?Step@MultiSpline@@QAEXM@Z)
+    void Step(float delta);
+    // 0x004651f0 (PDB: 0x00466b90 / ?GetQuaternion@MultiSpline@@QBE?AVQuat@cdc@@XZ)
+    cdc::Quat GetQuaternion() const;
 };
 static_assert(sizeof(MultiSpline) == 0x70, "MultiSpline size mismatch");
 

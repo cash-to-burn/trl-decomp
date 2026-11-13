@@ -69,6 +69,20 @@ void CAMERA_CalcRotation(cdc::Euler* outRot, const cdc::Vector3* target, const c
     outRot->z = std::atan2(dy, dx) + CS_HALF_PI;
 }
 
+// 0x0048c980 (PDB: 0x0048e490)
+void CAMERA_SetTarget(Camera* camera, const cdc::Vector3* targetPosition)
+{
+    CAMERA_CalcRotation(&camera->TargetFocusRotation, targetPosition, &camera->core.position);
+
+    float dx = targetPosition->x - camera->core.position.x;
+    float dy = targetPosition->y - camera->core.position.y;
+    float dz = targetPosition->z - camera->core.position.z;
+    float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
+
+    camera->focusDistance = dist;
+    camera->targetFocusDistance = dist;
+}
+
 // 0x0048d340 (PDB: 0x0048ee50)
 float CAMERA_CalcZRotation(const cdc::Vector3* target, const cdc::Vector3* source)
 {

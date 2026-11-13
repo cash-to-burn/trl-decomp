@@ -15,6 +15,7 @@ void CriticalDampAngleControl(float* current, float target, float* vel, float* a
 
 // Camera angle and position support routines
 void CAMERA_CalcRotation(cdc::Euler* outRot, const cdc::Vector3* target, const cdc::Vector3* source); // 0x0048c8d0 (PDB: 0x0048e3e0)
+void CAMERA_SetTarget(Camera* camera, const cdc::Vector3* targetPosition); // 0x0048c980 (PDB: 0x0048e490)
 float CAMERA_CircleAnglef(float angle); // 0x0048ca00 (PDB: 0x0048e510)
 void CAMERA_SetZRotation(Camera* camera, float rotZ); // 0x0048ca60 (PDB: 0x0048e570)
 float CAMERA_SignedAngleDifference(float a, float b); // 0x0048ca90 (PDB: 0x0048e5a0)
