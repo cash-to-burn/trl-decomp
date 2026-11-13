@@ -973,6 +973,33 @@ Original Module: `f:\tr7\game\camera\cameraSpline.c` (`0x00488130`–`0x0048a17c
 
 ---
 
+### Multibody Collision — CollideUtils, CollideSphere, CollidePlane, CollideCapsule, CollideMesh (`src/game/Multibody/collision/`)
+| Function | Address (Retail / PDB) | Status | Source File |
+|---|---|---|---|
+| `CrossTrick` | `0x00501c40` / `0x004fd260` | [x] Done | `CollideUtils.cpp` |
+| `LineLineMidpoint` | `0x00501ca0` / `0x00503940` | [x] Done | `CollideUtils.cpp` |
+| `TestSegmentAndBox` | `0x00501dd0` / `0x00503a70` | [x] Done | `CollideUtils.cpp` |
+| `ClipPolyToPlane` (`cdc::Vector3*`) | `0x00501f10` / `0x00503bb0` | [x] Done | `CollideUtils.cpp` |
+| `ClipPolyToPlane` (`ClipPoint*`) | `0x005021d0` / `0x00503e70` | [x] Done | `CollideUtils.cpp` |
+| `PointToSegmentDistance` | `0x00502530` / `0x005041d0` | [x] Done | `CollideUtils.cpp` |
+| `PointToAlignedBoxDistance` | `0x005026d0` / `0x00504370` | [x] Done | `CollideUtils.cpp` |
+| `PointToBoxDistance` | `0x00502800` / `0x005044a0` | [x] Done | `CollideUtils.cpp` |
+| `TestPointAndBox` | `0x00502a50` / `0x005046f0` | [x] Done | `CollideUtils.cpp` |
+| `SegmentToSegmentDistance` | `0x00502b00` / `0x005047a0` | [x] Done | `CollideUtils.cpp` |
+| `CollideSphereAndSphere` | `0x004fe270` / `0x004fff70` | [x] Done | `CollideSphere.cpp` |
+| `CollideSphereAndBox` | `0x004fe3a0` / `0x005000a0` | [x] Done | `CollideSphere.cpp` |
+| `CollideSphereAndPlane` | `0x004fd100` / `0x004fee00` | [x] Done | `CollidePlane.cpp` |
+| `CollideCapsuleAndPlane` | `0x004fd1d0` / `0x004feed0` | [x] Done | `CollidePlane.cpp` |
+| `CollideBoxAndPlane` | `0x004fd350` / `0x004ff050` | [x] Done | `CollidePlane.cpp` |
+| `CollideCapsuleAndSphere` | `0x004fcae0` / `0x004fe7e0` | [x] Done | `CollideCapsule.cpp` |
+| `CollideCapsuleAndCapsule` | `0x004fcc10` / `0x004fe910` | [x] Done | `CollideCapsule.cpp` |
+| `CollideMeshAndSphere` | `0x004fcd40` / `0x004fea40` | [x] Done | `CollideMesh.cpp` |
+| `CollideMeshAndBox` | `0x004fcea0` / `0x004feba0` | [x] Done | `CollideMesh.cpp` |
+| `CollideMeshAndCapsule` | `0x004fcfd0` / `0x004fecd0` | [x] Done | `CollideMesh.cpp` |
+- **Structs & Helpers Added**: `ClipPoint` (`0x20`), `CPoint` (`0x30`), `OBox` (`0xc0`), and `MultibodyCollision` helpers in `src/game/Multibody/collision/CollideUtils.h`; matching headers in `CollideSphere.h`, `CollidePlane.h`, `CollideCapsule.h`, `CollideMesh.h`.
+
+---
+
 ## Next Targets in Execution Queue
 1. **Collision / Physics Subsystem (Remaining `src/game/Multibody/collision/` & `Physics.obj`)**:
-   - `CollideUtils.obj` (`CrossTrick`, `LineLineMidpoint`, `TestSegmentAndBox`, `ClipPolyToPlane`, distance/overlap helpers), `CollideSphere.obj`, `CollideBox.obj`, and core `Physics.obj` handlers
+   - `CollideTriAndSphere.obj`, `CollideTriAndCapsule.obj`, `CollideTriAndBox.obj`, `CollideBoxAndCapsule.obj`, `CollideBoxAndBox.obj`, `CollideSweptSphere.obj`, and core `Physics.obj` handlers
